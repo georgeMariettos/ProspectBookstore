@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prospect Bookstore</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="index.css" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Books will be inserted here -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to fetch books from Google Books API
+
+        async function fetchBooks(query = 'bestsellers') {
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=10`);
+                const data = await response.json();
+                return data.items || [];
+            } catch (error) {
+                console.error('Error fetching books:', error);
+                return [];
+            }
+        }
+
+        // Function to create carousel items
+        function createCarouselItems(books) {
+            const carouselInner = document.querySelector('.carousel-inner');
+            carouselInner.innerHTML = '';
+
+            books.forEach((book, index) => {
+                const volumeInfo = book.volumeInfo;
+                const imageUrl = volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x196';
+                
+                const carouselItem = document.createElement('div');
+                carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                
+                carouselItem.innerHTML = `
+                    <div class="book-slide">
+                        <img src="${imageUrl}" alt="${volumeInfo.title}">
+                        <div class="book-title">${volumeInfo.title}</div>
+                        <div class="book-author">by ${volumeInfo.authors ? volumeInfo.authors.join(', ') : 'Unknown Author'}</div>
+                    </div>
+                `;
+                
+                carouselInner.appendChild(carouselItem);
+            });
+        }
+
+        // Initialize the carousel with books
+        async function initializeCarousel() {
+            const books = await fetchBooks();
+            createCarouselItems(books);
+        }
+
+        // Load books when the page loads
+        document.addEventListener('DOMContentLoaded', initializeCarousel);
+    </script>
+</body>
+</html>
