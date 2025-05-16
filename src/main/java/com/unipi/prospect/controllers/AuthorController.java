@@ -10,7 +10,7 @@ public class AuthorController {
 
     @GetMapping
     public String AuthorPage(){
-        return "redirect:/author.html";
+        return "author";
     }
 
 }

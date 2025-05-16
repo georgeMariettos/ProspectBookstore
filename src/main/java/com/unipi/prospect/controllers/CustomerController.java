@@ -10,7 +10,7 @@ public class CustomerController {
 
     @GetMapping
     public String CustomerPage(){
-        return "redirect:/customer.html";
+        return "customer";
     }
 
 }

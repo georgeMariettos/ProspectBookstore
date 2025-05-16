@@ -11,7 +11,7 @@ public class AdminController {
     @GetMapping
     public String AdminPage(){
 
-        return "redirect:/admin.html";
+        return "admin";
     }
 
 
