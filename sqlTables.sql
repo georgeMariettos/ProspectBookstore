@@ -22,6 +22,47 @@ Create table Books(
     genre text null default  null,
     price float(5,2) null default  null,
     stock int check ( stock >= 0 ) not null default  0,
+    imageUrl text,
     primary key (isbn),
     foreign key (authorUsername) references  Users(username)
 );
+
+create  table Comments(
+    commentID integer primary key autoIncrement,
+    username text not null,
+    dateCreated Datetime,
+    bookIsbn text not null,
+    replyTo text default null,
+    foreign key (username) references  Users(username),
+    foreign key (bookIsbn) references  Books(isbn),
+    foreign key (replyTo) references Comments(commentID)
+);
+
+create table  Orders(
+    orderId integer primary key autoincrement,
+    created Datetime,
+    status text check(status in ('preparing', 'sent', 'delivered', 'cancelled')),
+    total float(6,2) not null,
+    address text not null,
+    username text not null,
+    items text not null,
+    foreign key (username) references Users(username)
+);
+
+create  table  OrderItems(
+    orderId integer,
+    bookIsbn text,
+    quantity integer,
+    primary key (orderId,bookIsbn),
+    foreign key (orderId) references  Orders(orderId),
+    foreign key (bookIsbn) references  Books(isbn)
+);
+
+create  table  Tickets(
+    ticketID integer primary key autoincrement,
+    comment text,
+    username text not null,
+    creationDate datetime,
+    status text check ( status in ('opened','resolved') ),
+    foreign key (username) references Users(username)
+)
