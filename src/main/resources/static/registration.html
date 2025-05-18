@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Σελίδα εγγραφής</title>
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-4 text-center">Εγγραφή</h3>
+                    <form action="/customer/register" method="POST">
+                        <div class="mb-3">
+                            <label for="Username" class="form-label">Όνομα χρήστη</label>
+                            <input type="text" class="form-control" id="username" name="username"  required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Ονοματεπώνυμο</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Address" class="form-label">Διεύθυνση</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Κωδικός</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Επιβεβαίωση κωδικού</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Δημιουργία λογαριασμού</button>
+                        </div>
+                    </form>
+
+                    <p class="mt-3 text-center">
+                        Έχετε ήδη λογαριασμό; <a href="login.html">Συνδεθείτε</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

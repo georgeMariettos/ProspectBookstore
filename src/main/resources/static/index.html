@@ -8,7 +8,49 @@
     <link rel="stylesheet" type="text/css" href="index.css" />
 </head>
 <body>
-    <div class="container mt-5">
+
+
+<nav class="navbar navbar-light bg-light px-4">
+    <a class="navbar-brand" href="#">Prospect BookStore</a>
+    <div class="d-flex gap-2">
+        <a href="registration.html" class="btn btn-outline-primary">Register</a>
+        <a href="login.html" class="btn btn-outline-secondary">Login</a>
+    </div>
+</nav>
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <form action="searchresults.html" method="GET" role="search">
+                <div class="position-relative">
+                    <input
+                            type="search"
+                            name="q"
+                            class="form-control rounded-pill border-primary"
+                            placeholder="Search"
+                            aria-label="Search"
+                            required
+                    >
+                    <i class="bi bi-search text-primary input-group-icon"></i>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container mt-5">
         <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <!-- Books will be inserted here -->
