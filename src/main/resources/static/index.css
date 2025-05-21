@@ -6,38 +6,79 @@
     background: #f8f9fa;
     padding: 20px;
 }
+
 .book-slide {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 15px;
+    border-radius: 8px;
 }
+
+.book-slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: white;
+}
+
 .book-slide img {
     max-height: 250px;
     object-fit: contain;
     margin-bottom: 15px;
 }
+
 .book-title {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 5px;
 }
+
 .book-author {
     font-style: italic;
     color: #666;
 }
-.carousel-control-prev-icon,.carousel-control-next-icon {
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
     background-color: #000;
     border-radius: 100%;
 }
 
- .input-group .form-control {
-      padding-right: 2.5rem;
-    }
-    .input-group-icon {
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-    }
+.input-group-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 5;
+}
+
+/* Modal Styles */
+#bookDetailModal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.book-detail-image {
+    max-height: 300px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.book-description {
+    margin-top: 15px;
+    text-align: justify;
+}
+
+.book-meta {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.book-preview-link {
+    margin-top: 20px;
+    display: inline-block;
+}
