@@ -12,7 +12,7 @@ create table CustomerAddress(
     username text not null,
     address text not null,
     primary key (username),
-    foreign key (username) references  Users(username)
+    foreign key (username) references  Users(username) on update cascade on delete cascade
 );
 
 Create table Books(

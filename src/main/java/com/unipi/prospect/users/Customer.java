@@ -3,8 +3,21 @@ package com.unipi.prospect.users;
 public class Customer extends User{
 
     private String address;
-    public Customer(String username, String password, String name, String address) {
-        super(username, password, name);
+    public Customer(String username, String password, String name, String surname, String address) {
+        super(username, password, name, surname);
+        this.address = address;
+    }
+
+    public Customer(String username, String password, String name, String surname, boolean active, String address) {
+        super(username, password, name, surname, active);
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
     }
 
