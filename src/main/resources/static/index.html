@@ -5,7 +5,12 @@
     <title>Prospect Bookstore</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/starability-fade.min.css"/>
+
+
     <link rel="stylesheet" type="text/css" href="index.css" />
 </head>
 <body>
@@ -59,36 +64,115 @@
 
 <!-- Book Detail Modal -->
 <div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="bookDetailModalLabel">Book Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-                <div class="text-center">
-                    <img id="bookDetailImage" src="" alt="" class="book-detail-image">
-                </div>
-                <h3 id="bookDetailTitle" class="text-center mb-3"></h3>
-                <h5 id="bookDetailAuthor" class="text-center mb-4"></h5>
-                
                 <div class="row">
-                    <div class="col-md-6">
-                        <p class="book-meta"><strong>Publisher:</strong> <span id="bookDetailPublisher"></span></p>
-                        <p class="book-meta"><strong>Published Date:</strong> <span id="bookDetailPublishedDate"></span></p>
+                    <!-- Left: Book Details -->
+                    <div class="col-md-6 pe-md-4 border-end" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="text-center mb-3">
+                            <img id="bookDetailImage" src="" alt="" class="book-detail-image img-fluid" style="max-height: 200px;">
+                        </div>
+                        <h3 id="bookDetailTitle" class="text-center mb-2"></h3>
+                        <h5 id="bookDetailAuthor" class="text-center mb-4"></h5>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="book-meta"><strong>Publisher:</strong> <span id="bookDetailPublisher"></span></p>
+                                <p class="book-meta"><strong>Published Date:</strong> <span id="bookDetailPublishedDate"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="book-meta"><strong>Page Count:</strong> <span id="bookDetailPageCount"></span></p>
+                                <p class="book-meta"><strong>Categories:</strong> <span id="bookDetailCategories"></span></p>
+                            </div>
+                        </div>
+
+                        <div id="bookDetailDescription" class="book-description mt-3"></div>
+
+                        <div class="text-center mt-3">
+                            <a id="bookDetailPreviewLink" href="#" target="_blank" class="btn btn-primary book-preview-link">Preview Book</a>
+                        </div>
+
                     </div>
-                    <div class="col-md-6">
-                        <p class="book-meta"><strong>Page Count:</strong> <span id="bookDetailPageCount"></span></p>
-                        <p class="book-meta"><strong>Categories:</strong> <span id="bookDetailCategories"></span></p>
+                    <div class="col-md-6 ps-md-4" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="mt-5 mb-5 ">
+                            <h4 class="mb-3">Add the book to your cart!</h4>
+                            <button class="btn btn-success mb-4 mt-3">Add to Cart!</button>
+                        </div>
+                        <h4>Leave your rating and comment here!</h4>
+                        <form class="mb-3 validated-form" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating:</label>
+                                <fieldset class="starability-fade">
+                                    <input type="radio" id="rate5" name="rating" value="5" />
+                                    <label for="rate5" title="Amazing">5 stars</label>
+
+                                    <input type="radio" id="rate4" name="rating" value="4" />
+                                    <label for="rate4" title="Very good">4 stars</label>
+
+                                    <input type="radio" id="rate3" name="rating" value="3" />
+                                    <label for="rate3" title="Average">3 stars</label>
+
+                                    <input type="radio" id="rate2" name="rating" value="2" />
+                                    <label for="rate2" title="Not good">2 stars</label>
+
+                                    <input type="radio" id="rate1" name="rating" value="1" required />
+                                    <label for="rate1" title="Terrible">1 star</label>
+                                </fieldset>
+                                <div class="invalid-feedback" id="rating-error" style="display: none;">
+                                    Please select a rating.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="comment">Comment: </label>
+                                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
+                            </div>
+                            <button class="btn btn-success mb-4">Submit</button>
+                        </form>
+
+                        <h5>User Reviews:</h5>
+                        <div id="commentsContainer">
+                            <!-- Example comment cards -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rating:</h5>
+                                    <div class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="card-title">by user1</p>
+                                    <p class="card-text">This is a comment.</p>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rating:</h5>
+                                    <div class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <p class="card-title">by user2</p>
+                                    <p class="card-text">Another comment.</p>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                
-                <div id="bookDetailDescription" class="book-description mt-4"></div>
-                
-                <div class="text-center">
-                    <a id="bookDetailPreviewLink" href="#" target="_blank" class="btn btn-primary book-preview-link">Preview Book</a>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -96,126 +180,188 @@
     </div>
 </div>
 
-<!-- Bootstrap JS and Popper.js -->
+
+
+
+<!-- Bootstrap JS and Popper.js and validation.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    // Book detail modal instance
-    let bookDetailModal;
-    
-    // Function to fetch books from our backend API
-    async function fetchBooks(query = 'bestsellers') {
-        try {
-            const response = await fetch(`/api/books/search?query=${encodeURIComponent(query)}`);
-            const books = await response.json();
-            return books || [];
-        } catch (error) {
-            console.error('Error fetching books:', error);
-            return [];
-        }
-    }
 
-    // Function to create carousel items
-    function createCarouselItems(books) {
-        const carouselInner = document.querySelector('.carousel-inner');
-        carouselInner.innerHTML = '';
 
-        // Show a message if no books found
-        if (books.length === 0) {
-            const emptyMessage = document.createElement('div');
-            emptyMessage.className = 'carousel-item active';
-            emptyMessage.innerHTML = `
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <h3>No books found. Try a different search.</h3>
-                </div>
-            `;
-            carouselInner.appendChild(emptyMessage);
-            return;
-        }
 
-        books.forEach((book, index) => {
-            const carouselItem = document.createElement('div');
-            carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
-            
-            carouselItem.innerHTML = `
-                <div class="book-slide">
-                    <img src="${book.imageUrl}" alt="${book.title}">
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}</div>
-                </div>
-            `;
-            
-            // Add click event to open the modal with book details
-            const bookSlide = carouselItem.querySelector('.book-slide');
-            bookSlide.addEventListener('click', () => openBookDetail(book));
-            
-            carouselInner.appendChild(carouselItem);
-        });
-    }
 
-    // Function to open book detail modal
-    function openBookDetail(book) {
-        // Set modal content
-        document.getElementById('bookDetailModalLabel').textContent = book.title;
-        document.getElementById('bookDetailImage').src = book.imageUrl;
-        document.getElementById('bookDetailImage').alt = book.title;
-        document.getElementById('bookDetailTitle').textContent = book.title;
-        document.getElementById('bookDetailAuthor').textContent = `by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}`;
-        document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
-        document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
-        document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
-        document.getElementById('bookDetailCategories').textContent = book.categories && book.categories.length > 0 ? 
-            book.categories.join(', ') : 'Unknown';
-        document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
-        
-        const previewLink = document.getElementById('bookDetailPreviewLink');
-        if (book.previewLink) {
-            previewLink.href = book.previewLink;
-            previewLink.style.display = 'inline-block';
-        } else {
-            previewLink.style.display = 'none';
-        }
-        
-        // Show the modal
-        bookDetailModal.show();
-    }
+      // Book detail modal instance
+      let bookDetailModal;
 
-    // Initialize the carousel with books
-    async function initializeCarousel() {
-        const books = await fetchBooks();
-        createCarouselItems(books);
-    }
+      // Function to fetch books from our backend API
+      async function fetchBooks(query = 'bestsellers') {
+          try {
+              const response = await fetch(`/api/books/search?query=${encodeURIComponent(query)}`);
+              const books = await response.json();
+              return books || [];
+          } catch (error) {
+              console.error('Error fetching books:', error);
+              return [];
+          }
+      }
 
-    // Handle search form submission
-    document.getElementById('searchForm').addEventListener('submit', async function(event) {
+      // Function to create carousel items
+      function createCarouselItems(books) {
+          const carouselInner = document.querySelector('.carousel-inner');
+          carouselInner.innerHTML = '';
+
+          // Show a message if no books found
+          if (books.length === 0) {
+              const emptyMessage = document.createElement('div');
+              emptyMessage.className = 'carousel-item active';
+              emptyMessage.innerHTML = `
+                  <div class="d-flex justify-content-center align-items-center h-100">
+                      <h3>No books found. Try a different search.</h3>
+                  </div>
+              `;
+              carouselInner.appendChild(emptyMessage);
+              return;
+          }
+
+          books.forEach((book, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+
+              carouselItem.innerHTML = `
+                  <div class="book-slide">
+                      <img src="${book.imageUrl}" alt="${book.title}">
+                      <div class="book-title">${book.title}</div>
+                      <div class="book-author">by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}</div>
+                  </div>
+              `;
+
+              // Add click event to open the modal with book details
+              const bookSlide = carouselItem.querySelector('.book-slide');
+              bookSlide.addEventListener('click', () => openBookDetail(book));
+
+              carouselInner.appendChild(carouselItem);
+          });
+      }
+
+      // Function to open book detail modal
+      function openBookDetail(book) {
+          // Set modal content
+          document.getElementById('bookDetailModalLabel').textContent = book.title;
+          document.getElementById('bookDetailImage').src = book.imageUrl;
+          document.getElementById('bookDetailImage').alt = book.title;
+          document.getElementById('bookDetailTitle').textContent = book.title;
+          document.getElementById('bookDetailAuthor').textContent = `by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}`;
+          document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
+          document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
+          document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
+          document.getElementById('bookDetailCategories').textContent = book.categories && book.categories.length > 0 ?
+              book.categories.join(', ') : 'Unknown';
+          document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
+
+          const previewLink = document.getElementById('bookDetailPreviewLink');
+          if (book.previewLink) {
+              previewLink.href = book.previewLink;
+              previewLink.style.display = 'inline-block';
+          } else {
+              previewLink.style.display = 'none';
+          }
+
+          // Show the modal
+          bookDetailModal.show();
+      }
+
+      // Initialize the carousel with books
+      async function initializeCarousel() {
+          const books = await fetchBooks();
+          createCarouselItems(books);
+      }
+
+      // Handle search form submission
+      document.getElementById('searchForm').addEventListener('submit', async function(event) {
+          event.preventDefault();
+          const query = document.getElementById('searchQuery').value.trim();
+          if (query) {
+              const books = await fetchBooks(query);
+              createCarouselItems(books);
+          }
+      });
+
+      // Handle search icon click
+      document.getElementById('searchButton').addEventListener('click',async function(event) {
+          event.preventDefault();
+          const searchForm = document.getElementById('searchForm');
+          const searchQuery = document.getElementById('searchQuery').value.trim();
+
+          if (searchQuery) {
+              const books = await fetchBooks(searchQuery);
+              createCarouselItems(books);
+          }
+      });
+
+      // Initialize everything when the page loads
+      document.addEventListener('DOMContentLoaded', () => {
+          // Initialize the modal
+          bookDetailModal = new bootstrap.Modal(document.getElementById('bookDetailModal'));
+          const urlParams = new URLSearchParams(window.location.search);
+          const initialQuery = urlParams.get('q') || 'bestsellers';
+          // Load books with an initial query
+          fetchBooks(initialQuery).then(createCarouselItems);
+      });
+
+
+  (function () {
+    'use strict'
+
+
+    var forms = document.querySelectorAll('.validated-form')
+
+
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })()
+
+   document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.validated-form');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    const ratingError = document.getElementById('rating-error');
+
+    form.addEventListener('submit', function (event) {
+      const isRatingSelected = Array.from(ratingInputs).some(input => input.checked);
+
+      if (!isRatingSelected) {
         event.preventDefault();
-        const query = document.getElementById('searchQuery').value.trim();
-        if (query) {
-            const books = await fetchBooks(query);
-            createCarouselItems(books);
-        }
-    });
-    
-    // Handle search icon click
-    document.getElementById('searchButton').addEventListener('click',async function(event) {
-        event.preventDefault();
-        const searchForm = document.getElementById('searchForm');
-        const searchQuery = document.getElementById('searchQuery').value.trim();
+        event.stopPropagation();
+        ratingError.classList.add('d-block'); // Show error
+      } else {
+        ratingError.classList.remove('d-block'); // Hide error if fixed
+      }
 
-        if (searchQuery) {
-            const books = await fetchBooks(searchQuery);
-            createCarouselItems(books);
+      this.classList.add('was-validated');
+    });
+
+    // Hide error once a rating is selected
+    ratingInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.checked) {
+          ratingError.classList.remove('d-block');
         }
+      });
     });
-    
-    // Initialize everything when the page loads
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize the modal
-        bookDetailModal = new bootstrap.Modal(document.getElementById('bookDetailModal'));
-        const urlParams = new URLSearchParams(window.location.search);
-        const initialQuery = urlParams.get('q') || 'bestsellers';
-        // Load books with an initial query
-        fetchBooks(initialQuery).then(createCarouselItems);
-    });
+  });
+
+
+
 </script>
 </body>
 </html>
+
