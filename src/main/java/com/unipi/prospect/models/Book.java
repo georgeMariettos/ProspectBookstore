@@ -5,37 +5,37 @@ import java.util.List;
 public class Book {
     private String isbn;
     private String title;
-    private List<String> authors;
+    private List<String> authorUsername;
     private String imageUrl;
     private String description;
     private String publisher;
     private String publishedDate;
     private int pageCount;
-    private List<String> categories;
+    private List<String> genre;
     private String previewLink;
 
     public Book() {
     }
 
-    public Book(String isbn, String title, List<String> authors, String imageUrl) {
+    public Book(String isbn, String title, List<String> authorUsername, String imageUrl) {
         this.isbn = isbn;
         this.title = title;
-        this.authors = authors;
+        this.authorUsername = authorUsername;
         this.imageUrl = imageUrl;
     }
 
-    public Book(String isbn, String title, List<String> authors, String imageUrl,
+    public Book(String isbn, String title, List<String> authorUsername, String imageUrl,
                 String description, String publisher, String publishedDate,
-                int pageCount, List<String> categories, String previewLink) {
+                int pageCount, List<String> genre, String previewLink) {
         this.isbn = isbn;
         this.title = title;
-        this.authors = authors;
+        this.authorUsername = authorUsername;
         this.imageUrl = imageUrl;
         this.description = description;
         this.publisher = publisher;
         this.publishedDate = publishedDate;
         this.pageCount = pageCount;
-        this.categories = categories;
+        this.genre = genre;
         this.previewLink = previewLink;
     }
 
@@ -55,12 +55,12 @@ public class Book {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
-        return authors;
+    public List<String> getAuthorUsername() {
+        return authorUsername;
     }
 
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
+    public void setAuthorUsername(List<String> authorUsername) {
+        this.authorUsername = authorUsername;
     }
 
     public String getImageUrl() {
@@ -103,12 +103,12 @@ public class Book {
         this.pageCount = pageCount;
     }
 
-    public List<String> getCategories() {
-        return categories;
+    public List<String> getGenre() {
+        return genre;
     }
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+    public void setGenre(List<String> genre) {
+        this.genre = genre;
     }
 
     public String getPreviewLink() {

@@ -70,8 +70,8 @@ public class BookController {
         Map<String, Object> volumeInfo = (Map<String, Object>) item.get("volumeInfo");
         
         String title = (String) volumeInfo.get("title");
-        List<String> authors = volumeInfo.containsKey("authors") ? 
-            (List<String>) volumeInfo.get("authors") : 
+        List<String> authorUsername = volumeInfo.containsKey("authors") ?
+            (List<String>) volumeInfo.get("authors") :
             Collections.singletonList("Unknown Author");
         
         String imageUrl = "https://via.placeholder.com/128x196";
@@ -101,8 +101,8 @@ public class BookController {
             ((Number) volumeInfo.get("pageCount")).intValue() : 
             0;
             
-        List<String> categories = volumeInfo.containsKey("categories") ? 
-            (List<String>) volumeInfo.get("categories") : 
+        List<String> genre = volumeInfo.containsKey("categories") ?
+            (List<String>) volumeInfo.get("categories") :
             Collections.emptyList();
 
             
@@ -110,7 +110,7 @@ public class BookController {
             (String) volumeInfo.get("previewLink") : 
             "";
         
-        return new Book(id, title, authors, imageUrl, description, publisher, 
-                        publishedDate, pageCount, categories, previewLink);
+        return new Book(id, title, authorUsername, imageUrl, description, publisher,
+                        publishedDate, pageCount, genre, previewLink);
     }
 }

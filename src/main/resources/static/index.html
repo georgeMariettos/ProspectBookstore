@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-6">
                         <p class="book-meta"><strong>Page Count:</strong> <span id="bookDetailPageCount"></span></p>
-                        <p class="book-meta"><strong>Categories:</strong> <span id="bookDetailCategories"></span></p>
+                        <p class="book-meta"><strong>Genres:</strong> <span id="bookDetailGenres"></span></p>
                     </div>
                 </div>
                 
@@ -140,7 +140,7 @@
                 <div class="book-slide">
                     <img src="${book.imageUrl}" alt="${book.title}">
                     <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}</div>
+                    <div class="book-author">by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}</div>
                 </div>
             `;
             
@@ -159,12 +159,12 @@
         document.getElementById('bookDetailImage').src = book.imageUrl;
         document.getElementById('bookDetailImage').alt = book.title;
         document.getElementById('bookDetailTitle').textContent = book.title;
-        document.getElementById('bookDetailAuthor').textContent = `by ${book.authors ? book.authors.join(', ') : 'Unknown Author'}`;
+        document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}`;
         document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
         document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
         document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
-        document.getElementById('bookDetailCategories').textContent = book.categories && book.categories.length > 0 ? 
-            book.categories.join(', ') : 'Unknown';
+        document.getElementById('bookDetailGenres').textContent = book.genre && book.genre.length > 0 ?
+            book.genre.join(', ') : 'Unknown';
         document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
         
         const previewLink = document.getElementById('bookDetailPreviewLink');
