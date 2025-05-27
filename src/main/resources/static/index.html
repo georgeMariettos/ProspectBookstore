@@ -66,27 +66,104 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="text-center">
-                    <img id="bookDetailImage" src="" alt="" class="book-detail-image">
-                </div>
-                <h3 id="bookDetailTitle" class="text-center mb-3"></h3>
-                <h5 id="bookDetailAuthor" class="text-center mb-4"></h5>
-                
                 <div class="row">
-                    <div class="col-md-6">
-                        <p class="book-meta"><strong>Publisher:</strong> <span id="bookDetailPublisher"></span></p>
-                        <p class="book-meta"><strong>Published Date:</strong> <span id="bookDetailPublishedDate"></span></p>
+                    <!-- Left: Book Details -->
+                    <div class="col-md-6 pe-md-4 border-end" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="text-center mb-3">
+                            <img id="bookDetailImage" src="" alt="" class="book-detail-image img-fluid" style="max-height: 200px;">
+                        </div>
+                        <h3 id="bookDetailTitle" class="text-center mb-2"></h3>
+                        <h5 id="bookDetailAuthor" class="text-center mb-4"></h5>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="book-meta"><strong>Publisher:</strong> <span id="bookDetailPublisher"></span></p>
+                                <p class="book-meta"><strong>Published Date:</strong> <span id="bookDetailPublishedDate"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="book-meta"><strong>Page Count:</strong> <span id="bookDetailPageCount"></span></p>
+                                <p class="book-meta"><strong>Genres:</strong> <span id="bookDetailGenres"></span></p>
+                            </div>
+                        </div>
+
+                        <div id="bookDetailDescription" class="book-description mt-3"></div>
+
+                        <div class="text-center mt-3">
+                            <a id="bookDetailPreviewLink" href="#" target="_blank" class="btn btn-primary book-preview-link">Preview Book</a>
+                        </div>
+
                     </div>
-                    <div class="col-md-6">
-                        <p class="book-meta"><strong>Page Count:</strong> <span id="bookDetailPageCount"></span></p>
-                        <p class="book-meta"><strong>Genres:</strong> <span id="bookDetailGenres"></span></p>
+                    <div class="col-md-6 ps-md-4" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="mt-5 mb-5 ">
+                            <h4 class="mb-3">Add the book to your cart!</h4>
+                            <button class="btn btn-success mb-4 mt-3">Add to Cart!</button>
+                        </div>
+                        <h4>Leave your rating and comment here!</h4>
+                        <form class="mb-3 validated-form" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating:</label>
+                                <fieldset class="starability-fade">
+                                    <input type="radio" id="rate5" name="rating" value="5" />
+                                    <label for="rate5" title="Amazing">5 stars</label>
+
+                                    <input type="radio" id="rate4" name="rating" value="4" />
+                                    <label for="rate4" title="Very good">4 stars</label>
+
+                                    <input type="radio" id="rate3" name="rating" value="3" />
+                                    <label for="rate3" title="Average">3 stars</label>
+
+                                    <input type="radio" id="rate2" name="rating" value="2" />
+                                    <label for="rate2" title="Not good">2 stars</label>
+
+                                    <input type="radio" id="rate1" name="rating" value="1" required />
+                                    <label for="rate1" title="Terrible">1 star</label>
+                                </fieldset>
+                                <div class="invalid-feedback" id="rating-error" style="display: none;">
+                                    Please select a rating.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="comment">Comment: </label>
+                                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
+                            </div>
+                            <button class="btn btn-success mb-4">Submit</button>
+                        </form>
+
+                        <h5>User Reviews:</h5>
+                        <div id="commentsContainer">
+                            <!-- Example comment cards -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rating:</h5>
+                                    <div class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="card-title">by user1</p>
+                                    <p class="card-text">This is a comment.</p>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rating:</h5>
+                                    <div class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <p class="card-title">by user2</p>
+                                    <p class="card-text">Another comment.</p>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                
-                <div id="bookDetailDescription" class="book-description mt-4"></div>
-                
-                <div class="text-center">
-                    <a id="bookDetailPreviewLink" href="#" target="_blank" class="btn btn-primary book-preview-link">Preview Book</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -132,52 +209,52 @@
             return;
         }
 
-        books.forEach((book, index) => {
-            const carouselItem = document.createElement('div');
-            carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
-            
-            carouselItem.innerHTML = `
-                <div class="book-slide">
-                    <img src="${book.imageUrl}" alt="${book.title}">
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}</div>
-                </div>
-            `;
-            
-            // Add click event to open the modal with book details
-            const bookSlide = carouselItem.querySelector('.book-slide');
-            bookSlide.addEventListener('click', () => openBookDetail(book));
-            
-            carouselInner.appendChild(carouselItem);
-        });
-    }
+          books.forEach((book, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
 
-    // Function to open book detail modal
-    function openBookDetail(book) {
-        // Set modal content
-        document.getElementById('bookDetailModalLabel').textContent = book.title;
-        document.getElementById('bookDetailImage').src = book.imageUrl;
-        document.getElementById('bookDetailImage').alt = book.title;
-        document.getElementById('bookDetailTitle').textContent = book.title;
-        document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}`;
-        document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
-        document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
-        document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
-        document.getElementById('bookDetailGenres').textContent = book.genre && book.genre.length > 0 ?
-            book.genre.join(', ') : 'Unknown';
-        document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
-        
-        const previewLink = document.getElementById('bookDetailPreviewLink');
-        if (book.previewLink) {
-            previewLink.href = book.previewLink;
-            previewLink.style.display = 'inline-block';
-        } else {
-            previewLink.style.display = 'none';
-        }
-        
-        // Show the modal
-        bookDetailModal.show();
-    }
+              carouselItem.innerHTML = `
+                  <div class="book-slide">
+                      <img src="${book.imageUrl}" alt="${book.title}">
+                      <div class="book-title">${book.title}</div>
+                      <div class="book-author">by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}</div>
+                  </div>
+              `;
+
+              // Add click event to open the modal with book details
+              const bookSlide = carouselItem.querySelector('.book-slide');
+              bookSlide.addEventListener('click', () => openBookDetail(book));
+
+              carouselInner.appendChild(carouselItem);
+          });
+      }
+
+      // Function to open book detail modal
+      function openBookDetail(book) {
+          // Set modal content
+          document.getElementById('bookDetailModalLabel').textContent = book.title;
+          document.getElementById('bookDetailImage').src = book.imageUrl;
+          document.getElementById('bookDetailImage').alt = book.title;
+          document.getElementById('bookDetailTitle').textContent = book.title;
+          document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}`;
+          document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
+          document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
+          document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
+          document.getElementById('bookDetailGenres').textContent = book.genre && book.genre.length > 0 ?
+              book.genre.join(', ') : 'Unknown';
+          document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
+
+          const previewLink = document.getElementById('bookDetailPreviewLink');
+          if (book.previewLink) {
+              previewLink.href = book.previewLink;
+              previewLink.style.display = 'inline-block';
+          } else {
+              previewLink.style.display = 'none';
+          }
+
+          // Show the modal
+          bookDetailModal.show();
+      }
 
     // Initialize the carousel with books
     async function initializeCarousel() {
