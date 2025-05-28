@@ -20,13 +20,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/books")
 public class BookController {
 
+    // RestTemplate to make HTTP requests to Google Books API
     private final RestTemplate restTemplate = new RestTemplate();
     private final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes";
 
+    // Endpoint to search for books using Google Books API
     @GetMapping("/search")
     public ResponseEntity<List<Book>> searchBooks(@RequestParam(defaultValue = "bestsellers") String query) {
         try {
-            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&maxResults=10";
+            // Google Books API URL with query parameters
+            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&langRestrict=en&gl=us&filter=ebooks&maxResults=5";
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
             if (response == null || !response.containsKey("items")) {
@@ -48,7 +51,7 @@ public class BookController {
     }
 
 
-    
+    // Endpoint to get a book by its ID using Google Books API
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable String id) {
         try {
@@ -66,17 +69,18 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
+    // Helper method to parse book details from the API response
     private Book parseBookFromResponse(Map<String, Object> item) {
         String id = (String) item.get("id");
         Map<String, Object> volumeInfo = (Map<String, Object>) item.get("volumeInfo");
-        
+
         String title = (String) volumeInfo.get("title");
         List<String> authorUsername = volumeInfo.containsKey("authors") ?
             (List<String>) volumeInfo.get("authors") :
             Collections.singletonList("Unknown Author");
-        
-        String imageUrl = "https://img.icons8.com/?size=180&id=fOU7z641V5Z0&format=png&color=000000"; // Default placeholder image
+        // Default placeholder image
+        String imageUrl = "https://img.icons8.com/?size=180&id=fOU7z641V5Z0&format=png&color=000000";
         if (volumeInfo.containsKey("imageLinks")) {
             Map<String, String> imageLinks = (Map<String, String>) volumeInfo.get("imageLinks");
             if (imageLinks.containsKey("thumbnail")) {
