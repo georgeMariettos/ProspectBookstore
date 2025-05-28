@@ -76,7 +76,7 @@ public class BookController {
             (List<String>) volumeInfo.get("authors") :
             Collections.singletonList("Unknown Author");
         
-        String imageUrl = "https://via.placeholder.com/128x196";
+        String imageUrl = "https://img.icons8.com/?size=180&id=fOU7z641V5Z0&format=png&color=000000"; // Default placeholder image
         if (volumeInfo.containsKey("imageLinks")) {
             Map<String, String> imageLinks = (Map<String, String>) volumeInfo.get("imageLinks");
             if (imageLinks.containsKey("thumbnail")) {
