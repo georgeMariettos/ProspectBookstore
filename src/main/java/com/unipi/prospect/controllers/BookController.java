@@ -75,6 +75,23 @@ public class BookController {
         String id = (String) item.get("id");
         Map<String, Object> volumeInfo = (Map<String, Object>) item.get("volumeInfo");
 
+        // Extract ISBN
+        String isbn = "Unknown ISBN";
+        if (volumeInfo.containsKey("industryIdentifiers")) {
+            List<Map<String, String>> identifiers = (List<Map<String, String>>) volumeInfo.get("industryIdentifiers");
+            for (Map<String, String> identifier : identifiers) {
+                if ("ISBN_13".equals(identifier.get("type"))) {
+                    isbn = identifier.get("identifier");
+                    break;
+                } else if ("ISBN_10".equals(identifier.get("type")) && "Unknown ISBN".equals(isbn)) {
+                    // Fallback to ISBN_10 if ISBN_13 isn't found
+                    isbn = identifier.get("identifier");
+                }
+            }
+        }
+        System.out.println(isbn);
+
+        // Extract title and author(s)
         String title = (String) volumeInfo.get("title");
         System.out.println(title);
         List<String> authorUsername = volumeInfo.containsKey("authors") ?
@@ -111,8 +128,7 @@ public class BookController {
             
         String previewLink = volumeInfo.containsKey("previewLink") ? 
             (String) volumeInfo.get("previewLink") : "";
-        
-        return new Book(id, title, authorString, imageUrl, description, publisher,
+        return new Book(isbn, title, authorString, imageUrl, description, publisher,
                         publishedDate, pageCount, genreString, previewLink);
     }
 }
