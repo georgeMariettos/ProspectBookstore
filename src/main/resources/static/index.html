@@ -217,7 +217,7 @@
                   <div class="book-slide">
                       <img src="${book.imageUrl}" alt="${book.title}">
                       <div class="book-title">${book.title}</div>
-                      <div class="book-author">by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}</div>
+                      <div class="book-author">by ${book.authorUsername || 'Unknown Author'}</div>
                   </div>
               `;
 
@@ -236,12 +236,11 @@
           document.getElementById('bookDetailImage').src = book.imageUrl;
           document.getElementById('bookDetailImage').alt = book.title;
           document.getElementById('bookDetailTitle').textContent = book.title;
-          document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername ? book.authorUsername.join(', ') : 'Unknown Author'}`;
+          document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername || 'Unknown Author'}`;
           document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
           document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
           document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
-          document.getElementById('bookDetailGenres').textContent = book.genre && book.genre.length > 0 ?
-              book.genre.join(', ') : 'Unknown';
+          document.getElementById('bookDetailGenres').textContent = book.genre || 'Unknown';
           document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
 
           const previewLink = document.getElementById('bookDetailPreviewLink');

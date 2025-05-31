@@ -1,6 +1,6 @@
 package com.unipi.prospect.controllers;
 
-import com.unipi.prospect.models.Book;
+import com.unipi.prospect.product.Book;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,9 +76,11 @@ public class BookController {
         Map<String, Object> volumeInfo = (Map<String, Object>) item.get("volumeInfo");
 
         String title = (String) volumeInfo.get("title");
+        System.out.println(title);
         List<String> authorUsername = volumeInfo.containsKey("authors") ?
-            (List<String>) volumeInfo.get("authors") :
-            Collections.singletonList("Unknown Author");
+            (List<String>) volumeInfo.get("authors") : Collections.singletonList("Unknown Author");
+        String authorString = String.join(", ", authorUsername);
+
         // Default placeholder image
         String imageUrl = "https://img.icons8.com/?size=180&id=fOU7z641V5Z0&format=png&color=000000";
         if (volumeInfo.containsKey("imageLinks")) {
@@ -92,31 +94,25 @@ public class BookController {
         
         // Extract additional book details
         String description = volumeInfo.containsKey("description") ? 
-            (String) volumeInfo.get("description") : 
-            "No description available";
+            (String) volumeInfo.get("description") : "No description available";
             
         String publisher = volumeInfo.containsKey("publisher") ? 
-            (String) volumeInfo.get("publisher") : 
-            "Unknown Publisher";
+            (String) volumeInfo.get("publisher") : "Unknown Publisher";
             
         String publishedDate = volumeInfo.containsKey("publishedDate") ? 
-            (String) volumeInfo.get("publishedDate") : 
-            "Unknown";
+            (String) volumeInfo.get("publishedDate") : "Unknown";
             
         int pageCount = volumeInfo.containsKey("pageCount") ? 
-            ((Number) volumeInfo.get("pageCount")).intValue() : 
-            0;
+            ((Number) volumeInfo.get("pageCount")).intValue() : 0;
             
         List<String> genre = volumeInfo.containsKey("categories") ?
-            (List<String>) volumeInfo.get("categories") :
-            Collections.emptyList();
-
+            (List<String>) volumeInfo.get("categories") : Collections.emptyList();
+        String genreString = String.join(", ", genre);
             
         String previewLink = volumeInfo.containsKey("previewLink") ? 
-            (String) volumeInfo.get("previewLink") : 
-            "";
+            (String) volumeInfo.get("previewLink") : "";
         
-        return new Book(id, title, authorUsername, imageUrl, description, publisher,
-                        publishedDate, pageCount, genre, previewLink);
+        return new Book(id, title, authorString, imageUrl, description, publisher,
+                        publishedDate, pageCount, genreString, previewLink);
     }
 }
