@@ -89,6 +89,10 @@ public class BookController {
                 }
             }
         }
+        if (isbn.equals("Unknown ISBN")) {
+            // Skip books without ISBN
+            return null;
+        }
         System.out.println(isbn);
 
         // Extract title and author(s)
