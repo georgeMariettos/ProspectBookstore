@@ -19,7 +19,7 @@ public class CustomerController {
                                    @RequestParam String address) {
 
 
-        Customer customer = new Customer(username, password, name, address);
+        //Customer customer = new Customer(username, password, name, address);
 
         return "redirect:/index.html";
     }

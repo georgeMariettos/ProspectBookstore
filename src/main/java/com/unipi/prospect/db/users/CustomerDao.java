@@ -1,4 +1,4 @@
-package com.unipi.prospect.db;
+package com.unipi.prospect.db.users;
 
 import com.unipi.prospect.users.Customer;
 
@@ -16,6 +16,7 @@ public class CustomerDao implements UserDao<Customer> {
         }
     }
 
+    @Override
     public boolean insert(Customer customer) {
         String sqlString = "INSERT INTO Users VALUES(?,?,?,?,?,?)";
         String sqlString2 = "INSERT INTO CustomerAddress VALUES(?,?)";
@@ -40,6 +41,7 @@ public class CustomerDao implements UserDao<Customer> {
         }
     }
 
+    @Override
     public boolean update(Customer customer) {
         String sqlString = "UPDATE Users SET username = ?, password = ?, name = ?, surname = ?, active = ? WHERE username = ?";
         try{
@@ -68,6 +70,7 @@ public class CustomerDao implements UserDao<Customer> {
         pstmt.close();
     }
 
+    @Override
     public boolean delete(Customer customer) {
         String sqlString = "DELETE FROM Users WHERE username = ?";
         try{

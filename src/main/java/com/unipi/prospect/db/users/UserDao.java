@@ -1,8 +1,7 @@
-package com.unipi.prospect.db;
+package com.unipi.prospect.db.users;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public interface UserDao<T> {
     public boolean insert(T t);

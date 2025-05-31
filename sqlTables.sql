@@ -19,10 +19,15 @@ Create table Books(
     isbn text not null,
     title text not null ,
     authorUsername text not null,
+    imageUrl text default null,
+    description text null default null,
+    publisher text default null,
+    publishedDate text default null,
+    pageCount integer default 0,
     genre text null default  null,
+    previewLink text default null,
     price float(5,2) null default  null,
     stock int check ( stock >= 0 ) not null default  0,
-    imageUrl text,
     primary key (isbn),
     foreign key (authorUsername) references  Users(username)
 );
@@ -31,8 +36,10 @@ create  table Comments(
     commentID integer primary key autoIncrement,
     username text not null,
     dateCreated Datetime,
+    content text default '',
     bookIsbn text not null,
-    replyTo text default null,
+    replyTo integer default null,
+    rating integer default 0,
     foreign key (username) references  Users(username),
     foreign key (bookIsbn) references  Books(isbn),
     foreign key (replyTo) references Comments(commentID)
@@ -45,7 +52,6 @@ create table  Orders(
     total float(6,2) not null,
     address text not null,
     username text not null,
-    items text not null,
     foreign key (username) references Users(username)
 );
 
@@ -53,6 +59,7 @@ create  table  OrderItems(
     orderId integer,
     bookIsbn text,
     quantity integer,
+    price float(6,2) not null,
     primary key (orderId,bookIsbn),
     foreign key (orderId) references  Orders(orderId),
     foreign key (bookIsbn) references  Books(isbn)

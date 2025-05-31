@@ -1,0 +1,43 @@
+package com.unipi.prospect.commerce;
+
+import com.unipi.prospect.product.Item;
+
+import java.sql.Date;
+import java.util.ArrayList;
+
+public class ShoppingCart {
+    private Date created;
+    private float total;
+    private ArrayList<Item> items;
+
+    ShoppingCart(Date created, ArrayList<Item> items) {
+        this.created = created;
+        this.items = items;
+        calculateTotal();
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+        calculateTotal();
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    private void calculateTotal(){
+        float sum = 0;
+        for(Item item : items){
+            sum += item.getTotalPrice();
+        }
+        this.total = sum;
+    }
+}

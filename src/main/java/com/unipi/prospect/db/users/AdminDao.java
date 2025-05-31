@@ -1,4 +1,4 @@
-package com.unipi.prospect.db;
+package com.unipi.prospect.db.users;
 
 import com.unipi.prospect.users.Admin;
 
@@ -86,6 +86,7 @@ public class AdminDao implements UserDao<Admin>{
         }
     }
 
+    @Override
     public Admin selectByUsername(String username){
         String sqlString = "SELECT * FROM Users WHERE username = ?";
         try{
