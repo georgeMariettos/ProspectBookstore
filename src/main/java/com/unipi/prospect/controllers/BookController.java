@@ -132,6 +132,7 @@ public class BookController {
             
         String previewLink = volumeInfo.containsKey("previewLink") ? 
             (String) volumeInfo.get("previewLink") : "";
+        System.out.println(isbn);
         return new Book(isbn, title, authorString, imageUrl, description, publisher,
                         publishedDate, pageCount, genreString, previewLink);
     }
