@@ -29,7 +29,7 @@ public class BookController {
     public ResponseEntity<List<Book>> searchBooks(@RequestParam(defaultValue = "bestsellers") String query) {
         try {
             // Google Books API URL with query parameters
-            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&langRestrict=en&gl=us&filter=ebooks&maxResults=5";
+            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&langRestrict=en&gl=us&filter=ebooks&maxResults=10";
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
             if (response == null || !response.containsKey("items")) {
@@ -40,7 +40,10 @@ public class BookController {
             List<Book> books = new ArrayList<>();
 
             for (Map<String, Object> item : items) {
-                books.add(parseBookFromResponse(item));
+                Book book = parseBookFromResponse(item);
+                if (book != null) {
+                    books.add(book);
+                }
             }
 
             return ResponseEntity.ok(books);
@@ -63,6 +66,9 @@ public class BookController {
             }
             
             Book book = parseBookFromResponse(response);
+            if (book == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(book);
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,7 +138,31 @@ public class BookController {
             
         String previewLink = volumeInfo.containsKey("previewLink") ? 
             (String) volumeInfo.get("previewLink") : "";
+
+        // Price extraction
+        Map<String, Object> saleInfo = (Map<String, Object>) item.get("saleInfo");
+        double price = 0.0; // Default price if not available
+
+        if (saleInfo != null && "FOR_SALE".equals(saleInfo.get("saleability"))) {
+            Map<String, Object> retailPrice = (Map<String, Object>) saleInfo.get("retailPrice");
+            if (retailPrice != null) {
+                // Check if the price is double or integer
+                if (retailPrice.get("amount") instanceof Integer) {
+                    price = ((Integer) retailPrice.get("amount")).doubleValue();
+                } else if (retailPrice.get("amount") instanceof Double) {
+                    // If it's already a double, just cast it
+                    price = (Double) retailPrice.get("amount");
+                } else if (retailPrice.get("amount") instanceof String) {
+                    // Fallback to 0.0 if the type is unexpected
+                    price = 0.0;
+                } else {
+                    // Fallback to 0.0 if the type is unexpected
+                    price = 0.0;
+                }
+            }
+        }
+
         return new Book(isbn, title, authorString, imageUrl, description, publisher,
-                        publishedDate, pageCount, genreString, previewLink);
+                        publishedDate, pageCount, genreString, previewLink, (float) price, 10);
     }
 }
