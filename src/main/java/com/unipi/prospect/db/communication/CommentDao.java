@@ -24,7 +24,11 @@ public class CommentDao {
             psmt.setDate(2, c.getDateCreated());
             psmt.setString(3, c.getContent());
             psmt.setString(4, c.getBookIsbn());
-            psmt.setInt(5, c.getReplyTo());
+            if (c.getReplyTo() == -1){
+                psmt.setString(5, null);
+            }else{
+                psmt.setInt(5, c.getReplyTo());
+            }
             psmt.setInt(6, c.getRating());
             psmt.executeUpdate();
             return true;
