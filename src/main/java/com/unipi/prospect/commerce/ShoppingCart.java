@@ -10,7 +10,7 @@ public class ShoppingCart {
     private float total;
     private ArrayList<Item> items;
 
-    ShoppingCart(Date created, ArrayList<Item> items) {
+    public ShoppingCart(Date created, ArrayList<Item> items) {
         this.created = created;
         this.items = items;
         calculateTotal();
