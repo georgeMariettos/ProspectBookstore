@@ -184,23 +184,11 @@
 </div>
 <!-- Top Header -->
 <header class="top-header">
-    <div class="header-content">
+    <div class="header-content d-flex justify-content-between align-items-center">
         <img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img">
 
-
-        <div class="d-flex gap-2">
-            <a href="registration.html" class="btn btn-outline-primary">Εγγραφή</a>
-            <a href="login.html" class="btn btn-outline-secondary">Σύνδεση</a>
-        </div>
-    </div>
-</header>
-
-
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <form id="searchForm" role="search">
+        <div class="flex-grow-1 d-flex justify-content-center">
+            <div class="col-md-8 col-lg-6"> <form id="searchForm" role="search">
                 <div class="position-relative">
                     <input
                             type="search"
@@ -212,13 +200,23 @@
                             required
                     >
                     <span class="input-group-icon" id="searchButton">
-                        <i class="bi bi-search text-primary"></i>
-                    </span>
+                            <i class="bi bi bi-search text-primary"></i>
+                        </span>
                 </div>
             </form>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="registration.html" class="btn btn-outline-primary">Εγγραφή</a>
+            <a href="login.html" class="btn btn-outline-secondary">Σύνδεση</a>
         </div>
     </div>
-</div>
+</header>
+
+
+
+
 
 <div class="container mt-5">
     <h1 class="books-heading">Best sellers &amp; Προτάσεις</h1>
