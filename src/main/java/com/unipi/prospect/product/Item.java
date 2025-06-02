@@ -9,6 +9,7 @@ public class Item {
     public Item(String isbn, int quantity, float price){
         this.isbn = isbn;
         this.quantity = quantity;
+        this.price = price;
         this.totalPrice = quantity * price;
     }
 
@@ -31,5 +32,10 @@ public class Item {
 
     public float getTotalPrice() {
         return totalPrice;
+    }
+
+    @Override
+    public String toString(){
+        return isbn + " quantity: " + quantity + " price:" + totalPrice;
     }
 }

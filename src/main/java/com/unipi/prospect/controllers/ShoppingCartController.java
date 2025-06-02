@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.sql.Date;
 import java.util.ArrayList;
 
-@Controller()
+@Controller
 public class ShoppingCartController {
     @GetMapping("/cart")
     String getShoppingCart(Model model) {
@@ -19,6 +19,7 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = new ShoppingCart(new Date(System.currentTimeMillis()), items);
         model.addAttribute("title", "Your Cart");
         model.addAttribute("cartItems", shoppingCart.getItems());
+        model.addAttribute("date", shoppingCart.getCreated());
         return "cart";
     }
 }
