@@ -3,47 +3,273 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
+    <title>Σύνδεση χρήστη</title>
+    <link rel="shortcut icon" href="http://i.imgur.com/iJx6I7Y.png" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
     />
-</head>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
+
+
+
+
+
+    <style>
+
+
+
+        /* Top Header Styles */
+        .top-header {
+            background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
+            padding: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden; /* Important for clean edges */
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+
+
+
+
+
+
+
+
+
+        /* Bottom Footer Styles */
+        .social-footer {
+            background-color: #821934;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 28px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+            color: #f8f9fa;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Style for the logo */
+        .resized-img {
+            width: 240px;
+            height: auto;   /* this keeps the original aspect ratio */
+            display: block; /* optional: removes any extra space */
+        }
+
+
+
+        body {
+            background-color: #E9ECEF;
+            min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
+            display: flex;
+            flex-direction: column; /* Stacks header, main content, and footer vertically */
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Custom style for the login/registration buttons */
+        .btn-custom { /* This class will make your button the specified color, size, and white text */
+            background-color: #821934;
+            border-color: #821934;
+            color: white; /* Makes the button text white */
+            font-size: 0.9rem; /* Makes text slightly smaller */
+            padding: 0.5rem 1rem; /* Smaller padding for a smaller button */
+        }
+
+        .btn-custom:hover { /* This is for when the user hovers over the button */
+            background-color: #6a152a; /* Slightly darker on hover */
+            border-color: #6a152a;
+        }
+
+
+
+
+
+
+
+
+
+    </style>
+
+
+
+
+
+        </head>
 <body class="bg-light">
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm rounded-4">
-                <div class="card-body">
-                    <h3 class="card-title mb-4 text-center">User Login</h3>
-                    <form>
-                        <div class="mb-3">
-                            <label for="Username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="Username"  required>
-                        </div>
 
 
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" required>
-                        </div>
+
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-content d-flex justify-content-between align-items-center">
+        <img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img">
+    </div>
+</header>
 
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </div>
-                    </form>
 
-                    <p class="mt-3 text-center">
-                        Don't have an account?  <a href="registration.html">Register here</a>
-                    </p>
-                </div>
+
+
+
+
+
+<div class="container my-auto"> <div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm rounded-4">
+            <div class="card-body">
+                <h3 class="card-title mb-4 text-center">Σύνδεση χρήστη</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="Username" class="form-label">Όνομα χρήστη</label>
+                        <input type="text" class="form-control" id="Username"  required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Κωδικός</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-custom w-25">Σύνδεση</button>
+                    </div>
+                </form>
+
+                <p class="mt-3 text-center">
+                    Δεν έχετε λογαριασμό;  <a href="registration.html">Εγγραφείτε εδώ</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+
+
+
+
+
+
+<!-- Bottom Footer with Social Media Icons -->
+<footer class="social-footer">
+    <div class="container">
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" class="social-icon">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" class="social-icon">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com" target="_blank" class="social-icon">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+        <div class="footer-text">
+            © 2025 Prospect BookStore. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
