@@ -3,32 +3,200 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration page</title>
+    <title>Δημιουργία λογαριασμού νέου πελάτη</title>
     <!-- Bootstrap CSS -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        /* Top Header Styles */
+        .top-header {
+            background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
+            padding: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden; /* Important for clean edges */
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+
+
+
+
+
+
+
+
+
+        /* Bottom Footer Styles */
+        .social-footer {
+            background-color: #821934;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 28px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+            color: #f8f9fa;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Style for the logo */
+        .resized-img {
+            width: 240px;
+            height: auto;   /* this keeps the original aspect ratio */
+            display: block; /* optional: removes any extra space */
+        }
+
+
+
+        body {
+            background-color: #E9ECEF; /* Λίγο πιο γκρι από αυτό του bootstrap */
+        }
+
+
+
+
+
+
+
+        /* Για το κουμπί συνέχεια */
+        /* Custom style for the registration button */
+        .btn-register {
+            background-color: #821934;
+            border-color: #821934;
+            color: white;
+            padding: 0.5rem 1rem; /* Reduces the button's overall size */
+        }
+
+        .btn-register:hover {
+            background-color: #6a152a; /* Slightly darker on hover for better user feedback */
+            border-color: #6a152a;
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+
+
+
+
+
+
+
+
+
+
+
 </head>
 <body class="bg-light">
+
+
+
+
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-content d-flex justify-content-between align-items-center">
+        <img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img">
+    </div>
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm rounded-4">
                 <div class="card-body">
-                    <h3 class="card-title mb-4 text-center">Register</h3>
+                    <h3 class="card-title mb-4 text-center">Δημιουργία λογαριασμού</h3>
                     <form action="/customer/register" method="POST">
                         <div class="mb-3">
-                            <label for="Username" class="form-label">Username</label>
+                            <label for="Username" class="form-label">Όνομα χρήστη</label>
                             <label for="username"></label><input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="mb-3">
-                            <label for="Name" class="form-label">Full Name</label>
+                            <label for="Name" class="form-label">Oνοματεπώνυμο</label>
                             <label for="name"></label><input type="text" class="form-control" id="name" name="name" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="Address" class="form-label">Address</label>
+                            <label for="Address" class="form-label">Διεύθυνση</label>
                             <label for="address"></label><input type="text" class="form-control" id="address" name="address" required>
                         </div>
 
@@ -38,30 +206,82 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Κωδικός</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
 
 
 
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <label for="confirmPassword" class="form-label">Επιβεβαίωση κωδικού</label>
                             <input type="password" class="form-control" id="confirmPassword" required>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Create Account</button>
+
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-register w-25">Συνέχεια</button>
                         </div>
                     </form>
 
                     <p class="mt-3 text-center">
-                        Already have an account? <a href="login.html">Sign in</a>
+                        Έχετε ήδη λογαριασμό; <a href="login.html">Πατήστε εδώ</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Bottom Footer with Social Media Icons -->
+<footer class="social-footer">
+    <div class="container">
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" class="social-icon">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" class="social-icon">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com" target="_blank" class="social-icon">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+        <div class="footer-text">
+            © 2025 Prospect BookStore. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
 
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
