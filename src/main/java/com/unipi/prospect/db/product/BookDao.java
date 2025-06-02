@@ -20,7 +20,7 @@ public class BookDao {
     public boolean insert(Book book) {
         String sqlString = "INSERT INTO Books VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
-            if(new AuthorDao().selectByUsername(book.getAuthorUsername()) != null) {
+
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getIsbn());
                 psmt.setString(2, book.getTitle());
@@ -36,8 +36,7 @@ public class BookDao {
                 psmt.setString(12, Integer.toString(book.getStock()));
                 psmt.executeUpdate();
                 return true;
-            }
-            return false;
+
         } catch (SQLException e) {
             return false;
         }
@@ -115,6 +114,7 @@ public class BookDao {
         String sqlString = "SELECT * FROM Books WHERE isbn = ?";
         try{
             PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, isbn);
             ResultSet rs = psmt.executeQuery();
             if(rs.next()) {
                 return new Book(

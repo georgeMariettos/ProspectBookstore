@@ -33,6 +33,7 @@ public class CommentDao {
             psmt.executeUpdate();
             return true;
         } catch (SQLException e) {
+            System.out.println(e);
             return false;
         }
     }
