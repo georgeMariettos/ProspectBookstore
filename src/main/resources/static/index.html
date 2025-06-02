@@ -1,22 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Prospect Bookstore</title>
+    <link rel="shortcut icon" href="http://i.imgur.com/iJx6I7Y.png" type="image/x-icon">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css?v=4" />
+    <style>
+
+        /* Top Header Styles */
+        .top-header {
+            background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
+            padding: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden; /* Important for clean edges */
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+
+
+
+
+
+        /* Bottom Footer Styles */
+        .social-footer {
+            background-color: #821934;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 28px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+            color: #f8f9fa;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+
+
+
+
+
+        /* Style for Best sellers & recommendations */
+        .books-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #343a40;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .books-heading::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #821934;
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+
+
+
+
+
+
+        /* Style for the logo */
+        .resized-img {
+            width: 240px;
+            height: auto;   /* this keeps the original aspect ratio */
+            display: block; /* optional: removes any extra space */
+        }
+
+
+
+
+
+        /* Για το κουμπί της σύνδεσης και εγγραφής for the logo */
+        .btn-outline-primary,
+        .btn-outline-secondary {
+            color: #ffffff; /* White text for both buttons */
+            background-color: transparent; /* Initially transparent background */
+            border: 1px solid transparent; /* No border initially (transparent border) */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+        }
+
+        .btn-outline-primary:hover,
+        .btn-outline-secondary:hover {
+            color: #ffffff; /* Keep text white on hover */
+            background-color: #4d0d21; /* Fill with a darker purple on hover */
+            border-color: #4d0d21; /* Border appears and matches fill color on hover */
+        }
+
+
+
+
+        body {
+            background-color: #E9ECEF; /* Λίγο πιο γκρι από αυτό του bootstrap */
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-light bg-light px-4">
-    <a class="navbar-brand" href="#">Prospect BookStore</a>
-    <div class="d-flex gap-2">
-        <a href="registration.html" class="btn btn-outline-primary">Register</a>
-        <a href="login.html" class="btn btn-outline-secondary">Login</a>
+
+
+<div style="background-color: #333; color: #fff; padding: 8px 0; text-align: center; font-size: 14px;">
+    <span style="margin: 0 15px;">Εύκολες πληρωμές</span>
+    <span style="margin: 0 15px;">Με αντικαταβολή και κάρτα</span>
+    <span style="margin: 0 15px;">Τηλεφωνικές Παραγγελίες 10:00-17:00</span>
+</div>
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-content">
+        <img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img">
+
+
+        <div class="d-flex gap-2">
+            <a href="registration.html" class="btn btn-outline-primary">Εγγραφή</a>
+            <a href="login.html" class="btn btn-outline-secondary">Σύνδεση</a>
+        </div>
     </div>
-</nav>
+</header>
+
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -28,7 +207,7 @@
                             id="searchQuery"
                             name="q"
                             class="form-control rounded-pill border-primary"
-                            placeholder="Search"
+                            placeholder="Τι ψάχνεις σήμερα;"
                             aria-label="Search"
                             required
                     >
@@ -42,7 +221,7 @@
 </div>
 
 <div class="container mt-5">
-
+    <h1 class="books-heading">Best sellers &amp; Προτάσεις</h1>
     <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <!-- Books will be inserted here -->
@@ -90,7 +269,7 @@
                         <div class="text-center mt-3">
                             <a id="bookDetailPreviewLink" href="#" target="_blank" class="btn btn-primary book-preview-link">Preview Book</a>
                         </div>
-                        
+
                         <div id="bookDetailDescription" class="book-description mt-3"></div>
 
 
@@ -176,12 +355,38 @@
     </div>
 </div>
 
+<!-- Bottom Footer with Social Media Icons -->
+<footer class="social-footer">
+    <div class="container">
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" class="social-icon">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" class="social-icon">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com" target="_blank" class="social-icon">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+        <div class="footer-text">
+            © 2025 Prospect BookStore. All rights reserved.
+        </div>
+    </div>
+</footer>
+
 <!-- Bootstrap JS and Popper.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Book detail modal instance
     let bookDetailModal;
-    
+
     // Function to fetch books from our backend API
     async function fetchBooks(query = 'bestsellers') {
         try {
@@ -201,36 +406,36 @@
 
         // Ensure books is an array and filter out null/undefined books
         const validBooks = Array.isArray(books) ? books.filter(book => book !== null && book !== undefined) : [];
-        
+
         if (validBooks.length === 0) {
             const emptyMessage = document.createElement('div');
             emptyMessage.className = 'carousel-item active';
             emptyMessage.innerHTML = `
             <div class="d-flex justify-content-center align-items-center h-100">
-                <h3>No books found. Try a different search.</h3>
+                <h3>Δεν βρέθηκαν αποτελέσματα. Δοκιμάστε έναν διαφορετικό τίτλο.</h3>
             </div>
         `;
             carouselInner.appendChild(emptyMessage);
             return;
         }
-    
+
         // Chunk books into groups of 3
         for (let i = 0; i < validBooks.length; i += 3) {
             const slideBooks = validBooks.slice(i, i + 3);
             const carouselItem = document.createElement('div');
             carouselItem.className = `carousel-item ${i === 0 ? 'active' : ''}`;
-    
+
             const row = document.createElement('div');
             row.className = 'row justify-content-center';
-    
+
             slideBooks.forEach(book => {
                 // Extra safety check
                 if (!book) return;
-                
+
                 const col = document.createElement('div');
                 // Use col-md-4 to show up to 3 in a row, center fewer items
                 col.className = `col-12 col-sm-6 col-md-4 d-flex align-items-stretch`;
-    
+
                 col.innerHTML = `
                 <div class="card w-100 h-100 book-slide" style="cursor:pointer;">
                     <img src="${book.imageUrl || ''}" class="card-img-top" alt="${book.title || 'Book'}">
@@ -257,38 +462,38 @@
 
 
     // Function to open book detail modal
-      function openBookDetail(book) {
-          // Safety check for null or undefined book
-          if (!book) {
-              console.error('Error: Attempted to open detail modal with null or undefined book');
-              return;
-          }
-          
-          // Set modal content
-          document.getElementById('bookDetailModalLabel').textContent = book.title || 'Unknown Title';
-          document.getElementById('bookDetailImage').src = book.imageUrl || '';
-          document.getElementById('bookDetailImage').alt = book.title || 'Book';
-          document.getElementById('bookDetailTitle').textContent = book.title || 'Unknown Title';
-          document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername || 'Unknown Author'}`;
-          document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
-          document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
-          document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
-          document.getElementById('bookDetailGenres').textContent = book.genre || 'Unknown';
-          document.getElementById('bookDetailPrice').textContent = book.price || '0';
-          document.getElementById('bookDetailStock').textContent = book.stock || 'Unknown';
-          document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
+    function openBookDetail(book) {
+        // Safety check for null or undefined book
+        if (!book) {
+            console.error('Error: Attempted to open detail modal with null or undefined book');
+            return;
+        }
 
-          const previewLink = document.getElementById('bookDetailPreviewLink');
-          if (book.previewLink) {
-              previewLink.href = book.previewLink;
-              previewLink.style.display = 'inline-block';
-          } else {
-              previewLink.style.display = 'none';
-          }
+        // Set modal content
+        document.getElementById('bookDetailModalLabel').textContent = book.title || 'Unknown Title';
+        document.getElementById('bookDetailImage').src = book.imageUrl || '';
+        document.getElementById('bookDetailImage').alt = book.title || 'Book';
+        document.getElementById('bookDetailTitle').textContent = book.title || 'Unknown Title';
+        document.getElementById('bookDetailAuthor').textContent = `by ${book.authorUsername || 'Unknown Author'}`;
+        document.getElementById('bookDetailPublisher').textContent = book.publisher || 'Unknown';
+        document.getElementById('bookDetailPublishedDate').textContent = book.publishedDate || 'Unknown';
+        document.getElementById('bookDetailPageCount').textContent = book.pageCount ? `${book.pageCount} pages` : 'Unknown';
+        document.getElementById('bookDetailGenres').textContent = book.genre || 'Unknown';
+        document.getElementById('bookDetailPrice').textContent = book.price || '0';
+        document.getElementById('bookDetailStock').textContent = book.stock || 'Unknown';
+        document.getElementById('bookDetailDescription').innerHTML = book.description || 'No description available';
 
-          // Show the modal
-          bookDetailModal.show();
-      }
+        const previewLink = document.getElementById('bookDetailPreviewLink');
+        if (book.previewLink) {
+            previewLink.href = book.previewLink;
+            previewLink.style.display = 'inline-block';
+        } else {
+            previewLink.style.display = 'none';
+        }
+
+        // Show the modal
+        bookDetailModal.show();
+    }
 
     // Initialize the carousel with books
     async function initializeCarousel() {
@@ -305,7 +510,7 @@
             createCarouselItems(books);
         }
     });
-    
+
     // Handle search icon click
     document.getElementById('searchButton').addEventListener('click',async function(event) {
         event.preventDefault();
@@ -317,7 +522,7 @@
             createCarouselItems(books);
         }
     });
-    
+
     // Initialize everything when the page loads
     document.addEventListener('DOMContentLoaded', () => {
         // Initialize the modal
