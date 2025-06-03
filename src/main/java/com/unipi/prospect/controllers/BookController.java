@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import java.sql.Date;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +38,7 @@ public class BookController {
         System.out.println("SEARCH IS BEING EXECUTED");
         try {
             // Google Books API URL with query parameters
-            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&langRestrict=en&gl=us&filter=ebooks&maxResults=5";
+            String url = GOOGLE_BOOKS_API_URL + "?q=" + query + "&langRestrict=en&gl=us&filter=ebooks&maxResults=10";
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
             if (response == null || !response.containsKey("items")) {
@@ -48,10 +51,10 @@ public class BookController {
             for (Map<String, Object> item : items) {
 
                 Book book = parseBookFromResponse(item);
-
+            if (book != null) {
                 bookDao.insert(book);
-
                 books.add(book);
+            }
             }
 
             return ResponseEntity.ok(books);
@@ -75,6 +78,9 @@ public class BookController {
             }
 
             Book book = parseBookFromResponse(response);
+            if (book == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(book);
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,7 +119,7 @@ public class BookController {
         String title = (String) volumeInfo.get("title");
         System.out.println(title);
         List<String> authorUsername = volumeInfo.containsKey("authors") ?
-                (List<String>) volumeInfo.get("authors") : Collections.singletonList("Unknown Author");
+            (List<String>) volumeInfo.get("authors") : Collections.singletonList("Unknown Author");
         String authorString = String.join(", ", authorUsername);
 
         // Default placeholder image
@@ -129,27 +135,48 @@ public class BookController {
 
         // Extract additional book details
         String description = volumeInfo.containsKey("description") ?
-                (String) volumeInfo.get("description") : "No description available";
+            (String) volumeInfo.get("description") : "No description available";
 
         String publisher = volumeInfo.containsKey("publisher") ?
-                (String) volumeInfo.get("publisher") : "Unknown Publisher";
+            (String) volumeInfo.get("publisher") : "Unknown Publisher";
 
         String publishedDate = volumeInfo.containsKey("publishedDate") ?
-                (String) volumeInfo.get("publishedDate") : "Unknown";
+            (String) volumeInfo.get("publishedDate") : "Unknown";
 
         int pageCount = volumeInfo.containsKey("pageCount") ?
-                ((Number) volumeInfo.get("pageCount")).intValue() : 0;
+            ((Number) volumeInfo.get("pageCount")).intValue() : 0;
 
         List<String> genre = volumeInfo.containsKey("categories") ?
-                (List<String>) volumeInfo.get("categories") : Collections.emptyList();
+            (List<String>) volumeInfo.get("categories") : Collections.emptyList();
         String genreString = String.join(", ", genre);
 
         String previewLink = volumeInfo.containsKey("previewLink") ?
-                (String) volumeInfo.get("previewLink") : "";
-        System.out.println(isbn);
+            (String) volumeInfo.get("previewLink") : "";
 
+        // Price extraction
+        Map<String, Object> saleInfo = (Map<String, Object>) item.get("saleInfo");
+        double price = 0.0; // Default price if not available
+
+        if (saleInfo != null && "FOR_SALE".equals(saleInfo.get("saleability"))) {
+            Map<String, Object> retailPrice = (Map<String, Object>) saleInfo.get("retailPrice");
+            if (retailPrice != null) {
+                // Check if the price is double or integer
+                if (retailPrice.get("amount") instanceof Integer) {
+                    price = ((Integer) retailPrice.get("amount")).doubleValue();
+                } else if (retailPrice.get("amount") instanceof Double) {
+                    // If it's already a double, just cast it
+                    price = (Double) retailPrice.get("amount");
+                } else if (retailPrice.get("amount") instanceof String) {
+                    // Fallback to 0.0 if the type is unexpected
+                    price = 0.0;
+                } else {
+                    // Fallback to 0.0 if the type is unexpected
+                    price = 0.0;
+                }
+            }
+        }
 
         return new Book(isbn, title, authorString, imageUrl, description, publisher,
-                publishedDate, pageCount, genreString, previewLink);
+                        publishedDate, pageCount, genreString, previewLink, (float) price, 10);
     }
 }
