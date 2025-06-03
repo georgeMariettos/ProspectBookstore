@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="css/index.css?v=4" />
+    <link rel="stylesheet" type="text/css" href="css/starability-fade.min.css" />
     <style>
 
         /* Top Header Styles */
@@ -497,7 +498,18 @@
             return;
         }
 
+
+
+
         try {
+
+             const form = document.getElementById('commentForm');
+            form.reset();
+            form.classList.remove('was-validated');
+            document.getElementById('rating-error').style.display = 'none';
+
+
+
             // Safely set modal content with null checks for each element
             const elements = {
                 'bookDetailModalLabel': book.title || 'Unknown Title',
@@ -604,11 +616,11 @@
 
 
 
-// Example starter JavaScript for disabling form submissions if there are invalid fields
+
 (function () {
   'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+
   var forms = document.querySelectorAll('.validated-form')
 
   // Loop over them and prevent submission
@@ -668,7 +680,25 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const form = e.target;
-            const formData = new FormData(form);
+
+             if (!form.checkValidity()) {
+                form.classList.add('was-validated'); // show Bootstrap styles
+                return;
+                 }
+
+                const ratingInputs = form.querySelectorAll('input[name="rating"]');
+                const ratingError = document.getElementById('rating-error');
+                const ratingValid = Array.from(ratingInputs).some(input => input.checked);
+
+                if (!ratingValid) {
+                ratingError.style.display = 'block';
+                return;
+                } else {
+                ratingError.style.display = 'none';
+                }
+
+
+                 const formData = new FormData(form);
 
             try {
                 const response = await fetch('/comment/save', {
