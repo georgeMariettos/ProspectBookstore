@@ -55,8 +55,7 @@ public class UserController {
         session.setAttribute("username", authenticatedUser.getUsername());
         
         // Store additional customer information if applicable
-        if (authenticatedUser instanceof Customer) {
-            Customer customer = (Customer) authenticatedUser;
+        if (authenticatedUser instanceof Customer customer) {
             session.setAttribute("customerAddress", customer.getAddress());
         }
         
