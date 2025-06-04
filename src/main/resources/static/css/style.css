@@ -1,0 +1,236 @@
+/* Top Header Styles */
+.top-header {
+    background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
+    padding: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden; /* Important for clean edges */
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+/* Bottom Footer Styles */
+.social-footer {
+    background-color: #821934;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.social-icon {
+    color: white;
+    font-size: 28px;
+    transition: all 0.3s;
+}
+
+.social-icon:hover {
+    transform: scale(1.2);
+    color: #f8f9fa;
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Style for the logo */
+.resized-img {
+    width: 240px;
+    height: auto;   /* this keeps the original aspect ratio */
+    display: block; /* optional: removes any extra space */
+}
+
+/* Για το κουμπί της σύνδεσης και εγγραφής for the logo */
+.btn-outline-primary,
+.btn-outline-secondary {
+    color: #ffffff; /* White text for both buttons */
+    background-color: transparent; /* Initially transparent background */
+    border: 1px solid transparent; /* No border initially (transparent border) */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover {
+    color: #ffffff; /* Keep text white on hover */
+    background-color: #4d0d21; /* Fill with a darker purple on hover */
+    border-color: #4d0d21; /* Border appears and matches fill color on hover */
+}
+
+body {
+    background-color: #E9ECEF; /* Λίγο πιο γκρι από αυτό του bootstrap */
+}
+
+/* Brand name style */
+.brand-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Style for Best sellers & recommendations */
+.books-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #343a40;
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.books-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #821934;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+
+/* Για την αναζήτηση κάποια έξτρα */
+.position-relative {
+    position: relative;
+}
+
+.input-group-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+    color: #0d6efd;
+}
+
+#searchQuery {
+    padding-left: 45px;
+    padding-right: 15px;
+    border-radius: 50px !important;
+}
+
+/* Admin panel styles */
+.admin-panel-text {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-right: auto;
+}
+
+.admin-panel-text .admin-word {
+    color: #A33F5B;
+}
+
+.admin-panel-text .panel-word {
+    color: black;
+}
+
+.navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.navbar-nav li {
+    margin: 0 15px;
+}
+
+.navbar-nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1.1em;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-nav a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.profile-icon img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+    filter: invert(1) brightness(2); /* invert black to white */
+}
+
+/* Login page styles */
+body.bg-light {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Custom style for the login/registration buttons */
+.btn-custom {
+    background-color: #821934;
+    border-color: #821934;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.btn-custom:hover {
+    background-color: #6a152a;
+    border-color: #6a152a;
+}
+
+/* Registration page styles */
+.btn-register {
+    background-color: #821934;
+    border-color: #821934;
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+.btn-register:hover {
+    background-color: #6a152a;
+    border-color: #6a152a;
+}
+
+/* Inline styles moved to css */
+.announcement-bar {
+    background-color: #333;
+    color: #fff;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.announcement-text {
+    margin: 0 15px;
+}
+
+.book-detail-image {
+    max-height: 200px;
+}

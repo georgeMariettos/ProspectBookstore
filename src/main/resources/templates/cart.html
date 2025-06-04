@@ -5,101 +5,15 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="shortcut icon" href="http://i.imgur.com/iJx6I7Y.png" type="image/x-icon">
+        <link rel="stylesheet" href="/css/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>My Cart</title>
-        <style>
-
-            /* Top Header Styles */
-            .top-header {
-                background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
-                padding: 0;
-                width: 100%;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                position: relative;
-                overflow: hidden; /* Important for clean edges */
-                min-height: 100px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .header-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0 20px;
-                margin: 0 auto;
-                position: relative;
-                z-index: 1;
-                width: 100%;
-            }
-
-            /* Bottom Footer Styles */
-            .social-footer {
-                background-color: #821934;
-                color: white;
-                padding: 30px 0;
-                margin-top: 50px;
-                width: 100%;
-            }
-
-            .social-icons {
-                display: flex;
-                justify-content: center;
-                gap: 25px;
-            }
-
-            .social-icon {
-                color: white;
-                font-size: 28px;
-                transition: all 0.3s;
-            }
-
-            .social-icon:hover {
-                transform: scale(1.2);
-                color: #f8f9fa;
-            }
-
-            .footer-text {
-                text-align: center;
-                margin-top: 20px;
-                font-size: 14px;
-                opacity: 0.8;
-            }
-
-            /* Style for the logo */
-            .resized-img {
-                width: 240px;
-                height: auto;   /* this keeps the original aspect ratio */
-                display: block; /* optional: removes any extra space */
-            }
-
-            /* Για το κουμπί της σύνδεσης και εγγραφής for the logo */
-            .btn-outline-primary,
-            .btn-outline-secondary {
-                color: #ffffff; /* White text for both buttons */
-                background-color: transparent; /* Initially transparent background */
-                border: 1px solid transparent; /* No border initially (transparent border) */
-                transition: all 0.3s ease; /* Smooth transition for hover effects */
-            }
-
-            .btn-outline-primary:hover,
-            .btn-outline-secondary:hover {
-                color: #ffffff; /* Keep text white on hover */
-                background-color: #4d0d21; /* Fill with a darker purple on hover */
-                border-color: #4d0d21; /* Border appears and matches fill color on hover */
-            }
-
-            body {
-                background-color: #E9ECEF; /* Λίγο πιο γκρι από αυτό του bootstrap */
-            }
-        </style>
     </head>
     <body>
-        <div style="background-color: #333; color: #fff; padding: 8px 0; text-align: center; font-size: 14px;">
-            <span style="margin: 0 15px;">Εύκολες πληρωμές</span>
-            <span style="margin: 0 15px;">Με αντικαταβολή και κάρτα</span>
-            <span style="margin: 0 15px;">Τηλεφωνικές Παραγγελίες 10:00-17:00</span>
+            <div class="announcement-bar">
+                <span class="announcement-text">Εύκολες πληρωμές</span>
+                <span class="announcement-text">Με αντικαταβολή και κάρτα</span>
+                <span class="announcement-text">Τηλεφωνικές Παραγγελίες 10:00-17:00</span>
         </div>
         <!-- Top Header -->
         <header class="top-header">
