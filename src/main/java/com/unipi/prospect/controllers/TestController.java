@@ -1,6 +1,6 @@
 package com.unipi.prospect.controllers;
 
-import com.unipi.prospect.db.users.AdminDao;
+import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.users.Admin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ public class TestController {
     @GetMapping
     public String test(){
         Admin admin = new Admin("admin", "123", "a", "b", true);
-        System.out.println(new AdminDao().insert(admin));
+        System.out.println(new UserDAO().insert(admin));
         return "redirect:/index.html";
     }
 }

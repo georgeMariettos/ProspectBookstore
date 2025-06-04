@@ -1,10 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>I buY bOoks!</title>
+    <title>Prospect Bookstore - My Account</title>
+    <link rel="shortcut icon" href="http://i.imgur.com/iJx6I7Y.png" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css?v=4" />
+    <link rel="stylesheet" type="text/css" href="css/starability-fade.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
-<h1>HIII CUSTOMER</h1>
+
+<div class="announcement-bar">
+    <span class="announcement-text">Εύκολες πληρωμές</span>
+    <span class="announcement-text">Με αντικαταβολή και κάρτα</span>
+    <span class="announcement-text">Τηλεφωνικές Παραγγελίες 10:00-17:00</span>
+</div>
+
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-content d-flex justify-content-between align-items-center">
+        <a href="/">
+            <img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img">
+        </a>
+
+
+
+        <div class="d-flex gap-2">
+            <a href="/" class="btn btn-outline-secondary">Αρχική</a>
+            <a href="/logout" class="btn btn-outline-secondary">Αποσύνδεση</a>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="books-heading">Ο Λογαριασμός μου</h1>
+            
+            <div class="card mb-4">
+                <div class="card-header text-white" style="background-color: #821934;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Καλώς ήρθες, <span th:text="${username}">Customer</span>!
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Εδώ μπορείς να δεις όλες τις παραγγελίες σου.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header text-white" style="background-color: #821934;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Οι Παραγγελίες μου
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div th:if="${orders == null || orders.isEmpty()}" class="text-center p-5">
+                        <i class="bi bi-bag-x" style="font-size: 4rem; color: #ccc;"></i>
+                        <h4 class="mt-3">Δεν έχεις ακόμα παραγγελίες</h4>
+                        <p class="text-muted">Όταν κάνεις μια παραγγελία, θα εμφανιστεί εδώ.</p>
+                        <a href="/" class="btn mt-3 text-white" style="background-color: #821934;">Περιήγηση στο κατάστημα</a>
+                    </div>
+                    
+                    <div th:if="${!orders.isEmpty()}" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Αριθμός Παραγγελίας</th>
+                                    <th>Ημερομηνία</th>
+                                    <th>Κατάσταση</th>
+                                    <th>Σύνολο</th>
+                                    <th>Διεύθυνση</th>
+                                    <th>Προϊόντα</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="order : ${orders}">
+                                    <td th:text="${'#' + order.id}">ID</td>
+                                    <td th:text="${#dates.format(order.created, 'dd/MM/yyyy')}">Date</td>
+                                    <td>
+                                        <span th:if="${order.status == 'preparing'}" class="badge bg-warning text-dark">Σε επεξεργασία</span>
+                                        <span th:if="${order.status == 'sent'}" class="badge bg-info">Απεστάλη</span>
+                                        <span th:if="${order.status == 'delivered'}" class="badge bg-success">Παραδόθηκε</span>
+                                        <span th:if="${order.status == 'cancelled'}" class="badge bg-danger">Ακυρώθηκε</span>
+                                    </td>
+                                    <td th:text="${#numbers.formatDecimal(order.total, 1, 2) + ' €'}">Total</td>
+                                    <td th:text="${order.address}">Address</td>
+                                    <td>
+                                        <button class="btn btn-sm" 
+                                                type="button" 
+                                                data-bs-toggle="collapse" 
+                                                th:data-bs-target="'#orderItems' + ${order.id}" 
+                                                aria-expanded="false"
+                                                style="border: 1px solid #821934; color: #821934;">
+                                            <i class="bi bi-eye"></i> Προβολή
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Collapsible items section for each order -->
+                                <tr th:each="order : ${orders}" class="collapse" th:id="'orderItems' + ${order.id}">
+                                    <td colspan="6">
+                                        <div class="card border-0">
+                                            <div class="card-body bg-light">
+                                                <h5 class="mb-3">Προϊόντα Παραγγελίας</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Τίτλος</th>
+                                                                <th>Ποσότητα</th>
+                                                                <th>Τιμή</th>
+                                                                <th>Σύνολο</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr th:each="item : ${order.items}">
+                                                                <td th:text="${item.title}">Title</td>
+                                                                <td th:text="${item.quantity}">Qty</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.price, 1, 2) + ' €'}">Price</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2) + ' €'}">Total</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Footer with Social Media Icons -->
+<footer class="social-footer">
+    <div class="container">
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" class="social-icon">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" class="social-icon">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com" target="_blank" class="social-icon">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+        <div class="footer-text">
+            © 2025 Prospect BookStore. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

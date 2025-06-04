@@ -31,6 +31,7 @@ public class Customer extends User{
 
     }
     public void ViewOrder(){
-
+        // This method is now implemented in the CustomerController
+        // to display orders in the customer.html template
     }
 }

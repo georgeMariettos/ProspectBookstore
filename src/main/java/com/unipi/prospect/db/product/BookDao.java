@@ -1,6 +1,6 @@
 package com.unipi.prospect.db.product;
 
-import com.unipi.prospect.db.users.AuthorDao;
+import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
 
 import java.sql.*;
@@ -20,7 +20,10 @@ public class BookDao {
     public boolean insert(Book book) {
         String sqlString = "INSERT INTO Books VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
-            if(new AuthorDao().selectByUsername(book.getAuthorUsername()) != null) {
+            if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
+                return false; // Author username must not be null or empty
+            }
+            if(new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()){
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getIsbn());
                 psmt.setString(2, book.getTitle());
@@ -46,7 +49,10 @@ public class BookDao {
     public boolean update(Book book) {
         String sqlString = "UPDATE Books SET title = ?, authorUsername = ?, imageUrl = ?, description = ?, publisher = ?, publishedDate = ?, pageCount = ?, genre = ?, previewLink = ?, price = ?, stock = ? WHERE isbn = ?";
         try{
-            if (new AuthorDao().selectByUsername(book.getAuthorUsername()) != null) {
+            if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
+                return false; // Author username must not be null or empty
+            }
+            if (new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()) {
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getTitle());
                 psmt.setString(2, book.getAuthorUsername());

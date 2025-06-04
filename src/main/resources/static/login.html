@@ -38,19 +38,22 @@
         <div class="card shadow-sm rounded-4">
             <div class="card-body">
                 <h3 class="card-title mb-4 text-center">Σύνδεση χρήστη</h3>
-                <form>
+                <form action="/login" method="post">
                     <div class="mb-3">
-                        <label for="Username" class="form-label">Όνομα χρήστη</label>
-                        <input type="text" class="form-control" id="Username"  required>
+                        <label for="username" class="form-label">Όνομα χρήστη</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
                     </div>
-
+                
                     <div class="mb-3">
                         <label for="password" class="form-label">Κωδικός</label>
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
-
+                
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-custom w-25">Σύνδεση</button>
+                    </div>
+                    <div id="loginError" class="alert alert-danger mt-3 d-none">
+                        Λάθος όνομα χρήστη ή κωδικός πρόσβασης.
                     </div>
                 </form>
 
@@ -95,25 +98,14 @@
     </div>
 </footer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Check if there's an error parameter in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error') && urlParams.get('error') === 'true') {
+        document.getElementById('loginError').classList.remove('d-none');
+    }
+</script>
 </body>
 </html>

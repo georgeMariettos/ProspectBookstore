@@ -1,7 +1,5 @@
 package com.unipi.prospect.db.product;
 
-import com.unipi.prospect.db.users.AuthorDao;
-import com.unipi.prospect.product.Book;
 import com.unipi.prospect.product.Item;
 
 import java.sql.*;
