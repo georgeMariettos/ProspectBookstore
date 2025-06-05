@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Λειτουργίες χρήστη admin</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Λειτουργίες χρήστη admin</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
 
-<header class="top-header">
-    <div class="header-content">
-        <span class="admin-panel-text">
-            <span class="admin-word">Admin</span><span class="panel-word">Panel</span>
-        </span>
-        <ul class="navbar-nav">
-            <li><a href="#">αρχική</a></li>
-            <li><a href="#">προϊόντα</a></li>
-            <li><a href="#">παραγγελίες</a></li>
-            <li><a href="#">χρήστες</a></li>
-            <li><a href="#">tickets</a></li>
-        </ul>
-        <span class="profile-icon">
-            <img src="https://i.imgur.com/5UcWQb6.png" alt="Profile Icon">
-        </span>
+    <header class="top-header">
+        <div class="header-content">
+            <span class="admin-panel-text">
+                <span class="admin-word">Admin</span><span class="panel-word">Panel</span>
+            </span>
+            <ul class="navbar-nav">
+                <li><a href="#">Aρχική</a></li>
+                <li><a href="#">προϊόντα</a></li>
+                <li><a href="#">παραγγελίες</a></li>
+                <li><a href="#">χρήστες</a></li>
+                <li><a href="#">tickets</a></li>
+            </ul>
+            <span class="profile-icon">
+                <img src="https://i.imgur.com/5UcWQb6.png" alt="Profile Icon">
+            </span>
+        </div>
+    </header>
+
+    <div>
+        <span th:text="'Welcome, ' + ${username}"/>
     </div>
-</header>
 
-<h1>HIII ADMIN</h1>
-
-</body>
+    </body>
 </html>

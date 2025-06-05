@@ -5,13 +5,15 @@ import com.unipi.prospect.product.Item;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.Date;
 import java.util.ArrayList;
 
 @Controller
+@RequestMapping("/cart")
 public class ShoppingCartController {
-    @GetMapping("/cart")
+    @GetMapping
     String getShoppingCart(Model model) {
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(new Item("0", 1, 5.99f));

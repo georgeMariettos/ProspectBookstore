@@ -40,7 +40,7 @@ public class CustomerController {
         // If not logged in, redirect to login page
         if (username == null) {
             return "redirect:/login.html";
-            }
+        }
         // Fetch orders for this customer
         OrderDao orderDao = new OrderDao();
         ArrayList<Order> orders = orderDao.selectAllByUsername(username);
