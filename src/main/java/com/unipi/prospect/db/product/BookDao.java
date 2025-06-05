@@ -144,4 +144,19 @@ public class BookDao {
             return null;
         }
     }
+
+    public int getCountOfBooks() throws SQLException {
+        String sqlString = "SELECT COUNT(*) FROM Books";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlString);
+            int count = 0;
+            if (rs.next()){
+               count = rs.getInt(1);
+            }
+            return count;
+        }catch (SQLException e){
+            throw  new SQLException(e);
+        }
+    }
 }

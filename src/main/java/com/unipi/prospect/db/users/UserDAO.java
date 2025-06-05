@@ -225,4 +225,19 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public int getCountOfUsers() throws SQLException {
+        String sqlString = "SELECT COUNT(*) FROM users";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlString);
+            int count = 0;
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+            return  count;
+        }catch (SQLException e){
+            throw new SQLException((e));
+        }
+    }
 }

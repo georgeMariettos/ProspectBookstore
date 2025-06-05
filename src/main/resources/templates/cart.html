@@ -28,28 +28,30 @@
         </header>
 
         <!-- Page Content -->
-        <div class="container-sm pt-2 ps-3 pe-3 my-5 border rounded" style="background-color: #f4f5f8">
-            <h1>My Cart</h1>
-            <table>
-                <tr th:each="item : ${cartItems}">
-                    <td>
-                        <div class="d-flex flex-row justify-content-around p-2">
-                            <span th:text="${item.getIsbn()}" class="p-2 flex-fill"/>
-                            <span th:text="${item.getTotalPrice()}" class="p-2 flex-fill"/>
-                            <span th:text="${item.getQuantity()}" class="p-2 flex-fill"/>
-                            <div class="input-group">
-                                <span class="input-group-text">Quantity</span>
-                                <input type="number" class="form-control" th:id="${item.getIsbn()}" onchange="checkValues(this)" min="1" max="999" th:value="${item.getQuantity()}"/>
+        <main>
+            <div class="container-sm pt-2 ps-3 pe-3 my-5 border rounded" style="background-color: #f4f5f8">
+                <h1>My Cart</h1>
+                <table>
+                    <tr th:each="item : ${cartItems}">
+                        <td>
+                            <div class="d-flex flex-row justify-content-around p-2">
+                                <span th:text="${item.getIsbn()}" class="p-2 flex-fill"/>
+                                <span th:text="${item.getTotalPrice()}" class="p-2 flex-fill"/>
+                                <span th:text="${item.getQuantity()}" class="p-2 flex-fill"/>
+                                <div class="input-group">
+                                    <span class="input-group-text">Quantity</span>
+                                    <input type="number" class="form-control" th:id="${item.getIsbn()}" onchange="checkValues(this)" min="1" max="999" th:value="${item.getQuantity()}"/>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <div class="d-flex flex-row justify-content-between p-2">
-                <button class="btn btn-primary bg-secondary bg-gradient border border-secondary" id="empty">Clear Cart</button>
-                <button class="btn btn-primary bg-success bg-gradient border border-success" id="checkout">Checkout</button>
+                        </td>
+                    </tr>
+                </table>
+                <div class="d-flex flex-row justify-content-between p-2">
+                    <button class="btn btn-primary bg-secondary bg-gradient border border-secondary" id="empty">Clear Cart</button>
+                    <button class="btn btn-primary bg-success bg-gradient border border-success" id="checkout">Checkout</button>
+                </div>
             </div>
-        </div>
+        </main>
 
         <!-- Bottom Footer with Social Media Icons -->
         <footer class="social-footer">

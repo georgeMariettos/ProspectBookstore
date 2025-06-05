@@ -87,6 +87,7 @@ public class OrderDao {
         String sqlString = "SELECT * FROM Orders WHERE orderId = ?";
         try{
             PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setInt(1, orderId);
             ResultSet rs = psmt.executeQuery();
             Order order;
             if (rs.next()) {
@@ -104,6 +105,22 @@ public class OrderDao {
             return null;
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    public int getCountOfOrdersByStatus(String status) throws SQLException {
+        String sqlString = "SELECT count(*) FROM Orders WHERE status = ?";
+        try{
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, status);
+            ResultSet rs = psmt.executeQuery();
+            int count = 0;
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
     }
 }

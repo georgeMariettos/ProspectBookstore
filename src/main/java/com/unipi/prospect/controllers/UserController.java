@@ -61,7 +61,7 @@ public class UserController {
         
         // Redirect based on user role
         if (authenticatedUser instanceof Admin) {
-            return "redirect:/admin";
+            return "redirect:/admin/main";
         } else if (authenticatedUser instanceof Author) {
             return "redirect:/author";
         } else if (authenticatedUser instanceof Customer) {

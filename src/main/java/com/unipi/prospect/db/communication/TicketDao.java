@@ -93,4 +93,20 @@ public class TicketDao {
             return null;
         }
     }
+
+    public int getCountOfTicketsByStatus(String status) throws SQLException{
+        String sqlString = "SELECT count(*) FROM Tickets where status = ?";
+        try {
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, status);
+            ResultSet rs = psmt.executeQuery();
+            int count = 0;
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+            return count;
+        }catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
 }

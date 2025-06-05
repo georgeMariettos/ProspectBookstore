@@ -81,6 +81,14 @@
 
 body {
     background-color: #E9ECEF; /* Λίγο πιο γκρι από αυτό του bootstrap */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main{
+    flex: 1;
 }
 
 /* Brand name style */
