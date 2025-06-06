@@ -168,6 +168,8 @@ public class UserDAO {
                 surname = rs.getString("surname");
                 active = rs.getBoolean("active");
             }
+            rs.close();
+            pstmt.close();
             if (role.equalsIgnoreCase("Customer")) {
                 String sqlString2 = "SELECT * FROM CustomerAddress WHERE username = ?";
                 PreparedStatement pstmt2 = conn.prepareStatement(sqlString2);
@@ -183,6 +185,8 @@ public class UserDAO {
                             rs2.getString("address")
                     );
                 }
+                rs2.close();
+                pstmt2.close();
             } else if (role.equalsIgnoreCase("Author")) {
                 return new Author(
                         username,
