@@ -182,8 +182,7 @@
                         </div>
                         
                         <!-- Show login message if user is not logged in -->
-                        <div th:unless="${session.username}" class="alert alert-info mb-4">
-                            <i class="bi bi-info-circle-fill me-2"></i>
+                        <div th:unless="${session.username}" class="alert alert-warning mb-4 mt-3">
                             <a href="/login.html" class="alert-link">Σύνδεση</a> απαιτείται για να αφήσετε κριτική
                         </div>
 
@@ -345,17 +344,18 @@
             return;
         }
 
-
-
-
         try {
-
-             const form = document.getElementById('commentForm');
-            form.reset();
-            form.classList.remove('was-validated');
-            document.getElementById('rating-error').style.display = 'none';
-
-
+            // Check if form exists (only for logged-in users)
+            const form = document.getElementById('commentForm');
+            if (form) {
+                form.reset();
+                form.classList.remove('was-validated');
+                
+                const ratingError = document.getElementById('rating-error');
+                if (ratingError) {
+                    ratingError.style.display = 'none';
+                }
+            }
 
             // Safely set modal content with null checks for each element
             const elements = {
