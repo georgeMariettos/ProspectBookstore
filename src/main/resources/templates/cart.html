@@ -21,12 +21,22 @@
                 <a href="/"><img src="https://i.imgur.com/Ksq7tEh.png" alt="Our logo" class="resized-img"></a>
 
                 <div class="d-flex gap-2">
-                    <a href="registration.html" class="btn btn-outline-primary">Εγγραφή</a>
-                    <a href="login.html" class="btn btn-outline-secondary">Σύνδεση</a>
+                    <!-- Show these buttons if user is not logged in -->
+                    <div th:unless="${session.username}">
+                        <a href="registration.html" class="btn btn-outline-primary">Εγγραφή</a>
+                        <a href="login.html" class="btn btn-outline-secondary">Σύνδεση</a>
+                    </div>
+                    
+                    <!-- Show these buttons if user is logged in -->
+                    <div th:if="${session.username}">
+                        <a href="/" class="btn btn-outline-secondary">Αρχική</a>
+                        <a href="/customer" class="btn btn-outline-primary">Ο Λογαριασμός μου</a>
+                        <a href="/logout" class="btn btn-outline-secondary">Αποσύνδεση</a>
+                    </div>
                 </div>
             </div>
         </header>
-
+        
         <!-- Page Content -->
         <main>
             <div class="container-sm pt-2 ps-3 pe-3 my-5 border rounded" style="background-color: #f4f5f8">
@@ -86,6 +96,7 @@
                     input.value = 999;
                 }
             }
+
         </script>
     </body>
 </html>
