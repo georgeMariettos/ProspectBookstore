@@ -51,12 +51,11 @@ public class BookController {
             for (Map<String, Object> item : items) {
 
                 Book book = parseBookFromResponse(item);
-            if (book != null) {
-                bookDao.insert(book);
-                books.add(book);
+                if (book != null) {
+                    bookDao.insert(book);
+                    books.add(book);
+                }
             }
-            }
-
             return ResponseEntity.ok(books);
         } catch (Exception e) {
             e.printStackTrace();

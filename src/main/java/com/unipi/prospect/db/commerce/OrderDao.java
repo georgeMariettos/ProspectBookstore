@@ -1,6 +1,7 @@
 package com.unipi.prospect.db.commerce;
 
 import com.unipi.prospect.commerce.Order;
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.product.ItemDao;
 
 import java.sql.*;
@@ -10,11 +11,7 @@ public class OrderDao {
     private final Connection conn;
 
     public OrderDao() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public boolean insert(Order order) {
@@ -27,6 +24,7 @@ public class OrderDao {
             psmt.setString(4, order.getAddress());
             psmt.setString(5, order.getUsername());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -41,6 +39,7 @@ public class OrderDao {
             psmt.setString(2, order.getAddress());
             psmt.setInt(3, order.getId());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -100,6 +99,8 @@ public class OrderDao {
                         null
                 );
                 order.setItems(new ItemDao().selectItemsByOrderID(orderId));
+                rs.close();
+                psmt.close();
                 return order;
             }
             return null;
@@ -118,6 +119,7 @@ public class OrderDao {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
+            psmt.close();
             return count;
         } catch (SQLException e) {
             throw new SQLException(e);

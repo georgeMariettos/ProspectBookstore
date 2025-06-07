@@ -1,6 +1,7 @@
 package com.unipi.prospect.controllers;
 
 import com.unipi.prospect.commerce.Order;
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.commerce.OrderDao;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.users.Customer;

@@ -2,9 +2,85 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://i.imgur.com/iJx6I7Y.png" type="image/x-icon">
+    <title>Διαχείριση Παραγγελιών</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-test
+
+<header class="top-header">
+    <div class="header-content">
+                    <span class="admin-panel-text">
+                        <span class="admin-word">Admin</span><span class="panel-word">Panel</span>
+                    </span>
+        <ul class="navbar-nav" style="flex-direction: row">
+            <li><a href="/admin/main">Aρχική</a></li>
+            <li><a href="/admin/products">προϊόντα</a></li>
+            <li><a href="/admin/orders">παραγγελίες</a></li>
+            <li><a href="/admin/users">χρήστες</a></li>
+            <li><a href="/admin/tickets">tickets</a></li>
+        </ul>
+        <span class="profile-icon">
+                        <img src="https://i.imgur.com/5UcWQb6.png" alt="Profile Icon">
+                    </span>
+    </div>
+</header>
+
+<main>
+    <div class="container-sm p-20 my-5 border rounded" style="background-color: #f4f5f8">
+        <h1>Διαχείριση Παραγγελιών</h1>
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a th:class="'nav-link ' + ${tab == 'preparing'?'active':''}" aria-current="page" href="/admin/orders?tab=preparing">Preparing</a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="'nav-link ' + ${tab == 'sent'?'active':''}" href="/admin/orders?tab=sent">Sent</a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="'nav-link ' + ${tab == 'delivered'?'active':''}" href="/admin/orders?tab=delivered">Delivered</a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="'nav-link ' + ${tab == 'cancelled'?'active':''}" href="/admin/orders?tab=cancelled">Cancelled</a>
+                </li>
+            </ul>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Client username</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order: ${orders}">
+                        <td th:text="${order.getId()}"/>
+                        <td th:text="${order.getCreated()}"/>
+                        <td th:text="${order.getStatus()}"/>
+                        <td th:text="${order.getTotal()}"/>
+                        <td th:text="${order.getAddress()}"/>
+                        <td th:text="${order.getUsername()}"/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- Bottom Footer with Social Media Icons -->
+<footer class="social-footer">
+    <div class="container">
+        <div class="footer-text">
+            © 2025 Prospect BookStore. All rights reserved.
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>

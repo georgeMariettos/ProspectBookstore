@@ -20,6 +20,22 @@ public abstract class User {
         this.active = active;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -38,6 +54,10 @@ public abstract class User {
 
     public String getSurname() {
         return surname;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void ChangeAccountDetails(){

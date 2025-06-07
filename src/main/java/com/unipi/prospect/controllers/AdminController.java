@@ -1,16 +1,27 @@
 package com.unipi.prospect.controllers;
 
+import com.unipi.prospect.commerce.Order;
+import com.unipi.prospect.communication.Ticket;
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.commerce.OrderDao;
 import com.unipi.prospect.db.communication.TicketDao;
 import com.unipi.prospect.db.product.BookDao;
 import com.unipi.prospect.db.users.UserDAO;
+import com.unipi.prospect.product.Book;
 import com.unipi.prospect.users.Admin;
+import com.unipi.prospect.users.Customer;
 import com.unipi.prospect.users.User;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,9 +30,7 @@ public class AdminController {
     @GetMapping("/main")
     public String adminMainPage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/";
-        }else if (!(user instanceof Admin)){
+        if (checkInvalidSession(session)) {
             return "redirect:/";
         }
         model.addAttribute("username", user.getUsername());
@@ -61,22 +70,111 @@ public class AdminController {
 
     @GetMapping("/products")
     public String adminProductsPage(Model model, HttpSession session) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        ArrayList<Book> books;
+        books = new BookDao().selectAll();
+        model.addAttribute("books", books);
         return "adminProducts";
     }
 
     @GetMapping("/orders")
-    public String adminOrdersPage(Model model, HttpSession session) {
+    public String adminOrdersPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        ArrayList<Order> orders;
+        if (tab == null){
+            tab = "preparing";
+        }
+        orders = new OrderDao().selectAllByStatus("preparing");
+        model.addAttribute("orders", orders);
+        model.addAttribute("tab", tab);
         return "adminOrders";
     }
 
     @GetMapping("/tickets")
-    public String adminTicketsPage(Model model, HttpSession session) {
+    public String adminTicketsPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        ArrayList<Ticket> tickets;
+        if (tab == null){
+            tab = "opened";
+        }
+        tickets = new TicketDao().selectAllTicketsByStatus(tab);
+        model.addAttribute("orders", tickets);
+        model.addAttribute("tab", tab);
         return "adminTickets";
     }
 
     @GetMapping("/users")
-    public String adminUsersPage(Model model, HttpSession session) {
+    public String adminUsersPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        ArrayList<User> users;
+        if (tab == null){
+            tab = "Customer";
+        }
+        users = new UserDAO().selectAll(tab);
+        model.addAttribute("users", users);
+        model.addAttribute("tab", tab);
         return "adminUsers";
     }
 
+    @GetMapping("/users/edit")
+    public String adminUsersEditPage(Model model,@RequestParam(required = false, name = "username") String username, HttpSession session, @RequestParam(required = false, name = "role") String role) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        User user = new UserDAO().selectByUsername(username, role);
+        model.addAttribute("user", user);
+        String address = null;
+        if (user instanceof Customer) {
+            address = new UserDAO().selectAddressByUsername(username);
+        }
+        model.addAttribute("address", address);
+        model.addAttribute("role", role);
+        return "adminEditUser";
+    }
+
+    @PostMapping("/users/save")
+    public String adminSaveUser(@RequestParam("username") String username,
+                                @RequestParam("name") String name,
+                                @RequestParam("surname") String surname,
+                                @RequestParam("address") String address,
+                                @RequestParam("email")  String email,
+                                @RequestParam("active") String active,
+                                @RequestParam("role") String role,
+                                HttpSession session) {
+        try{
+            if (checkInvalidSession(session)) {
+                return "redirect:/";
+            }
+            User user = new UserDAO().selectByUsername(username, role);
+            user.setUsername(username);
+            user.setName(name);
+            user.setSurname(surname);
+            if(active.equals("true")){
+                user.setActive(true);
+            }else{
+                user.setActive(false);
+            }
+            new UserDAO().update(user);
+            return "redirect:/admin/users?tab=" + role;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean checkInvalidSession(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null){
+            return true;
+        } else {
+            return !(user instanceof Admin);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.unipi.prospect.db.users;
 
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.users.Admin;
 import com.unipi.prospect.users.Author;
 import com.unipi.prospect.users.Customer;
@@ -12,11 +13,7 @@ public class UserDAO {
     private final Connection conn;
 
     public UserDAO() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException | RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public User authenticate(String username, String password, String role) {
@@ -35,16 +32,26 @@ public class UserDAO {
                 String surname = rs.getString("surname");
                 boolean active = rs.getBoolean("active");
                 if (role.equalsIgnoreCase("admin")) {
+                    rs.close();
+                    pstmt.close();
                     return new Admin(username, password, name, surname, active);
                 } else if (role.equalsIgnoreCase("customer")) {
                     String address = selectAddressByUsername(username);
+                    rs.close();
+                    pstmt.close();
                     return new Customer(username, password, name, surname, active, address);
                 } else if (role.equalsIgnoreCase("author")) {
+                    rs.close();
+                    pstmt.close();
                     return new Author(username, password, name, surname, active);
                 } else {
+                    rs.close();
+                    pstmt.close();
                     throw new IllegalArgumentException("Invalid role: " + role);
                 }
             }
+            rs.close();
+            pstmt.close();
             return null; // No user found with matching credentials
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -64,12 +71,14 @@ public class UserDAO {
             pstmt.setBoolean(5, user.isActive());
             pstmt.setString(6, role);
             pstmt.executeUpdate();
+            pstmt.close();
             if (user instanceof Customer){
                 String sqlString2 = "INSERT INTO CustomerAddress VALUES(?,?)";
                 PreparedStatement pstmt2 = conn.prepareStatement(sqlString2);
                 pstmt2.setString(1, user.getUsername());
                 pstmt2.setString(2, ((Customer) user).getAddress());
                 pstmt2.executeUpdate();
+                pstmt2.close();
                 return true;
             }
             return true;
@@ -79,22 +88,23 @@ public class UserDAO {
     }
 
     public boolean update(User user) {
-        String sqlString = "UPDATE Users SET username = ?, password = ?, name = ?, surname = ?, active = ? WHERE username = ?";
+        String sqlString = "UPDATE Users SET password = ?, name = ?, surname = ?, active = ? WHERE username = ?";
         try{
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getSurname());
-            pstmt.setBoolean(5, user.isActive());
-            pstmt.setString(6, user.getUsername());
+            pstmt.setString(1, user.getPassword());
+            pstmt.setString(2, user.getName());
+            pstmt.setString(3, user.getSurname());
+            pstmt.setBoolean(4, user.isActive());
+            pstmt.setString(5, user.getUsername());
             pstmt.executeUpdate();
+
             if (user instanceof Customer) {
                 String sqlString2 = "UPDATE CustomerAddress SET address = ? WHERE username = ?";
-                PreparedStatement pstmt2 = conn.prepareStatement(sqlString2);
-                pstmt2.setString(1, ((Customer) user).getAddress());
-                pstmt2.setString(2, user.getUsername());
-                pstmt2.executeUpdate();
+                pstmt = conn.prepareStatement(sqlString2);
+                pstmt.setString(1, ((Customer) user).getAddress());
+                pstmt.setString(2, user.getUsername());
+                pstmt.executeUpdate();
+                pstmt.close();
             }
             return true;
         } catch (SQLException e) {
@@ -108,6 +118,7 @@ public class UserDAO {
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1,user.getUsername());
             pstmt.executeUpdate();
+            pstmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -145,6 +156,8 @@ public class UserDAO {
                     throw new IllegalArgumentException("Invalid role: " + role);
                 }
             }
+            rs.close();
+            pstmt.close();
             return users;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -161,7 +174,7 @@ public class UserDAO {
             String password = "";
             String name = "";
             String surname = "";
-            Boolean active = false;
+            boolean active = false;
             if (rs.next()){
                 password = rs.getString("password");
                 name = rs.getString("name");
@@ -175,18 +188,13 @@ public class UserDAO {
                 PreparedStatement pstmt2 = conn.prepareStatement(sqlString2);
                 pstmt2.setString(1, username);
                 ResultSet rs2 = pstmt2.executeQuery();
+                String address = "";
                 if (rs2.next()) {
-                    return new Customer(
-                            username,
-                            password,
-                            name,
-                            surname,
-                            active,
-                            rs2.getString("address")
-                    );
+                    address = rs2.getString("address");
                 }
                 rs2.close();
                 pstmt2.close();
+                return new Customer(username, password, name, surname, active, address);
             } else if (role.equalsIgnoreCase("Author")) {
                 return new Author(
                         username,
@@ -209,7 +217,6 @@ public class UserDAO {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
     public String selectAddressByUsername(String username) {
@@ -239,6 +246,8 @@ public class UserDAO {
             if (rs.next()){
                 count = rs.getInt(1);
             }
+            rs.close();
+            stmt.close();
             return  count;
         }catch (SQLException e){
             throw new SQLException((e));

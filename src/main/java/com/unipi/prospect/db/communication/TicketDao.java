@@ -1,6 +1,7 @@
 package com.unipi.prospect.db.communication;
 
 import com.unipi.prospect.communication.Ticket;
+import com.unipi.prospect.db.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,11 +10,7 @@ public class TicketDao {
     private final Connection conn;
 
     public TicketDao() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public boolean insert(Ticket ticket){
@@ -24,6 +21,7 @@ public class TicketDao {
             psmt.setDate(2, ticket.getCreationDate());
             psmt.setString(3, ticket.getStatus());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -38,6 +36,7 @@ public class TicketDao {
             psmt.setString(2, ticket.getStatus());
             psmt.setInt(3, ticket.getId());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -58,6 +57,8 @@ public class TicketDao {
                 String status = rs.getString("status");
                 tickets.add(new Ticket(id, comment, username, creationDate, status));
             }
+            rs.close();
+            psmt.close();
             return tickets;
         } catch (SQLException e) {
             return null;
@@ -88,6 +89,8 @@ public class TicketDao {
                 String status = rs.getString("status");
                 return new Ticket(id, comment, username, creationDate, status);
             }
+            rs.close();
+            psmt.close();
             return null;
         } catch (SQLException e) {
             return null;
@@ -104,6 +107,7 @@ public class TicketDao {
             if (rs.next()){
                 count = rs.getInt(1);
             }
+            psmt.close();
             return count;
         }catch (SQLException e) {
             throw new SQLException(e);

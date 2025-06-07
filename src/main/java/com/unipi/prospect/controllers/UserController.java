@@ -1,5 +1,6 @@
 package com.unipi.prospect.controllers;
 
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.users.Admin;
 import com.unipi.prospect.users.Author;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
     
-    private final UserDAO userDAO = new UserDAO();
+    //private final UserDAO userDAO = new UserDAO();
     
     @Autowired
     private CustomerController customerController;
@@ -33,16 +34,16 @@ public class UserController {
                         HttpSession session) {
         
         // Try to authenticate as admin first
-        User authenticatedUser = userDAO.authenticate(username, password, "Admin");
+        User authenticatedUser = new UserDAO().authenticate(username, password, "Admin");
         
         // If not admin, try author
         if (authenticatedUser == null) {
-            authenticatedUser = userDAO.authenticate(username, password, "Author");
+            authenticatedUser = new UserDAO().authenticate(username, password, "Author");
         }
         
         // If not author, try customer
         if (authenticatedUser == null) {
-            authenticatedUser = userDAO.authenticate(username, password, "Customer");
+            authenticatedUser = new UserDAO().authenticate(username, password, "Customer");
         }
         
         // If authentication failed for all roles
