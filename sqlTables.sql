@@ -41,7 +41,7 @@ create  table Comments(
     replyTo integer default null,
     rating integer default 0,
     foreign key (username) references  Users(username),
-    foreign key (bookIsbn) references  Books(isbn),
+    foreign key (bookIsbn) references  Books(isbn) on delete cascade,
     foreign key (replyTo) references Comments(commentID)
 );
 
@@ -61,7 +61,7 @@ create  table  OrderItems(
     quantity integer,
     price float(6,2) not null,
     primary key (orderId,bookIsbn),
-    foreign key (orderId) references  Orders(orderId),
+    foreign key (orderId) references  Orders(orderId) on delete cascade,
     foreign key (bookIsbn) references  Books(isbn)
 );
 

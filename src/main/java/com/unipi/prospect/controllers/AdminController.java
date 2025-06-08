@@ -9,6 +9,7 @@ import com.unipi.prospect.db.product.BookDao;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
 import com.unipi.prospect.users.Admin;
+import com.unipi.prospect.users.Author;
 import com.unipi.prospect.users.Customer;
 import com.unipi.prospect.users.User;
 import jakarta.servlet.http.HttpSession;
@@ -153,8 +154,16 @@ public class AdminController {
         return "adminEditUser";
     }
 
-    @PostMapping("/users/save")
-    public String adminSaveUser(@RequestParam("username") String username,
+    @GetMapping("/users/new")
+    public String adminUsersNewPage(HttpSession session) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        return "adminAddUser";
+    }
+
+    @PostMapping("/users/update")
+    public String adminUpdateUser(@RequestParam("username") String username,
                                 @RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("address") String address,
@@ -166,16 +175,61 @@ public class AdminController {
             if (checkInvalidSession(session)) {
                 return "redirect:/";
             }
-            User user = new UserDAO().selectByUsername(username, role);
-            user.setUsername(username);
-            user.setName(name);
-            user.setSurname(surname);
-            if(active.equals("on")){
-                user.setActive(true);
+            User user;
+            if (role.equals("Customer")) {
+                Customer customer = (Customer) (new UserDAO().selectByUsername(username, role));
+                customer.setUsername(username);
+                customer.setName(name);
+                customer.setSurname(surname);
+                customer.setAddress(address);
+                customer.setActive(active.equals("on"));
+                user = customer;
+            }else if (role.equals("Admin")) {
+                Admin admin = (Admin) (new UserDAO().selectByUsername(username, role));
+                admin.setUsername(username);
+                admin.setName(name);
+                admin.setSurname(surname);
+                admin.setActive(active.equals("on"));
+                user = admin;
             }else{
-                user.setActive(false);
+                Author author = (Author) (new UserDAO().selectByUsername(username, role));
+                author.setUsername(username);
+                author.setName(name);
+                author.setSurname(surname);
+                author.setActive(active.equals("on"));
+                user = author;
             }
             new UserDAO().update(user);
+            return "redirect:/admin/users?tab=" + role;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/users/save")
+    public String adminSaveUser(@RequestParam("username") String username,
+                                @RequestParam("password") String password,
+                                @RequestParam("name") String name,
+                                @RequestParam("surname") String surname,
+                                @RequestParam("address") String address,
+                                @RequestParam("email")  String email,
+                                @RequestParam("active") String active,
+                                @RequestParam("role") String role,
+                                HttpSession session){
+        try{
+            if (checkInvalidSession(session)) {
+                return "redirect:/";
+            }
+            User user;
+            boolean temp = active.equals("on");
+            if (role.equals("Customer")) {
+                user = new Customer(username, password, name, surname, temp, address);
+            }else if (role.equals("Admin")) {
+                user = new Admin(username, password, name, surname, temp);
+            }else{
+                user = new Author(username, password, name, surname, temp);
+            }
+            new UserDAO().insert(user);
             return "redirect:/admin/users?tab=" + role;
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
