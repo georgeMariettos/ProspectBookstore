@@ -7,6 +7,7 @@ import com.unipi.prospect.users.Admin;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
@@ -24,5 +25,11 @@ public class TestController {
             System.out.println(e);
         }
         return "redirect:/index.html";
+    }
+
+    @ResponseBody
+    @GetMapping("/t")
+    public boolean test2(HttpSession session){
+        return true;
     }
 }

@@ -15,10 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -88,10 +85,26 @@ public class AdminController {
         if (tab == null){
             tab = "preparing";
         }
-        orders = new OrderDao().selectAllByStatus("preparing");
+        orders = new OrderDao().selectAllByStatus(tab);
         model.addAttribute("orders", orders);
         model.addAttribute("tab", tab);
         return "adminOrders";
+    }
+
+    @ResponseBody
+    @GetMapping("/orders/confirm")
+    public boolean adminOrdersConfirmPage(HttpSession session, @RequestParam(required = false, name = "orderID") String orderID) {
+        if (checkInvalidSession(session)) {
+            throw new RuntimeException("Invalid session");
+        }
+        try {
+            Order order = new OrderDao().selectByOrderID(Integer.parseInt(orderID));
+            order.setStatus("sent");
+            new OrderDao().update(order);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @GetMapping("/tickets")
@@ -157,7 +170,7 @@ public class AdminController {
             user.setUsername(username);
             user.setName(name);
             user.setSurname(surname);
-            if(active.equals("true")){
+            if(active.equals("on")){
                 user.setActive(true);
             }else{
                 user.setActive(false);

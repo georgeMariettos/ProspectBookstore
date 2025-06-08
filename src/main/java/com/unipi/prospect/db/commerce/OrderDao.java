@@ -54,7 +54,7 @@ public class OrderDao {
             ResultSet rs = psmt.executeQuery();
             while (rs.next()) {
                 int orderId = rs.getInt("orderId");
-                Date created = rs.getDate("created");
+                Date created = Date.valueOf(rs.getString("created"));
                 String status = rs.getString("status");
                 float total = rs.getFloat("total");
                 String address = rs.getString("address");
@@ -92,7 +92,7 @@ public class OrderDao {
             if (rs.next()) {
                 order = new Order(
                         rs.getInt("orderId"),
-                        rs.getDate("created"),
+                        Date.valueOf(rs.getString("created")),
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("username"),

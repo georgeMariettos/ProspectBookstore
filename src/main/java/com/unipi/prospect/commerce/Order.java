@@ -69,6 +69,14 @@ public class Order {
         calculateTotal();
     }
 
+    public void setStatus(String status) {
+        if(status.equals("preparing")||status.equals("sent")||status.equals("delivered")||status.equals("cancelled")){
+            this.status = status;
+        }else{
+            throw new IllegalArgumentException("Invalid status value");
+        }
+    }
+
     private void calculateTotal(){
         float sum = 0;
         for(Item item : items){

@@ -56,16 +56,28 @@
                     <th scope="col">Total</th>
                     <th scope="col">Address</th>
                     <th scope="col">Client username</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="order: ${orders}">
+                    <tr th:each="order: ${orders}" th:data-orderID="${order.getId()}">
                         <td th:text="${order.getId()}"/>
                         <td th:text="${order.getCreated()}"/>
                         <td th:text="${order.getStatus()}"/>
                         <td th:text="${order.getTotal()}"/>
                         <td th:text="${order.getAddress()}"/>
                         <td th:text="${order.getUsername()}"/>
+                        <td>
+                            <button th:if="${order.getStatus().equals('preparing')}" th:name="${order.getId()}" onclick="changeStatus(this)" data-toggle="tooltip" data-placement="top" title="Mark sent">
+                                <i class="bi bi-check-square-fill"></i>
+                            </button>
+                            <button th:if="${!order.getStatus().equals('preparing')}" data-toggle="tooltip" data-placement="top" title="Change status">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button data-toggle="tooltip" data-placement="top" title="Details">
+                                <i class="bi bi-info-square-fill"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -81,6 +93,21 @@
         </div>
     </div>
 </footer>
+
+<script>
+    async function changeStatus(element){
+        let res = await fetch(`/admin/orders/confirm?orderID=${element.name}`);
+        let success = res.json();
+        success.then((data) => {
+            if (data === true){
+                let row = document.querySelectorAll("[data-orderID]");
+                row[0].remove();
+            }else{
+                alert("no");
+            }
+        })
+    }
+</script>
 
 </body>
 </html>
