@@ -1,7 +1,9 @@
 package com.unipi.prospect.controllers;
 
 import com.unipi.prospect.commerce.ShoppingCart;
+import com.unipi.prospect.communication.Ticket;
 import com.unipi.prospect.db.DBConnection;
+import com.unipi.prospect.db.communication.TicketDao;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Item;
 import com.unipi.prospect.users.Admin;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Controller
@@ -32,7 +35,6 @@ public class UserController {
     @Autowired
     private AdminController adminController;
 
-    
     @PostMapping("/login")
     public String login(@RequestParam String username, 
                         @RequestParam String password,
@@ -81,7 +83,26 @@ public class UserController {
             return "redirect:/";
         }
     }
-    
+
+    @PostMapping("/submit-ticket")
+    public String submitTicket(@RequestParam String ticketSubject,
+                               @RequestParam String ticketCategory,
+                               @RequestParam String ticketMessage,
+                               HttpSession session) {
+        Customer user = (Customer) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login.html?error=true";
+
+        }
+        String comment = ticketSubject + "\n" + ticketCategory + "\n" + ticketMessage;
+        // Create a new ticket
+        Ticket ticket = new Ticket(comment, user.getUsername(), new Date(System.currentTimeMillis()));
+        // Save the ticket to the database
+        new TicketDao().insert(ticket);
+
+        // Redirect to the user's dashboard or tickets page
+        return "redirect:/customer";
+    }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

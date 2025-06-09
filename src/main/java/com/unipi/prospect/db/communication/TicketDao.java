@@ -18,8 +18,9 @@ public class TicketDao {
         try {
             PreparedStatement psmt = conn.prepareStatement(sqlString);
             psmt.setString(1, ticket.getComment());
-            psmt.setDate(2, ticket.getCreationDate());
-            psmt.setString(3, ticket.getStatus());
+            psmt.setString(2, ticket.getUsername());
+            psmt.setDate(3, ticket.getCreationDate());
+            psmt.setString(4, ticket.getStatus());
             psmt.executeUpdate();
             psmt.close();
             return true;
