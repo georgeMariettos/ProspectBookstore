@@ -26,8 +26,6 @@ public class CustomerController {
                                    @RequestParam String name,
                                    @RequestParam String address) {
 
-        //Customer customer = new Customer(username, password, name, address);
-
         return "redirect:/index.html";
     }
 

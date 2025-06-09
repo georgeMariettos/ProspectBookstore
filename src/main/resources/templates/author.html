@@ -53,7 +53,7 @@
                     </h4>
                     <div class="container mt-4">
                         <div class="row" id="authorBooksContainer">
-                            <!-- JavaScript will inject book cards here -->
+
                         </div>
                     </div>
                 </div>
@@ -73,14 +73,14 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <!-- Left: Comments -->
+
                     <div class="col-md-6" id="commentsContainer" style="max-height: 400px; overflow-y: auto;">
-                        <!-- JS will populate this -->
+
                     </div>
 
-                    <!-- Right: Reply -->
                     <div class="col-md-6 d-flex flex-column">
                         <label for="replyTextarea" class="form-label fw-semibold">Leave a reply:</label>
+                        <div id="replyStatusMessage" class="mb-2 fw-semibold"></div>
                         <textarea id="replyTextarea" class="form-control mb-3" rows="8" placeholder="Write your reply here..."></textarea>
                         <button class="btn btn-success align-self-end">Reply</button>
                     </div>
@@ -124,37 +124,55 @@
 <script>
     async function fetchBooksByAuthor(author) {
         try {
+
             const response = await fetch(`/api/books/search/author?author=${encodeURIComponent(author)}`);
+
             const books = await response.json();
+
             return books || [];
-        } catch (error) {
+
+        }
+         catch (error)
+         {
+
             console.error('Error fetching books:', error);
             return [];
         }
     }
 
     function displayBooksAsCards(books) {
+
         const container = document.getElementById('authorBooksContainer');
+
         container.innerHTML = '';
 
         if (!books || books.length === 0) {
+
             container.innerHTML = `<p class="text-center">Δεν βρέθηκαν βιβλία για αυτόν τον συγγραφέα.</p>`;
+
             return;
         }
 
         books.forEach(book => {
+
             const col = document.createElement('div');
+
             col.className = 'col-12 col-sm-6 col-md-4 col-lg-3 mb-4';
 
             col.innerHTML = `
+
             <div class="card h-100 book-slide d-flex flex-column">
                 <img src="${book.imageUrl || ''}" class="card-img-top" alt="${book.title || 'Book'}">
                 <div class="card-body d-flex flex-column">
+
                     <h5 class="card-title">${book.title || 'Untitled'}</h5>
+
                     <p class="card-text text-muted mb-1">by ${book.authorUsername || 'Unknown'}</p>
 
                     <div class="mt-auto">
+
                         <span class="fw-bold text-primary d-block mb-2">€${book.price?.toFixed(2) || '0.00'}</span>
+
                         <button class="btn btn-success w-100 view-comments-btn"
                                 data-bs-toggle="modal"
                                 data-bs-target="#commentsModal"
@@ -169,7 +187,8 @@
             container.appendChild(col);
         });
 
-        // Attach event listeners for modal launch
+
+
         document.querySelectorAll('.view-comments-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const isbn = button.getAttribute('data-isbn');
@@ -179,7 +198,7 @@
         });
     }
 
-    function refreshComments(isbn) {
+   function refreshComments(isbn) {
     if (!isbn) {
         console.error('Cannot refresh comments: No ISBN provided');
         return;
@@ -194,59 +213,82 @@
                 return;
             }
 
-            container.innerHTML = ''; // Clear old comments
+            container.innerHTML = ''; // Clear existing comments
 
             if (!comments || comments.length === 0) {
                 container.innerHTML = '<p>No comments yet.</p>';
                 return;
             }
 
-            const commentMap = {};
-            comments.forEach(c => commentMap[c.id] = c);
+            // Map comment ID to comment object for quick lookup
+            const commentById = {};
+            comments.forEach(comment => {
+                commentById[comment.id] = comment;
+            });
 
-            const parentToChildren = {};
-            comments.forEach(c => {
-                if (c.replyTo && commentMap[c.replyTo]) {
-                    if (!parentToChildren[c.replyTo]) parentToChildren[c.replyTo] = [];
-                    parentToChildren[c.replyTo].push(c);
+            // Group replies under their parent comment ID
+            const repliesByParent = {};
+            comments.forEach(comment => {
+                if (comment.replyTo && commentById[comment.replyTo]) {
+                    if (!repliesByParent[comment.replyTo]) {
+                        repliesByParent[comment.replyTo] = [];
+                    }
+                    repliesByParent[comment.replyTo].push(comment);
                 }
             });
 
+            // Used to render a single comment or reply
             function renderComment(comment, isReply = false) {
                 const div = document.createElement('div');
                 div.className = isReply
-                    ? 'comment reply border-start ps-3 ms-4 mb-2'
-                    : 'comment border rounded p-3 mb-3';
+                    ? 'comment reply border-start ps-3 ms-4 mb-2 position-relative'
+                    : 'comment border rounded p-3 mb-3 position-relative';
 
+                // Build star rating HTML for top-level comments
                 let starsHtml = '';
                 if (!isReply) {
                     const fullStars = Math.floor(comment.rating || 0);
                     const emptyStars = 5 - fullStars;
-                    for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
-                    for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+                    starsHtml += '<i class="bi bi-star-fill"></i>'.repeat(fullStars);
+                    starsHtml += '<i class="bi bi-star"></i>'.repeat(emptyStars);
                 }
 
+                // Render comment HTML
                 div.innerHTML = `
+                    ${!isReply ? `
+                        <input type="checkbox"
+                               class="form-check-input comment-checkbox position-absolute top-50 end-0 translate-middle-y me-2"
+                               data-comment-id="${comment.id}">
+                    ` : ''}
+
                     <div class="d-flex align-items-center gap-2 mb-1">
-                        <h6 class="mb-0">${comment.username || 'Anonymous'} ${isReply ? '<span class="text-muted">(reply)</span>' : ''}</h6>
+                        <h6 class="mb-0">
+                            ${comment.username || 'Anonymous'}
+                            ${isReply ? '<span class="text-muted">(reply)</span>' : ''}
+                        </h6>
                         ${!isReply ? `<div class="text-warning">${starsHtml}</div>` : ''}
                     </div>
+
                     <div class="mb-2">
-                        <small class="text-muted">${comment.dateCreated ? new Date(comment.dateCreated).toLocaleDateString() : 'Unknown date'}</small>
+                        <small class="text-muted">
+                            ${comment.dateCreated ? new Date(comment.dateCreated).toLocaleDateString() : 'Unknown date'}
+                        </small>
                     </div>
+
                     <p class="mb-0">${comment.content || ''}</p>
                 `;
 
                 return div;
             }
 
-            // Render top-level comments, then render replies after them
+            // Render all top-level comments and their replies
             comments.forEach(comment => {
-                if (!comment.replyTo || !commentMap[comment.replyTo]) {
+                const isTopLevel = !comment.replyTo || !commentById[comment.replyTo];
+                if (isTopLevel) {
                     const commentDiv = renderComment(comment);
                     container.appendChild(commentDiv);
 
-                    const replies = parentToChildren[comment.id] || [];
+                    const replies = repliesByParent[comment.id] || [];
                     replies.forEach(reply => {
                         const replyDiv = renderComment(reply, true);
                         container.appendChild(replyDiv);
@@ -263,53 +305,68 @@
 
     // Reply button logic
     document.addEventListener('DOMContentLoaded', async () => {
-        const books = await fetchBooksByAuthor(DEFAULT_AUTHOR);
-        displayBooksAsCards(books);
+    const books = await fetchBooksByAuthor(DEFAULT_AUTHOR);
 
-        document.querySelector('#commentsModal .btn-success').addEventListener('click', async () => {
-            const commentText = document.getElementById('replyTextarea').value.trim();
-            if (!commentText) {
-                alert("Please enter a reply.");
-                return;
-            }
+    displayBooksAsCards(books);
 
-            const selectedIds = Array.from(document.querySelectorAll('#commentsContainer input[type="checkbox"]:checked'))
-                .map(cb => cb.getAttribute('data-id'))
-                .filter(id => id);
+    document.querySelector('#commentsModal .btn-success').addEventListener('click', async () => {
+    const statusEl = document.getElementById('replyStatusMessage');
+    const commentText = document.getElementById('replyTextarea').value.trim();
 
-            if (selectedIds.length === 0) {
-                alert("Please select at least one comment to reply to.");
-                return;
-            }
+    // Clear previous message
+    statusEl.textContent = '';
+    statusEl.className = 'mb-2 fw-semibold';
 
-            const isbn = document.getElementById('commentsModal').getAttribute('data-active-isbn');
-            const formData = new URLSearchParams();
-            formData.append('comment', commentText);
-            formData.append('isbn', isbn);
-            formData.append('username', DEFAULT_AUTHOR);
-            selectedIds.forEach(id => formData.append('replyTo', id));
+    if (!commentText) {
+        statusEl.textContent = "Please type a reply.";
+        statusEl.classList.add('text-danger');
+        return;
+    }
 
-            try {
-                const response = await fetch('/comment/reply', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData
-                });
+    const selectedIds = Array.from(document.querySelectorAll('#commentsContainer input.comment-checkbox:checked'))
+        .map(cb => cb.getAttribute('data-comment-id'))
+        .filter(id => id);
 
-                if (response.ok) {
-                    alert("Reply posted!");
-                    document.getElementById('replyTextarea').value = '';
-                    refreshComments(isbn);
-                } else {
-                    alert("Failed to post reply.");
-                }
-            } catch (err) {
-                console.error('Error posting reply:', err);
-            }
+    if (selectedIds.length === 0) {
+        statusEl.textContent = "Please select at least one comment to reply to.";
+        statusEl.classList.add('text-danger');
+        return;
+    }
+
+    const isbn = document.getElementById('commentsModal').getAttribute('data-active-isbn');
+    const formData = new URLSearchParams();
+    formData.append('comment', commentText);
+    formData.append('isbn', isbn);
+    formData.append('username', DEFAULT_AUTHOR);
+    selectedIds.forEach(id => formData.append('replyTo', id));
+
+    try {
+        const response = await fetch('/comment/reply', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
         });
+
+        if (response.ok) {
+            statusEl.textContent = "Reply sent!";
+            statusEl.classList.add('text-success');
+            document.getElementById('replyTextarea').value = '';
+            refreshComments(isbn);
+        } else {
+            statusEl.textContent = "Failed to post reply.";
+            statusEl.classList.add('text-danger');
+        }
+    } catch (err) {
+        console.error('Error posting reply:', err);
+        statusEl.textContent = "An error occurred.";
+        statusEl.classList.add('text-danger');
+    }
     });
+
+
+});
 </script>
 
 

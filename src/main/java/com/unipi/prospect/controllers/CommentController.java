@@ -2,8 +2,10 @@ package com.unipi.prospect.controllers;
 
 import com.unipi.prospect.communication.Comment;
 import com.unipi.prospect.db.communication.CommentDao;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -17,23 +19,26 @@ public class CommentController {
         this.commentDao = new CommentDao();
     }
 
-    // 1. Fetch comments for a given book by ISBN
+
     @GetMapping("/comments")
     public List<Comment> getComments(@RequestParam("isbn") String isbn) {
 
         return commentDao.selectByBookIsbn(isbn);
     }
+
     @PostMapping("/comment/save")
-    public ResponseEntity<String> saveComment(
-            @RequestParam("comment") String comment,
-            @RequestParam("rating") int rating,
-            @RequestParam("isbn") String isbn) {
+    public ResponseEntity<String> saveComment(HttpSession session,
+                                              @RequestParam("comment") String comment,
+                                              @RequestParam("rating") int rating,
+                                              @RequestParam("isbn") String isbn) {
 
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
+        String username = session.getAttribute("username").toString();
+
         CommentDao commentDao = new CommentDao();
-        Comment userComment = new Comment("Egg", sqlDate, comment, isbn, -1, rating);
+        Comment userComment = new Comment(username, sqlDate, comment, isbn, -1, rating);
         commentDao.insert(userComment);
 
         return ResponseEntity.ok("Success");
@@ -62,22 +67,10 @@ public class CommentController {
                     0
             );
 
-
             System.out.println(commentDao.insert(reply));
         }
 
         return ResponseEntity.ok("Success");
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
