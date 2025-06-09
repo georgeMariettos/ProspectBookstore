@@ -118,7 +118,7 @@ public class AdminController {
             tab = "opened";
         }
         tickets = new TicketDao().selectAllTicketsByStatus(tab);
-        model.addAttribute("orders", tickets);
+        model.addAttribute("tickets", tickets);
         model.addAttribute("tab", tab);
         return "adminTickets";
     }

@@ -33,11 +33,12 @@ public class ShoppingCart {
         return items;
     }
 
-    private void calculateTotal(){
+    public void calculateTotal(){
         float sum = 0;
         for(Item item : items){
             sum += item.getTotalPrice();
         }
+        sum = Float.parseFloat(String.format("%.2f",sum));
         this.total = sum;
     }
 }

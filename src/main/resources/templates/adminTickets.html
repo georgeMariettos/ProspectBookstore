@@ -44,31 +44,20 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Comment</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Active</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user: ${users}">
-                    <td th:text="${user.getUsername()}"/>
-                    <td th:text="${user.getName()}"/>
-                    <td th:text="${user.getSurname()}">
-                    <td>Customer</td>
-                    <td><input class="form-check-input" type="checkbox" th:id="${user.getUsername()}+'Check'" disabled th:checked="${user.isActive()}"></td>
-                    <td>
-                        <div style="column-gap: 4px;">
-                            <button data-toggle="tooltip" data-placement="top" title="Edit User">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button th:id="${user.getUsername()}" onclick="changeActiveStatus(this)" data-toggle="tooltip" data-placement="top" title="Toggle Active">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                            </button>
-                        </div>
-                    </td>
+                <tr th:each="ticket: ${tickets}">
+                    <td th:text="${ticket.getId()}"/>
+                    <td th:text="${ticket.getComment()}"/>
+                    <td th:text="${ticket.getUsername()}">
+                    <td th:text="${ticket.getCreationDate()}"/>
+                    <td th:text="${ticket.getStatus()}">
                 </tr>
                 </tbody>
             </table>
