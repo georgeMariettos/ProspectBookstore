@@ -64,8 +64,8 @@
                 <a href="/cart" class="btn btn-outline-success position-relative">
                     <i class="bi bi-cart3"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                          th:if="${session.cartCount != null && session.cartCount > 0}" 
-                          th:text="${session.cartCount}">
+                          th:if="${session.cart != null && session.cart.getItems().size() > 0}"
+                          th:text="${session.cart.getItems().size()}">
                         0
                     </span>
                 </a>
@@ -140,7 +140,7 @@
                             <p class="book-meta"><strong>Price:</strong> <span id="bookDetailPrice"></span><strong>€      </strong><strong>Stock:</strong> <span id="bookDetailStock"></span></p>
                             
                             <!-- If user is logged in, show add to cart button -->
-                            <button th:if="${session.username}" class="btn btn-success mb-4 mt-3" id="addToCartBtn">Add to Cart!</button>
+                            <button th:if="${session.username}" data-forBookIsbn="" onclick="addBookToCart(this)" class="btn btn-success mb-4 mt-3" id="addToCartBtn">Add to Cart!</button>
                             
                             <!-- If user is not logged in, show login required message -->
                             <div th:unless="${session.username}" class="alert alert-warning mb-4 mt-3">
@@ -394,6 +394,10 @@
             const isbnElement = document.getElementById('bookDetailIsbn');
             if (isbnElement) {
                 isbnElement.value = book.isbn || 'Unknown';
+            }
+            const buyButton = document.getElementById("addToCartBtn");
+            if (buyButton != null){
+                buyButton.setAttribute("data-forBookIsbn", book.isbn);
             }
     
             // Handle preview link separately
@@ -655,7 +659,17 @@ function refreshComments(isbn) {
         });
 }
 
-
+async function addBookToCart(element){
+    let response = await fetch(`/cart/add?isbn=${element.getAttribute('data-forBookIsbn')}`);
+    let promise = response.json();
+    promise.then((data) => {
+        if (data===true){
+            alert("Book added to cart");
+        }else{
+            alert("There was a problem while adding this book to your cart.");
+        }
+    });
+}
 
 
 </script>

@@ -3,7 +3,9 @@ package com.unipi.prospect.controllers;
 import com.unipi.prospect.communication.Comment;
 import com.unipi.prospect.db.communication.CommentDao;
 import com.unipi.prospect.db.product.BookDao;
+import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
+import com.unipi.prospect.users.Author;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,6 +53,9 @@ public class BookController {
 
                 Book book = parseBookFromResponse(item);
             if (book != null) {
+                if (new UserDAO().selectByUsername(book.getAuthorUsername(),"Author") != null){
+                    new UserDAO().insert(new Author(book.getAuthorUsername(), "000", book.getAuthorUsername(), book.getAuthorUsername(), true));
+                }
                 bookDao.insert(book);
                 books.add(book);
             }

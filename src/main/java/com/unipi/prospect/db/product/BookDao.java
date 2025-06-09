@@ -124,9 +124,9 @@ public class BookDao {
             PreparedStatement psmt = conn.prepareStatement(sqlString);
             psmt.setString(1, isbn);
             ResultSet rs = psmt.executeQuery();
+            Book book = null;
             if(rs.next()) {
-                psmt.close();
-                return new Book(
+                book = new Book(
                         rs.getString("isbn"),
                         rs.getString("title"),
                         rs.getString("authorUsername"),
@@ -141,8 +141,9 @@ public class BookDao {
                         rs.getInt("stock")
                 );
             }
-
-            return null;
+            psmt.close();
+            rs.close();
+            return book;
         } catch (SQLException e) {
             return null;
         }

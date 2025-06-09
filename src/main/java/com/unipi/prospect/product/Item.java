@@ -13,6 +13,13 @@ public class Item {
         this.totalPrice = quantity * price;
     }
 
+    public Item(Book book){
+        this.isbn = book.getIsbn();
+        this.quantity = 1;
+        this.price = book.getPrice();
+        this.totalPrice = quantity * price;
+    }
+
     public void setQuantity(int quantity){
         this.quantity = quantity;
         this.totalPrice = quantity * price;
