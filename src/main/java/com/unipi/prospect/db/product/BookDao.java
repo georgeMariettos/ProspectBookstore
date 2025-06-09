@@ -1,6 +1,5 @@
 package com.unipi.prospect.db.product;
 
-import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
 
@@ -11,7 +10,11 @@ public class BookDao {
     private final Connection conn;
 
     public BookDao() {
-        conn = DBConnection.getConnection();
+        try{
+            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean insert(Book book) {
@@ -20,7 +23,7 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            if(new UserDAO().selectByUsername(book.getAuthorUsername(), "Author") != null){
+            if(new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()){
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getIsbn());
                 psmt.setString(2, book.getTitle());
@@ -35,7 +38,6 @@ public class BookDao {
                 psmt.setString(11, String.format("%.2f",book.getPrice()));
                 psmt.setString(12, Integer.toString(book.getStock()));
                 psmt.executeUpdate();
-                psmt.close();
                 return true;
             }
             return false;
@@ -50,7 +52,7 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            if (new UserDAO().selectByUsername(book.getAuthorUsername(), "Author") != null) {
+            if (new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()) {
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getTitle());
                 psmt.setString(2, book.getAuthorUsername());
@@ -64,7 +66,7 @@ public class BookDao {
                 psmt.setString(10, String.format("%.2f",book.getPrice()));
                 psmt.setString(11, Integer.toString(book.getStock()));
                 psmt.executeUpdate();
-                psmt.close();
+
                 return true;
             }
             return false;
@@ -123,6 +125,7 @@ public class BookDao {
             psmt.setString(1, isbn);
             ResultSet rs = psmt.executeQuery();
             if(rs.next()) {
+                psmt.close();
                 return new Book(
                         rs.getString("isbn"),
                         rs.getString("title"),
@@ -138,6 +141,7 @@ public class BookDao {
                         rs.getInt("stock")
                 );
             }
+
             return null;
         } catch (SQLException e) {
             return null;
@@ -153,19 +157,9 @@ public class BookDao {
             if (rs.next()){
                count = rs.getInt(1);
             }
-            rs.close();
-            stmt.close();
             return count;
         }catch (SQLException e){
             throw  new SQLException(e);
-        }
-    }
-
-    public void disconnect(){
-        try{
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

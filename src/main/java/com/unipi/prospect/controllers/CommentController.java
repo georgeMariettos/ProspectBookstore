@@ -12,24 +12,14 @@ public class CommentController {
 
     private final CommentDao commentDao;
 
-    public CommentController() {
-        this.commentDao = new CommentDao(); // Or inject if using @Autowired
+    public CommentController()
+    {
+        this.commentDao = new CommentDao();
     }
 
     // 1. Fetch comments for a given book by ISBN
     @GetMapping("/comments")
     public List<Comment> getComments(@RequestParam("isbn") String isbn) {
-
-
-        System.out.println("ISBN IS "+ isbn);
-
-        for(Comment comment: commentDao.selectByBookIsbn(isbn))
-        {
-
-            System.out.println(comment.getContent());
-        }
-
-        System.out.println(commentDao.selectByBookIsbn(isbn).size());
 
         return commentDao.selectByBookIsbn(isbn);
     }
@@ -48,6 +38,43 @@ public class CommentController {
 
         return ResponseEntity.ok("Success");
     }
+
+    @PostMapping("/comment/reply")
+    public ResponseEntity<String> saveReplies(
+            @RequestParam("comment") String comment,
+            @RequestParam("username") String username,
+            @RequestParam("isbn") String isbn,
+            @RequestParam("replyTo") List<Integer> replyToIds
+    ) {
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+        CommentDao commentDao = new CommentDao();
+
+        for (Integer replyToId : replyToIds) {
+
+            Comment reply = new Comment(
+                    username,
+                    sqlDate,
+                    comment,
+                    isbn,
+                    replyToId,
+                    0
+            );
+
+
+            System.out.println(commentDao.insert(reply));
+        }
+
+        return ResponseEntity.ok("Success");
+    }
+
+
+
+
+
+
+
 
 
 

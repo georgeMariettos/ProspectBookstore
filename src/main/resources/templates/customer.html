@@ -38,42 +38,41 @@
     </div>
 </header>
 
-<main>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="books-heading">Ο Λογαριασμός μου</h1>
-
-                <div class="card mb-4">
-                    <div class="card-header text-white" style="background-color: #821934;">
-                        <h4 class="mb-0">
-                            <i class="bi bi-person-circle me-2"></i>
-                            Καλώς ήρθες, <span th:text="${username}">Customer</span>!
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="lead">Εδώ μπορείς να δεις όλες τις παραγγελίες σου.</p>
-                    </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="books-heading">Ο Λογαριασμός μου</h1>
+            
+            <div class="card mb-4">
+                <div class="card-header text-white" style="background-color: #821934;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Καλώς ήρθες, <span th:text="${username}">Customer</span>!
+                    </h4>
                 </div>
-
-                <div class="card">
-                    <div class="card-header text-white" style="background-color: #821934;">
-                        <h4 class="mb-0">
-                            <i class="bi bi-box-seam me-2"></i>
-                            Οι Παραγγελίες μου
-                        </h4>
+                <div class="card-body">
+                    <p class="lead">Εδώ μπορείς να δεις όλες τις παραγγελίες σου.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header text-white" style="background-color: #821934;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Οι Παραγγελίες μου
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div th:if="${orders == null || orders.isEmpty()}" class="text-center p-5">
+                        <i class="bi bi-bag-x" style="font-size: 4rem; color: #ccc;"></i>
+                        <h4 class="mt-3">Δεν έχεις ακόμα παραγγελίες</h4>
+                        <p class="text-muted">Όταν κάνεις μια παραγγελία, θα εμφανιστεί εδώ.</p>
+                        <a href="/" class="btn mt-3 text-white" style="background-color: #821934;">Περιήγηση στο κατάστημα</a>
                     </div>
-                    <div class="card-body">
-                        <div th:if="${orders == null || orders.isEmpty()}" class="text-center p-5">
-                            <i class="bi bi-bag-x" style="font-size: 4rem; color: #ccc;"></i>
-                            <h4 class="mt-3">Δεν έχεις ακόμα παραγγελίες</h4>
-                            <p class="text-muted">Όταν κάνεις μια παραγγελία, θα εμφανιστεί εδώ.</p>
-                            <a href="/" class="btn mt-3 text-white" style="background-color: #821934;">Περιήγηση στο κατάστημα</a>
-                        </div>
-
-                        <div th:if="${!orders.isEmpty()}" class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
+                    
+                    <div th:if="${!orders.isEmpty()}" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
                                 <tr>
                                     <th>Αριθμός Παραγγελίας</th>
                                     <th>Ημερομηνία</th>
@@ -82,8 +81,8 @@
                                     <th>Διεύθυνση</th>
                                     <th>Προϊόντα</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
                                 <tr th:each="order : ${orders}">
                                     <td th:text="${'#' + order.id}">ID</td>
                                     <td th:text="${#dates.format(order.created, 'dd/MM/yyyy')}">Date</td>
@@ -96,10 +95,10 @@
                                     <td th:text="${#numbers.formatDecimal(order.total, 1, 2) + ' €'}">Total</td>
                                     <td th:text="${order.address}">Address</td>
                                     <td>
-                                        <button class="btn btn-sm"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                th:data-bs-target="'#orderItems' + ${order.id}"
+                                        <button class="btn btn-sm" 
+                                                type="button" 
+                                                data-bs-toggle="collapse" 
+                                                th:data-bs-target="'#orderItems' + ${order.id}" 
                                                 aria-expanded="false"
                                                 style="border: 1px solid #821934; color: #821934;">
                                             <i class="bi bi-eye"></i> Προβολή
@@ -115,20 +114,20 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-sm">
                                                         <thead>
-                                                        <tr>
-                                                            <th>Τίτλος</th>
-                                                            <th>Ποσότητα</th>
-                                                            <th>Τιμή</th>
-                                                            <th>Σύνολο</th>
-                                                        </tr>
+                                                            <tr>
+                                                                <th>Τίτλος</th>
+                                                                <th>Ποσότητα</th>
+                                                                <th>Τιμή</th>
+                                                                <th>Σύνολο</th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr th:each="item : ${order.items}">
-                                                            <td th:text="${item.title}">Title</td>
-                                                            <td th:text="${item.quantity}">Qty</td>
-                                                            <td th:text="${#numbers.formatDecimal(item.price, 1, 2) + ' €'}">Price</td>
-                                                            <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2) + ' €'}">Total</td>
-                                                        </tr>
+                                                            <tr th:each="item : ${order.items}">
+                                                                <td th:text="${item.title}">Title</td>
+                                                                <td th:text="${item.quantity}">Qty</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.price, 1, 2) + ' €'}">Price</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2) + ' €'}">Total</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -136,15 +135,14 @@
                                         </div>
                                     </td>
                                 </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
+</div>
 
 <!-- Bottom Footer with Social Media Icons -->
 <footer class="social-footer">

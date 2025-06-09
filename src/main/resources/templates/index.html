@@ -574,12 +574,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
 function refreshComments(isbn) {
     if (!isbn) {
         console.error('Cannot refresh comments: No ISBN provided');
         return;
     }
-    
+
     fetch(`/comments?isbn=${encodeURIComponent(isbn)}`)
         .then(response => response.json())
         .then(comments => {
@@ -588,7 +589,7 @@ function refreshComments(isbn) {
                 console.error('Comments container not found');
                 return;
             }
-            
+
             container.innerHTML = ''; // Clear old comments
 
             if (!comments || comments.length === 0) {
@@ -596,25 +597,35 @@ function refreshComments(isbn) {
                 return;
             }
 
-            comments.forEach(comment => {
-                const div = document.createElement('div');
-                div.className = 'comment border rounded p-3 mb-3';
+            const commentMap = {};
+            comments.forEach(c => commentMap[c.id] = c);
 
-                const fullStars = Math.floor(comment.rating || 0);
-                const emptyStars = 5 - fullStars;
+            const parentToChildren = {};
+            comments.forEach(c => {
+                if (c.replyTo && commentMap[c.replyTo]) {
+                    if (!parentToChildren[c.replyTo]) parentToChildren[c.replyTo] = [];
+                    parentToChildren[c.replyTo].push(c);
+                }
+            });
+
+            function renderComment(comment, isReply = false) {
+                const div = document.createElement('div');
+                div.className = isReply
+                    ? 'comment reply border-start ps-3 ms-4 mb-2'
+                    : 'comment border rounded p-3 mb-3';
 
                 let starsHtml = '';
-                for (let i = 0; i < fullStars; i++) {
-                    starsHtml += '<i class="bi bi-star-fill"></i>';
-                }
-                for (let i = 0; i < emptyStars; i++) {
-                    starsHtml += '<i class="bi bi-star"></i>';
+                if (!isReply) {
+                    const fullStars = Math.floor(comment.rating || 0);
+                    const emptyStars = 5 - fullStars;
+                    for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
+                    for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
                 }
 
                 div.innerHTML = `
                     <div class="d-flex align-items-center gap-2 mb-1">
-                        <h6 class="mb-0">${comment.username || 'Anonymous'}</h6>
-                        <div class="text-warning">${starsHtml}</div>
+                        <h6 class="mb-0">${comment.username || 'Anonymous'} ${isReply ? '<span class="text-muted">(reply)</span>' : ''}</h6>
+                        ${!isReply ? `<div class="text-warning">${starsHtml}</div>` : ''}
                     </div>
                     <div class="mb-2">
                         <small class="text-muted">${comment.dateCreated ? new Date(comment.dateCreated).toLocaleDateString() : 'Unknown date'}</small>
@@ -622,7 +633,21 @@ function refreshComments(isbn) {
                     <p class="mb-0">${comment.content || ''}</p>
                 `;
 
-                container.appendChild(div);
+                return div;
+            }
+
+            // Render top-level comments, then render replies after them
+            comments.forEach(comment => {
+                if (!comment.replyTo || !commentMap[comment.replyTo]) {
+                    const commentDiv = renderComment(comment);
+                    container.appendChild(commentDiv);
+
+                    const replies = parentToChildren[comment.id] || [];
+                    replies.forEach(reply => {
+                        const replyDiv = renderComment(reply, true);
+                        container.appendChild(replyDiv);
+                    });
+                }
             });
         })
         .catch(error => {

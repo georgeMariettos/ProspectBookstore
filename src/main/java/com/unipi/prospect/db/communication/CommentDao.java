@@ -31,6 +31,7 @@ public class CommentDao {
             }
             psmt.setInt(6, c.getRating());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             System.out.println(e);

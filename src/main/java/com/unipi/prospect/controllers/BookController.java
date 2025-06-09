@@ -29,7 +29,6 @@ public class BookController {
     // RestTemplate to make HTTP requests to Google Books API
     private final RestTemplate restTemplate = new RestTemplate();
     private final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes";
-    private Book currentlyViewedBook;
     BookDao bookDao = new BookDao();
 
     // Endpoint to search for books using Google Books API
@@ -51,11 +50,12 @@ public class BookController {
             for (Map<String, Object> item : items) {
 
                 Book book = parseBookFromResponse(item);
-                if (book != null) {
-                    bookDao.insert(book);
-                    books.add(book);
-                }
+            if (book != null) {
+                bookDao.insert(book);
+                books.add(book);
             }
+            }
+
             return ResponseEntity.ok(books);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,12 +87,57 @@ public class BookController {
         }
     }
 
+
+    @GetMapping("/search/author")
+    public ResponseEntity<List<Book>> searchBooksByAuthor(@RequestParam String author) {
+        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
+        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
+        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
+        try {
+            if (author == null || author.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(Collections.emptyList());
+            }
+
+            String searchQuery = "inauthor:" + author.trim().replace(" ", "+");
+            String url = GOOGLE_BOOKS_API_URL + "?q=" + searchQuery + "&langRestrict=en&gl=us&filter=ebooks&maxResults=10";
+            Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+
+            if (response == null || !response.containsKey("items")) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+
+            List<Map<String, Object>> items = (List<Map<String, Object>>) response.get("items");
+            List<Book> books = new ArrayList<>();
+
+            for (Map<String, Object> item : items) {
+                Book book = parseBookFromResponse(item);
+                if (book != null)
+                {
+                    if(bookDao.selectByIsbn(book.getIsbn()) == null)
+                    {
+                        bookDao.insert(book);
+
+                    }
+
+                    books.add(book);
+                }
+            }
+
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+    }
+
+
+
     // Helper method to parse book details from the API response
     private Book parseBookFromResponse(Map<String, Object> item) {
         System.out.println("PARSE IS BEING EXECUTED");
         String id = (String) item.get("id");
         Map<String, Object> volumeInfo = (Map<String, Object>) item.get("volumeInfo");
-        CommentDao commentDao = new CommentDao();
+
 
         // Extract ISBN
         String isbn = "Unknown ISBN";
