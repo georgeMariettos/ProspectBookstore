@@ -124,10 +124,10 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr th:each="item : ${order.items}">
-                                                                <td th:text="${item.title}">Title</td>
-                                                                <td th:text="${item.quantity}">Qty</td>
-                                                                <td th:text="${#numbers.formatDecimal(item.price, 1, 2) + ' €'}">Price</td>
-                                                                <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2) + ' €'}">Total</td>
+                                                                <td th:text="${item.title}">Τίτλος</td>
+                                                                <td th:text="${item.quantity}">Ποσότητα</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.price, 1, 2) + ' €'}">Τιμή</td>
+                                                                <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2) + ' €'}">Σύνολο</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -189,11 +189,11 @@
                         <label for="ticketCategory" class="form-label">Κατηγορία</label>
                         <select class="form-select" id="ticketCategory" name="ticketCategory" required>
                             <option value="" selected disabled>Επιλέξτε κατηγορία</option>
-                            <option value="order">Παραγγελία</option>
-                            <option value="return">Επιστροφή</option>
-                            <option value="product">Προϊόν</option>
-                            <option value="website">Ιστοσελίδα</option>
-                            <option value="other">Άλλο</option>
+                            <option value="Παραγγελία">Παραγγελία</option>
+                            <option value="Επιστροφή">Επιστροφή</option>
+                            <option value="Προϊόν">Προϊόν</option>
+                            <option value="Ιστοσελίδα">Ιστοσελίδα</option>
+                            <option value="Άλλο">Άλλο</option>
                         </select>
                     </div>
                     <div class="mb-3">
