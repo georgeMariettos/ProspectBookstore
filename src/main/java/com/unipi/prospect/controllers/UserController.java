@@ -1,7 +1,9 @@
 package com.unipi.prospect.controllers;
 
+import com.unipi.prospect.commerce.ShoppingCart;
 import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.users.UserDAO;
+import com.unipi.prospect.product.Item;
 import com.unipi.prospect.users.Admin;
 import com.unipi.prospect.users.Author;
 import com.unipi.prospect.users.Customer;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 @Controller
 public class UserController {
@@ -62,10 +67,14 @@ public class UserController {
         
         // Redirect based on user role
         if (authenticatedUser instanceof Admin) {
+            session.setAttribute("role", "Admin");
             return "redirect:/admin/main";
         } else if (authenticatedUser instanceof Author) {
+            session.setAttribute("role", "Author");
             return "redirect:/author";
         } else if (authenticatedUser instanceof Customer) {
+            session.setAttribute("role", "Customer");
+            session.setAttribute("cart", new ShoppingCart(new Date(System.currentTimeMillis()), new ArrayList<Item>()));
             return "redirect:/customer";
         } else {
             // Fallback (shouldn't happen with proper user type checking)
