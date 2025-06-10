@@ -1,8 +1,6 @@
 package com.unipi.prospect.controllers;
 
-import com.unipi.prospect.commerce.Card;
-import com.unipi.prospect.commerce.Order;
-import com.unipi.prospect.commerce.ShoppingCart;
+import com.unipi.prospect.commerce.*;
 import com.unipi.prospect.db.commerce.OrderDao;
 import com.unipi.prospect.db.product.BookDao;
 import com.unipi.prospect.product.Book;
@@ -44,9 +42,10 @@ public class OrderController {
             if(session.getAttribute("role").equals("Customer")){
                 ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("cart");
                 Card card = new Card(shoppingCart.getTotal(), "Visa", "02/27", cardNumber, name, CVV);
-                System.out.println("Confirming Payment with Bank");
+                Payment payment = new Payment(shoppingCart.getTotal());
                 //Call to outside payment system
-                boolean success = card.Authorize();;
+                boolean success = card.Authorize();
+                payment.pay(card);
                 return "redirect:/order/complete?success="+success;
             }
         }
@@ -57,6 +56,10 @@ public class OrderController {
     public String confirmPayment(HttpSession session){
         if(session.getAttribute("username") != null){
             if(session.getAttribute("role").equals("Customer")){
+                ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("cart");
+                IPayment cash = new Cash(shoppingCart.getTotal());
+                Payment payment = new Payment(shoppingCart.getTotal());
+                payment.pay(cash);
                 return "redirect:/order/complete?success=true";
             }
         }

@@ -40,13 +40,13 @@
         <!-- Page Content -->
         <main>
             <div class="container-sm pt-2 ps-3 pe-3 my-5 border rounded" style="background-color: #f4f5f8">
-                <h1>My Cart</h1>
+                <h1>Το καλάθι μου</h1>
                 <table class="table table-striped">
                     <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total Price</th>
+                        <th scope="col">Τίτλος</th>
+                        <th scope="col">Τιμή</th>
+                        <th scope="col">Ποσότητα</th>
+                        <th scope="col">Συνολική Τιμή</th>
                     </tr>
                     <tr th:each="item : ${cart.getItems()}">
                         <th:block th:each="book: ${books}">
@@ -68,14 +68,14 @@
                     </tr>
                 </table>
                 <div>
-                    Overall total: <span th:text="${cart.getTotal()}"/>€
+                    Συνολική Τιμή: <span th:text="${cart.getTotal()}"/>€
                 </div>
                 <div class="d-flex flex-row justify-content-between p-2">
                     <a href="/cart/clear">
-                        <button class="btn btn-primary bg-secondary bg-gradient border border-secondary" id="empty">Clear Cart</button>
+                        <button class="btn btn-primary bg-secondary bg-gradient border border-secondary" id="empty">Καθάρισε το καλάθι</button>
                     </a>
                     <a href="/order">
-                        <button class="btn btn-primary bg-success bg-gradient border border-success" id="checkout">Checkout</button>
+                        <button class="btn btn-primary bg-success bg-gradient border border-success" id="checkout">Ολοκλήρωση παραγγελίας</button>
                     </a>
                 </div>
             </div>

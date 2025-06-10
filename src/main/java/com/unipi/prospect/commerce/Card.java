@@ -1,6 +1,6 @@
 package com.unipi.prospect.commerce;
 
-public class Card {
+public class Card implements IPayment {
     public float amount;
     private String type;
     private String expiryDate;
@@ -32,5 +32,10 @@ public class Card {
     public boolean Authorize(){
         //Bank Call
         return true;
+    }
+
+    @Override
+    public void pay(float amount) {
+        System.out.println("Paying with card: " + amount + "€");
     }
 }

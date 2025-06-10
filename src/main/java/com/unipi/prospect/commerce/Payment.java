@@ -1,11 +1,23 @@
 package com.unipi.prospect.commerce;
 
+import java.util.Objects;
+
 public class Payment {
-    private int id;
     private float amount;
 
-    public Payment(int id, float amount) {
-        this.id = id;
+    public Payment(float amount) {
         this.amount = amount;
     }
+
+    public void pay(IPayment paymentMethod) {
+        if (paymentMethod != null) {
+            paymentMethod.pay(amount);
+        } else {
+            System.out.println("Payment method is not specified.");
+        }
+    }
+
+
+
+
 }
