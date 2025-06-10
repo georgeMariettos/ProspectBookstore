@@ -3,7 +3,10 @@ package com.unipi.prospect.controllers;
 import com.unipi.prospect.commerce.Order;
 import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.commerce.OrderDao;
+import com.unipi.prospect.db.product.BookDao;
 import com.unipi.prospect.db.users.UserDAO;
+import com.unipi.prospect.product.Book;
+import com.unipi.prospect.product.Item;
 import com.unipi.prospect.users.Customer;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -44,8 +47,15 @@ public class CustomerController {
         OrderDao orderDao = new OrderDao();
         ArrayList<Order> orders = orderDao.selectAllByUsername(username);
 
+        ArrayList<Book> books = new ArrayList<Book>();
         // Add orders to the model
         model.addAttribute("orders", orders);
+        for (Order order : orders) {
+            for (Item item : order.getItems()) {
+                books.add(new BookDao().selectByIsbn(item.getIsbn()));
+            }
+        }
+        model.addAttribute("books", books);
         model.addAttribute("username", username);
 
         return "customer";

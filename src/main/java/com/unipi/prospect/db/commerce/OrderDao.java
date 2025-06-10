@@ -3,6 +3,7 @@ package com.unipi.prospect.db.commerce;
 import com.unipi.prospect.commerce.Order;
 import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.product.ItemDao;
+import com.unipi.prospect.product.Item;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,14 +18,23 @@ public class OrderDao {
     public boolean insert(Order order) {
         String sqlString = "INSERT INTO Orders (created, status, total, address, username) VALUES(?,?,?,?,?)";
         try {
-            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            PreparedStatement psmt = conn.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
             psmt.setDate(1, order.getCreated());
             psmt.setString(2, order.getStatus());
             psmt.setString(3, String.format("%.2f", order.getTotal()));
             psmt.setString(4, order.getAddress());
             psmt.setString(5, order.getUsername());
             psmt.executeUpdate();
+            int orderid = 0;
+            ResultSet rs = psmt.getGeneratedKeys();
+            if (rs.next()) {
+                orderid = rs.getInt(1);
+            }
+            rs.close();
             psmt.close();
+            for (Item item : order.getItems()) {
+                new ItemDao().insert(item, orderid);
+            }
             return true;
         } catch (SQLException e) {
             return false;
@@ -54,7 +64,7 @@ public class OrderDao {
             ResultSet rs = psmt.executeQuery();
             while (rs.next()) {
                 int orderId = rs.getInt("orderId");
-                Date created = Date.valueOf(rs.getString("created"));
+                Date created = rs.getDate("created");
                 String status = rs.getString("status");
                 float total = rs.getFloat("total");
                 String address = rs.getString("address");
@@ -92,7 +102,7 @@ public class OrderDao {
             if (rs.next()) {
                 order = new Order(
                         rs.getInt("orderId"),
-                        Date.valueOf(rs.getString("created")),
+                        rs.getDate("created"),
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("username"),
