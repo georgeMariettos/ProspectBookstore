@@ -1,6 +1,12 @@
 /* Top Header Styles */
 .top-header {
-    background: linear-gradient(135deg, white 75%, #A33F5B 75%, #A33F5B 90%, #821934 90%);
+    background: linear-gradient(135deg,
+    white 68%,
+    #D6A5B3 68%,
+    #D6A5B3 76%,
+    #A33F5B 76%,
+    #A33F5B 90%,
+    #821934 90%);
     padding: 0;
     width: 100%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);

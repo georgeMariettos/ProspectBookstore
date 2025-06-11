@@ -55,22 +55,22 @@
         <div class="d-flex gap-2 align-items-center">
             <!-- Show these buttons if user is not logged in -->
             <div th:unless="${session.username}">
-                <a href="/books/search" class="btn btn-outline-secondary">Λεπτομερής Αναζήτηση</a>
+                <a href="/books/search" class="btn btn-outline-secondary">Φίλτρα</a>
                 <a href="/registration.html" class="btn btn-outline-primary">Εγγραφή</a>
                 <a href="/login.html" class="btn btn-outline-secondary">Σύνδεση</a>
             </div>
-            
+
             <!-- Show these buttons if user is logged in -->
             <div th:if="${session.username}" class="d-flex gap-2 align-items-center">
                 <a th:if="${session.role} == 'Customer'" href="/cart" class="btn btn-outline-success position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                           th:if="${session.cart != null && session.cart.getItems().size() > 0}"
                           th:text="${session.cart.getItems().size()}">
                         0
                     </span>
                 </a>
-                <a href="/books/search" class="btn btn-outline-secondary">Λεπτομερής Αναζήτηση</a>
+                <a href="/books/search" class="btn btn-outline-secondary">Φίλτρα</a>
                 <a th:if="${session.role} == 'Customer'" href="/customer" class="btn btn-outline-primary">Ο Λογαριασμός μου</a>
                 <a th:if="${session.role} == 'Admin'" href="/admin/main" class="btn btn-outline-primary">Ο Λογαριασμός μου</a>
                 <a th:if="${session.role} == 'Author'" href="/author" class="btn btn-outline-primary">Ο Λογαριασμός μου</a>
@@ -146,10 +146,10 @@
                             <!-- If user is logged in and is a customer, show add to cart button -->
                             <div th:if="${session.username}">
                                 <button th:if="${session.role} == 'Customer'" data-forBookIsbn="" onclick="addBookToCart(this)" class="btn btn-success mb-4 mt-3" id="addToCartBtn">Προσθήκη στο Καλάθι!</button>
-                            <!-- If user is logged in but isn't a customer, show login required message -->
-                            <div th:if="${session.role} != 'Customer'" class="alert alert-warning mb-4 mt-3">
-                                Δεν έχετε δικαίωμα να προσθέσετε βιβλία στο καλάθι σας.
-                            </div>
+                                <!-- If user is logged in but isn't a customer, show login required message -->
+                                <div th:if="${session.role} != 'Customer'" class="alert alert-warning mb-4 mt-3">
+                                    Δεν έχετε δικαίωμα να προσθέσετε βιβλία στο καλάθι σας.
+                                </div>
                             </div>
                             <!-- If user is not logged in, show login required message -->
                             <div th:unless="${session.username}" class="alert alert-warning mb-4 mt-3">
@@ -165,16 +165,16 @@
                                     <fieldset class="starability-fade">
                                         <input type="radio" id="rate5" name="rating" value="5" />
                                         <label for="rate5" title="Amazing">5 αστέρια</label>
-                        
+
                                         <input type="radio" id="rate4" name="rating" value="4" />
                                         <label for="rate4" title="Very good">4 αστέρια</label>
-                        
+
                                         <input type="radio" id="rate3" name="rating" value="3" />
                                         <label for="rate3" title="Average">3 αστέρια</label>
-                        
+
                                         <input type="radio" id="rate2" name="rating" value="2" />
                                         <label for="rate2" title="Not good">2 αστέρια</label>
-                        
+
                                         <input type="radio" id="rate1" name="rating" value="1" required />
                                         <label for="rate1" title="Terrible">1 αστέρι</label>
                                     </fieldset>
@@ -189,7 +189,7 @@
                                 <button class="btn btn-success mb-4">Υποβολή</button>
                             </form>
                         </div>
-                        
+
                         <!-- Show login message if user is not logged in -->
                         <div th:unless="${session.username}" class="alert alert-warning mb-4 mt-3">
                             <a href="/login.html" class="alert-link">Σύνδεση</a> απαιτείται για να αφήσετε κριτική
@@ -359,7 +359,7 @@
             if (form) {
                 form.reset();
                 form.classList.remove('was-validated');
-                
+
                 const ratingError = document.getElementById('rating-error');
                 if (ratingError) {
                     ratingError.style.display = 'none';
@@ -379,7 +379,7 @@
                 'bookDetailStock': book.stock || 'Unknown',
                 'bookDetailDescription': book.description || 'No description available'
             };
-    
+
             // Set text content for each element
             for (const [id, value] of Object.entries(elements)) {
                 const element = document.getElementById(id);
@@ -391,14 +391,14 @@
                     }
                 }
             }
-    
+
             // Handle image separately
             const imageElement = document.getElementById('bookDetailImage');
             if (imageElement) {
                 imageElement.src = book.imageUrl || '';
                 imageElement.alt = book.title || 'Book';
             }
-    
+
             // Handle ISBN value separately
             const isbnElement = document.getElementById('bookDetailIsbn');
             if (isbnElement) {
@@ -408,7 +408,7 @@
             if (buyButton != null){
                 buyButton.setAttribute("data-forBookIsbn", book.isbn);
             }
-    
+
             // Handle preview link separately
             const previewLink = document.getElementById('bookDetailPreviewLink');
             if (previewLink) {
@@ -419,12 +419,12 @@
                     previewLink.style.display = 'none';
                 }
             }
-    
+
             // Refresh comments if ISBN is available
             if (book.isbn) {
                 refreshComments(book.isbn);
             }
-    
+
             // Show the modal
             if (bookDetailModal) {
                 bookDetailModal.show();
@@ -477,165 +477,165 @@
 
 
 
-(function () {
-  'use strict'
+    (function () {
+        'use strict'
 
 
-  var forms = document.querySelectorAll('.validated-form')
+        var forms = document.querySelectorAll('.validated-form')
 
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
 
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
-
-
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('.validated-form');
-    if (form) {
-        const ratingInputs = form.querySelectorAll('input[name="rating"]');
-        const ratingError = document.getElementById('rating-error');
 
-        if (ratingInputs && ratingError) {
-            ratingInputs.forEach(input => {
-                input.addEventListener('change', () => {
-                    if (input.checked) {
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('.validated-form');
+        if (form) {
+            const ratingInputs = form.querySelectorAll('input[name="rating"]');
+            const ratingError = document.getElementById('rating-error');
+
+            if (ratingInputs && ratingError) {
+                ratingInputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        if (input.checked) {
+                            ratingError.style.display = 'none';
+                        }
+                    });
+                });
+
+                form.addEventListener('submit', function (event) {
+                    let ratingValid = Array.from(ratingInputs).some(input => input.checked);
+
+                    if (!ratingValid) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        ratingError.style.display = 'block';
+                    } else {
                         ratingError.style.display = 'none';
                     }
+
+                    form.classList.add('was-validated');
                 });
-            });
-
-            form.addEventListener('submit', function (event) {
-                let ratingValid = Array.from(ratingInputs).some(input => input.checked);
-
-                if (!ratingValid) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    ratingError.style.display = 'block';
-                } else {
-                    ratingError.style.display = 'none';
-                }
-
-                form.classList.add('was-validated');
-            });
+            }
         }
-    }
-});
+    });
 
-// Add event listener only if commentForm exists
-document.addEventListener('DOMContentLoaded', function() {
-    const commentForm = document.getElementById('commentForm');
-    if (commentForm) {
-        commentForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Add event listener only if commentForm exists
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentForm = document.getElementById('commentForm');
+        if (commentForm) {
+            commentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
 
-            const form = e.target;
+                const form = e.target;
 
-             if (!form.checkValidity()) {
-                form.classList.add('was-validated'); // show Bootstrap styles
-                return;
-                 }
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated'); // show Bootstrap styles
+                    return;
+                }
 
                 const ratingInputs = form.querySelectorAll('input[name="rating"]');
                 const ratingError = document.getElementById('rating-error');
                 const ratingValid = Array.from(ratingInputs).some(input => input.checked);
 
                 if (!ratingValid) {
-                ratingError.style.display = 'block';
-                return;
+                    ratingError.style.display = 'block';
+                    return;
                 } else {
-                ratingError.style.display = 'none';
+                    ratingError.style.display = 'none';
                 }
 
 
-                 const formData = new FormData(form);
+                const formData = new FormData(form);
 
-            try {
-                const response = await fetch('/comment/save', {
-                    method: 'POST',
-                    body: formData
-                });
+                try {
+                    const response = await fetch('/comment/save', {
+                        method: 'POST',
+                        body: formData
+                    });
 
-                if (response.ok) {
-                    form.reset();
-                    form.classList.remove('was-validated');
-                    const ratingError = document.getElementById('rating-error');
-                    if (ratingError) {
-                        ratingError.style.display = 'none';
+                    if (response.ok) {
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        const ratingError = document.getElementById('rating-error');
+                        if (ratingError) {
+                            ratingError.style.display = 'none';
+                        }
+
+                        const isbn = document.getElementById("bookDetailIsbn").value;
+                        if (isbn) {
+                            refreshComments(isbn);
+                        }
                     }
-
-                    const isbn = document.getElementById("bookDetailIsbn").value;
-                    if (isbn) {
-                        refreshComments(isbn);
-                    }
-                }
-            } catch (err) {
-                console.error('Submission error:', err);
-            }
-        });
-    }
-});
-
-
-
-function refreshComments(isbn) {
-    if (!isbn) {
-        console.error('Cannot refresh comments: No ISBN provided');
-        return;
-    }
-
-    fetch(`/comments?isbn=${encodeURIComponent(isbn)}`)
-        .then(response => response.json())
-        .then(comments => {
-            const container = document.getElementById('commentsContainer');
-            if (!container) {
-                console.error('Comments container not found');
-                return;
-            }
-
-            container.innerHTML = ''; // Clear old comments
-
-            if (!comments || comments.length === 0) {
-                container.innerHTML = '<p>Δεν υπάρχουν σχόλια.</p>';
-                return;
-            }
-
-            const commentMap = {};
-            comments.forEach(c => commentMap[c.id] = c);
-
-            const parentToChildren = {};
-            comments.forEach(c => {
-                if (c.replyTo && commentMap[c.replyTo]) {
-                    if (!parentToChildren[c.replyTo]) parentToChildren[c.replyTo] = [];
-                    parentToChildren[c.replyTo].push(c);
+                } catch (err) {
+                    console.error('Submission error:', err);
                 }
             });
+        }
+    });
 
-            function renderComment(comment, isReply = false) {
-                const div = document.createElement('div');
-                div.className = isReply
-                    ? 'comment reply border-start ps-3 ms-4 mb-2'
-                    : 'comment border rounded p-3 mb-3';
 
-                let starsHtml = '';
-                if (!isReply) {
-                    const fullStars = Math.floor(comment.rating || 0);
-                    const emptyStars = 5 - fullStars;
-                    for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
-                    for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+
+    function refreshComments(isbn) {
+        if (!isbn) {
+            console.error('Cannot refresh comments: No ISBN provided');
+            return;
+        }
+
+        fetch(`/comments?isbn=${encodeURIComponent(isbn)}`)
+            .then(response => response.json())
+            .then(comments => {
+                const container = document.getElementById('commentsContainer');
+                if (!container) {
+                    console.error('Comments container not found');
+                    return;
                 }
 
-                div.innerHTML = `
+                container.innerHTML = ''; // Clear old comments
+
+                if (!comments || comments.length === 0) {
+                    container.innerHTML = '<p>Δεν υπάρχουν σχόλια.</p>';
+                    return;
+                }
+
+                const commentMap = {};
+                comments.forEach(c => commentMap[c.id] = c);
+
+                const parentToChildren = {};
+                comments.forEach(c => {
+                    if (c.replyTo && commentMap[c.replyTo]) {
+                        if (!parentToChildren[c.replyTo]) parentToChildren[c.replyTo] = [];
+                        parentToChildren[c.replyTo].push(c);
+                    }
+                });
+
+                function renderComment(comment, isReply = false) {
+                    const div = document.createElement('div');
+                    div.className = isReply
+                        ? 'comment reply border-start ps-3 ms-4 mb-2'
+                        : 'comment border rounded p-3 mb-3';
+
+                    let starsHtml = '';
+                    if (!isReply) {
+                        const fullStars = Math.floor(comment.rating || 0);
+                        const emptyStars = 5 - fullStars;
+                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
+                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+                    }
+
+                    div.innerHTML = `
                     <div class="d-flex align-items-center gap-2 mb-1">
                         <h6 class="mb-0">${comment.username || 'Anonymous'} ${isReply ? '<span class="text-muted">(reply)</span>' : ''}</h6>
                         ${!isReply ? `<div class="text-warning">${starsHtml}</div>` : ''}
@@ -646,39 +646,39 @@ function refreshComments(isbn) {
                     <p class="mb-0">${comment.content || ''}</p>
                 `;
 
-                return div;
-            }
-
-            // Render top-level comments, then render replies after them
-            comments.forEach(comment => {
-                if (!comment.replyTo || !commentMap[comment.replyTo]) {
-                    const commentDiv = renderComment(comment);
-                    container.appendChild(commentDiv);
-
-                    const replies = parentToChildren[comment.id] || [];
-                    replies.forEach(reply => {
-                        const replyDiv = renderComment(reply, true);
-                        container.appendChild(replyDiv);
-                    });
+                    return div;
                 }
-            });
-        })
-        .catch(error => {
-            console.error('Failed to load comments:', error);
-        });
-}
 
-async function addBookToCart(element){
-    let response = await fetch(`/cart/add?isbn=${element.getAttribute('data-forBookIsbn')}`);
-    let promise = response.json();
-    promise.then((data) => {
-        if (data===true){
-            alert("Book added to cart");
-        }else{
-            alert("There was a problem while adding this book to your cart.");
-        }
-    });
-}
+                // Render top-level comments, then render replies after them
+                comments.forEach(comment => {
+                    if (!comment.replyTo || !commentMap[comment.replyTo]) {
+                        const commentDiv = renderComment(comment);
+                        container.appendChild(commentDiv);
+
+                        const replies = parentToChildren[comment.id] || [];
+                        replies.forEach(reply => {
+                            const replyDiv = renderComment(reply, true);
+                            container.appendChild(replyDiv);
+                        });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Failed to load comments:', error);
+            });
+    }
+
+    async function addBookToCart(element){
+        let response = await fetch(`/cart/add?isbn=${element.getAttribute('data-forBookIsbn')}`);
+        let promise = response.json();
+        promise.then((data) => {
+            if (data===true){
+                alert("Book added to cart");
+            }else{
+                alert("There was a problem while adding this book to your cart.");
+            }
+        });
+    }
 
 
 </script>
