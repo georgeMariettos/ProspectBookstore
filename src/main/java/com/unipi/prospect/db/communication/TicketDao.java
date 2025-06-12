@@ -82,17 +82,18 @@ public class TicketDao {
             PreparedStatement psmt = conn.prepareStatement(sqlString);
             psmt.setInt(1, id);
             ResultSet rs = psmt.executeQuery();
+            Ticket ticket = null;
             if(rs.next()){
                 int ticketID = rs.getInt("ticketID");
                 String comment = rs.getString("comment");
                 String username = rs.getString("username");
                 Date creationDate = rs.getDate("creationDate");
                 String status = rs.getString("status");
-                return new Ticket(id, comment, username, creationDate, status);
+                ticket = new Ticket(id, comment, username, creationDate, status);
             }
             rs.close();
             psmt.close();
-            return null;
+            return ticket;
         } catch (SQLException e) {
             return null;
         }
@@ -108,6 +109,7 @@ public class TicketDao {
             if (rs.next()){
                 count = rs.getInt(1);
             }
+            rs.close();
             psmt.close();
             return count;
         }catch (SQLException e) {

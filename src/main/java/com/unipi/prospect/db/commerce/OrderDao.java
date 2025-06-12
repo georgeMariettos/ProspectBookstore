@@ -129,6 +129,7 @@ public class OrderDao {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
+            rs.close();
             psmt.close();
             return count;
         } catch (SQLException e) {

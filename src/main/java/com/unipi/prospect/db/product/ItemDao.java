@@ -1,5 +1,6 @@
 package com.unipi.prospect.db.product;
 
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.product.Item;
 
 import java.sql.*;
@@ -9,11 +10,7 @@ public class ItemDao {
     private final Connection conn;
 
     public ItemDao() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public boolean insert(Item item, int orderId) {
@@ -25,6 +22,7 @@ public class ItemDao {
             psmt.setInt(3, item.getQuantity());
             psmt.setString(4, String.format("%.2f", item.getPrice()));
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -41,6 +39,7 @@ public class ItemDao {
             psmt.setString(4, String.format("%.2f", item.getPrice()));
             psmt.setInt(5, orderId);
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -60,6 +59,8 @@ public class ItemDao {
                 float price = rs.getFloat("price");
                 items.add(new Item(isbn, quantity, price));
             }
+            rs.close();
+            psmt.close();
             return items;
         } catch (SQLException e) {
             return null;

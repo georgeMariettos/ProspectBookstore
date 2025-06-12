@@ -77,6 +77,34 @@ public class AdminController {
         return "adminProducts";
     }
 
+    @GetMapping("/products/updateStock")
+    @ResponseBody
+    public boolean updateStock(HttpSession session,
+                               @RequestParam(name = "isbn") String isbn,
+                               @RequestParam(name = "stock") int stock) {
+        if (checkInvalidSession(session)) {
+            return false;
+        }
+        if (stock >=0){
+            Book book = new BookDao().selectByIsbn(isbn);
+            book.setStock(stock);
+            new BookDao().update(book);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @GetMapping("/products/edit")
+    public String adminProductsEditPage(Model model, HttpSession session, @RequestParam(name = "isbn") String isbn) {
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        Book book = new BookDao().selectByIsbn(isbn);
+        model.addAttribute("book", book);
+        return "adminEditProduct";
+    }
+
     @GetMapping("/orders")
     public String adminOrdersPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
         if (checkInvalidSession(session)) {

@@ -1,5 +1,6 @@
 package com.unipi.prospect.db.product;
 
+import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
 
@@ -10,11 +11,7 @@ public class BookDao {
     private final Connection conn;
 
     public BookDao() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public boolean insert(Book book) {
@@ -38,6 +35,7 @@ public class BookDao {
                 psmt.setString(11, String.format("%.2f",book.getPrice()));
                 psmt.setString(12, Integer.toString(book.getStock()));
                 psmt.executeUpdate();
+                psmt.close();
                 return true;
             }
             return false;
@@ -65,7 +63,9 @@ public class BookDao {
                 psmt.setString(9, book.getPreviewLink());
                 psmt.setString(10, String.format("%.2f",book.getPrice()));
                 psmt.setString(11, Integer.toString(book.getStock()));
+                psmt.setString(12, book.getIsbn());
                 psmt.executeUpdate();
+                psmt.close();
 
                 return true;
             }
@@ -112,6 +112,8 @@ public class BookDao {
                 int stock = rs.getInt("stock");
                 books.add(new Book(isbn, title, authorUsername, imageUrl, description, publisher, publishedDate, pageCount, genre, previewLink, price, stock));
             }
+            rs.close();
+            psmt.close();
             return books;
         } catch (SQLException e) {
             return null;
@@ -158,6 +160,8 @@ public class BookDao {
             if (rs.next()){
                count = rs.getInt(1);
             }
+            rs.close();
+            stmt.close();
             return count;
         }catch (SQLException e){
             throw  new SQLException(e);

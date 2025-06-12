@@ -97,6 +97,7 @@ public class UserDAO {
             pstmt.setBoolean(4, user.isActive());
             pstmt.setString(5, user.getUsername());
             pstmt.executeUpdate();
+            pstmt.close();
 
             if (user instanceof Customer) {
                 String sqlString2 = "UPDATE CustomerAddress SET address = ? WHERE username = ?";
@@ -150,6 +151,8 @@ public class UserDAO {
                         String address = rs2.getString("address");
                         users.add(new Customer(username, password, name, surname, active, address));
                     }
+                    rs2.close();
+                    pstmt2.close();
                 } else if (role.equalsIgnoreCase("Author")) {
                     users.add(new Author(username, password, name, surname, active));
                 } else {

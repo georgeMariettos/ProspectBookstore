@@ -1,6 +1,7 @@
 package com.unipi.prospect.db.communication;
 
 import com.unipi.prospect.communication.Comment;
+import com.unipi.prospect.db.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,11 +10,7 @@ public class CommentDao {
     private final Connection conn;
 
     public CommentDao() {
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:userData.sqlite");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        conn = DBConnection.getConnection();
     }
 
     public boolean insert(Comment c){
@@ -48,6 +45,7 @@ public class CommentDao {
             psmt.setInt(3, c.getRating());
             psmt.setInt(4, c.getId());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -76,6 +74,8 @@ public class CommentDao {
                 int rating = rs.getInt("rating");
                 comments.add(new Comment(commentID, username, dateCreated, content, bookIsbn, replyTo, rating));
             }
+            rs.close();
+            psmt.close();
             return comments;
         } catch (SQLException e) {
             return null;
@@ -111,6 +111,7 @@ public class CommentDao {
             PreparedStatement psmt = conn.prepareStatement(sqlString);
             psmt.setInt(1, id);
             ResultSet rs = psmt.executeQuery();
+            Comment comment = null;
             if(rs.next()) {
                 int commentID = rs.getInt("commentID");
                 String username = rs.getString("username");
@@ -119,9 +120,11 @@ public class CommentDao {
                 String bookIsbn = rs.getString("bookIsbn");
                 int replyTo = rs.getInt("replyTo");
                 int rating = rs.getInt("rating");
-                return new Comment(commentID, username, dateCreated, content, bookIsbn, replyTo, rating);
+                comment = new Comment(commentID, username, dateCreated, content, bookIsbn, replyTo, rating);
             }
-            return null;
+            rs.close();
+            psmt.close();
+            return comment;
         } catch (SQLException e) {
             return null;
         }
@@ -133,6 +136,7 @@ public class CommentDao {
             PreparedStatement psmt = conn.prepareStatement(sqlString);
             psmt.setInt(1, c.getId());
             psmt.executeUpdate();
+            psmt.close();
             return true;
         } catch (SQLException e) {
             return false;
