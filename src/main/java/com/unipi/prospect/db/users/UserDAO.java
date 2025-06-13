@@ -6,6 +6,10 @@ import com.unipi.prospect.users.Author;
 import com.unipi.prospect.users.Customer;
 import com.unipi.prospect.users.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -20,12 +24,39 @@ public class UserDAO {
         if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             return null; // Invalid credentials
         }
-        String sqlString = "SELECT * FROM Users WHERE username = ? AND password = ? AND role = ?";
+        String validate = "SELECT password, salt FROM Users WHERE username = ? AND role = ?";
+        byte[] salt;
+        String storedHash;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(validate);
+            stmt.setString(1, username);
+            stmt.setString(2, role);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    storedHash = rs.getString("password");
+                    salt = rs.getBytes("salt");
+                    rs.close();
+                } else {
+                    rs.close();
+                    return null; // User not found
+                }
+            }
+
+
+            String hashedPassword = hashPassword(password, salt);
+            if (!hashedPassword.equals(storedHash)) {
+                return null; // Password does not match
+            }
+
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String sqlString = "SELECT * FROM Users WHERE username = ? AND role = ?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, role);
+            pstmt.setString(2, role);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("name");
@@ -58,10 +89,20 @@ public class UserDAO {
         }
     }
     public boolean insert(User user) {
+        byte[] salt;
+        try {
+            salt = generateSalt();
+            String hashedPassword = hashPassword(user.getPassword(), salt);
+            user.setPassword(hashedPassword);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            System.err.println("Error generating password hash: " + e.getMessage());
+            e.printStackTrace();
+            return false; // User addition failed
+        }
         String role = user.getClass().getSimpleName().toLowerCase();
         // first letter needs to be uppercase for the database
         role = role.substring(0, 1).toUpperCase() + role.substring(1);
-        String sqlString = "INSERT INTO Users VALUES(?,?,?,?,?,?)";
+        String sqlString = "INSERT INTO Users VALUES(?,?,?,?,?,?, ?)";
         try{
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1, user.getUsername());
@@ -70,6 +111,7 @@ public class UserDAO {
             pstmt.setString(4, user.getSurname());
             pstmt.setBoolean(5, user.isActive());
             pstmt.setString(6, role);
+            pstmt.setBytes(7, salt);
             pstmt.executeUpdate();
             pstmt.close();
             if (user instanceof Customer){
@@ -88,7 +130,17 @@ public class UserDAO {
     }
 
     public boolean update(User user) {
-        String sqlString = "UPDATE Users SET password = ?, name = ?, surname = ?, active = ? WHERE username = ?";
+        byte[] salt;
+        try {
+            salt = generateSalt();
+            String hashedPassword = hashPassword(user.getPassword(), salt);
+            user.setPassword(hashedPassword);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            System.err.println("Error generating password hash: " + e.getMessage());
+            e.printStackTrace();
+            return false; // User addition failed
+        }
+        String sqlString = "UPDATE Users SET password = ?, name = ?, surname = ?, active = ?, salt = ? WHERE username = ?";
         try{
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1, user.getPassword());
@@ -96,6 +148,7 @@ public class UserDAO {
             pstmt.setString(3, user.getSurname());
             pstmt.setBoolean(4, user.isActive());
             pstmt.setString(5, user.getUsername());
+            pstmt.setBytes(6, salt);
             pstmt.executeUpdate();
             pstmt.close();
 
@@ -254,6 +307,55 @@ public class UserDAO {
             return  count;
         }catch (SQLException e){
             throw new SQLException((e));
+        }
+    }
+
+
+    private byte[] generateSalt() throws NoSuchAlgorithmException, NoSuchProviderException {
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return salt;
+    }
+
+    private String hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(salt);
+        return bytesToHex(md.digest(password.getBytes()));
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    // Get all the users and update their password by hashing it with the salt
+    public void updateAllUsersPasswords() {
+        String sql = "SELECT username, password FROM Users";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                byte[] salt = generateSalt();
+
+                String hashedPassword = hashPassword(password, salt);
+
+                String updateSql = "UPDATE users SET password = ?, salt = ? WHERE username = ?";
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                    updateStmt.setString(1, hashedPassword);
+                    updateStmt.setBytes(2, salt);
+                    updateStmt.setString(3, username);
+                    updateStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException | NoSuchAlgorithmException | NoSuchProviderException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -5,6 +5,7 @@ create table  Users(
     surname text not null ,
     active boolean not null default true,
     role  check ( role in ('Admin','Customer','Author')) not null,
+    salt BLOB,
     primary key (username)
 );
 
