@@ -224,6 +224,8 @@ public class UserDAO {
 
         String sqlString = "SELECT * FROM Users WHERE username = ?";
         try{
+            boolean found = false;
+            User user = null;
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
@@ -236,6 +238,7 @@ public class UserDAO {
                 name = rs.getString("name");
                 surname = rs.getString("surname");
                 active = rs.getBoolean("active");
+                found = true;
             }
             rs.close();
             pstmt.close();
@@ -250,26 +253,33 @@ public class UserDAO {
                 }
                 rs2.close();
                 pstmt2.close();
-                return new Customer(username, password, name, surname, active, address);
+                if (found) {
+                    user = new Customer(username, password, name, surname, active, address);
+                }
             } else if (role.equalsIgnoreCase("Author")) {
-                return new Author(
-                        username,
-                        password,
-                        name,
-                        surname,
-                        active
-                );
+                if (found){
+                    user = new Author(
+                            username,
+                            password,
+                            name,
+                            surname,
+                            active
+                    );
+                }
             } else if (role.equalsIgnoreCase("Admin")) {
-                return new Admin(
-                        username,
-                        password,
-                        name,
-                        surname,
-                        active
-                );
+                if (found){
+                    user = new Admin(
+                            username,
+                            password,
+                            name,
+                            surname,
+                            active
+                    );
+                }
             } else {
                 throw new IllegalArgumentException("Invalid role: " + role);
             }
+            return user;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

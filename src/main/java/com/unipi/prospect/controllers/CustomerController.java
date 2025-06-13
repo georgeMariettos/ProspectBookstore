@@ -24,12 +24,21 @@ public class CustomerController {
 
     UserDAO userDAO = new UserDAO();
     @PostMapping("/register")
-    public String registerCustomer(@RequestParam String username,
-                                   @RequestParam String password,
-                                   @RequestParam String name,
-                                   @RequestParam String address) {
-
-        return "redirect:/index.html";
+    public String registerCustomer(@RequestParam(name = "username") String username,
+                                   @RequestParam(name = "name") String name,
+                                   @RequestParam(name = "surname") String surname,
+                                   @RequestParam(name = "address") String address,
+                                   @RequestParam(name = "password") String password,
+                                   @RequestParam(name = "confirmPassword") String conPass) {
+        if (new UserDAO().selectByUsername(username, "Customer") != null){
+            return "redirect:/registration.html?error=username+already+exists";
+        }
+        try{
+            new UserDAO().insert(new Customer(username, password, name, surname, true, address));
+            return "redirect:/login.html";
+        }catch(Exception e){
+            return "redirect:/registration.html?error=There+was+an+error+registering+your+account.+Try+again+later";
+        }
     }
 
     // Login is now handled by the main UserController
