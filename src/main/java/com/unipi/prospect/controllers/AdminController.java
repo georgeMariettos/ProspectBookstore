@@ -136,6 +136,33 @@ public class AdminController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/orders/changeStatus")
+    public boolean adminOrdersChangeStatus(HttpSession session,
+                                           @RequestParam(name = "orderID") String orderID,
+                                           @RequestParam(name = "status") String status) {
+        if (checkInvalidSession(session)) {
+            throw new RuntimeException("Invalid session");
+        }
+        try {
+            Order order = new OrderDao().selectByOrderID(Integer.parseInt(orderID));
+            order.setStatus(status);
+            new OrderDao().update(order);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/orders/getOrderDetails")
+    public Order adminOrdersGetOrderDetails(HttpSession session, @RequestParam(name = "orderID") String orderID) {
+        if (checkInvalidSession(session)) {
+            throw new RuntimeException("Invalid session");
+        }
+        return new OrderDao().selectByOrderID(Integer.parseInt(orderID));
+    }
+
     @GetMapping("/tickets")
     public String adminTicketsPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
         if (checkInvalidSession(session)) {
