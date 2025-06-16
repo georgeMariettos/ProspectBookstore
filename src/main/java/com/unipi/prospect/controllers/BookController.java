@@ -53,7 +53,7 @@ public class BookController {
 
                 Book book = parseBookFromResponse(item);
             if (book != null) {
-                if (new UserDAO().selectByUsername(book.getAuthorUsername(),"Author") != null){
+                if (new UserDAO().selectByUsername(book.getAuthorUsername(),"Author") == null){
                     new UserDAO().insert(new Author(book.getAuthorUsername(), "000", book.getAuthorUsername(), book.getAuthorUsername(), true));
                 }
                 bookDao.insert(book);

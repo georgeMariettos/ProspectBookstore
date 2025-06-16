@@ -45,6 +45,10 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
+    public void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
+    }
+
     public void setStock(int stock) {
         this.stock = Math.max(stock, 0);
     }

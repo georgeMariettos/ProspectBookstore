@@ -21,27 +21,22 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.selectByUsername(book.getAuthorUsername(), "Author");
-            if (user != null && user.isActive()) {
-                PreparedStatement psmt = conn.prepareStatement(sqlString);
-                psmt.setString(1, book.getIsbn());
-                psmt.setString(2, book.getTitle());
-                psmt.setString(3, book.getAuthorUsername());
-                psmt.setString(4, book.getImageUrl());
-                psmt.setString(5, book.getDescription());
-                psmt.setString(6, book.getPublisher());
-                psmt.setString(7, book.getPublishedDate());
-                psmt.setString(8, Integer.toString(book.getPageCount()));
-                psmt.setString(9, book.getGenre());
-                psmt.setString(10, book.getPreviewLink());
-                psmt.setString(11, String.format("%.2f",book.getPrice()));
-                psmt.setString(12, Integer.toString(book.getStock()));
-                psmt.executeUpdate();
-                psmt.close();
-                return true;
-            }
-            return false;
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, book.getIsbn());
+            psmt.setString(2, book.getTitle());
+            psmt.setString(3, book.getAuthorUsername());
+            psmt.setString(4, book.getImageUrl());
+            psmt.setString(5, book.getDescription());
+            psmt.setString(6, book.getPublisher());
+            psmt.setString(7, book.getPublishedDate());
+            psmt.setString(8, Integer.toString(book.getPageCount()));
+            psmt.setString(9, book.getGenre());
+            psmt.setString(10, book.getPreviewLink());
+            psmt.setString(11, String.format("%.2f",book.getPrice()));
+            psmt.setString(12, Integer.toString(book.getStock()));
+            psmt.executeUpdate();
+            psmt.close();
+            return true;
         } catch (SQLException e) {
             return false;
         }
@@ -53,28 +48,22 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.selectByUsername(book.getAuthorUsername(), "Author");
-            if (user != null && user.isActive()) {
-                PreparedStatement psmt = conn.prepareStatement(sqlString);
-                psmt.setString(1, book.getTitle());
-                psmt.setString(2, book.getAuthorUsername());
-                psmt.setString(3, book.getImageUrl());
-                psmt.setString(4, book.getDescription());
-                psmt.setString(5, book.getPublisher());
-                psmt.setString(6, book.getPublishedDate());
-                psmt.setString(7, Integer.toString(book.getPageCount()));
-                psmt.setString(8, book.getGenre());
-                psmt.setString(9, book.getPreviewLink());
-                psmt.setString(10, String.format("%.2f",book.getPrice()));
-                psmt.setString(11, Integer.toString(book.getStock()));
-                psmt.setString(12, book.getIsbn());
-                psmt.executeUpdate();
-                psmt.close();
-
-                return true;
-            }
-            return false;
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, book.getTitle());
+            psmt.setString(2, book.getAuthorUsername());
+            psmt.setString(3, book.getImageUrl());
+            psmt.setString(4, book.getDescription());
+            psmt.setString(5, book.getPublisher());
+            psmt.setString(6, book.getPublishedDate());
+            psmt.setString(7, Integer.toString(book.getPageCount()));
+            psmt.setString(8, book.getGenre());
+            psmt.setString(9, book.getPreviewLink());
+            psmt.setString(10, String.format("%.2f",book.getPrice()));
+            psmt.setString(11, Integer.toString(book.getStock()));
+            psmt.setString(12, book.getIsbn());
+            psmt.executeUpdate();
+            psmt.close();
+            return true;
         } catch (SQLException e) {
             return false;
         }
