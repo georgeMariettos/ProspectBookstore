@@ -3,6 +3,7 @@ package com.unipi.prospect.db.product;
 import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.users.UserDAO;
 import com.unipi.prospect.product.Book;
+import com.unipi.prospect.users.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            if(new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()){
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.selectByUsername(book.getAuthorUsername(), "Author");
+            if (user != null && user.isActive()) {
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getIsbn());
                 psmt.setString(2, book.getTitle());
@@ -50,7 +53,9 @@ public class BookDao {
             if (book.getAuthorUsername() == null || book.getAuthorUsername().isEmpty()) {
                 return false; // Author username must not be null or empty
             }
-            if (new UserDAO().selectByUsername(book.getAuthorUsername(), "Author").isActive()) {
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.selectByUsername(book.getAuthorUsername(), "Author");
+            if (user != null && user.isActive()) {
                 PreparedStatement psmt = conn.prepareStatement(sqlString);
                 psmt.setString(1, book.getTitle());
                 psmt.setString(2, book.getAuthorUsername());
