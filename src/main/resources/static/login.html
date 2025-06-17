@@ -57,6 +57,9 @@
                     <div id="loginError" class="alert alert-danger mt-3 d-none">
                         Λάθος όνομα χρήστη ή κωδικός πρόσβασης.
                     </div>
+                    <div id="banError" class="alert alert-danger mt-3 d-none">
+                        Ο λογαρισμός σας έχει απενεργοποιηθεί.
+                    </div>
                 </form>
 
                 <p class="mt-3 text-center">
@@ -107,6 +110,8 @@
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('error') && urlParams.get('error') === 'true') {
         document.getElementById('loginError').classList.remove('d-none');
+    }else if (urlParams.has('banError') && urlParams.get('banError') === 'true') {
+        document.getElementById('banError').classList.remove('d-none');
     }
 </script>
 </body>
