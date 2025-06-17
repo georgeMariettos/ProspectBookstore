@@ -219,7 +219,6 @@ public class AdminController {
                                 @RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("address") String address,
-                                @RequestParam("email")  String email,
                                 @RequestParam("active") String active,
                                 @RequestParam("role") String role,
                                 HttpSession session) {
@@ -264,7 +263,6 @@ public class AdminController {
                                 @RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("address") String address,
-                                @RequestParam("email")  String email,
                                 @RequestParam("active") String active,
                                 @RequestParam("role") String role,
                                 HttpSession session){
