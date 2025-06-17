@@ -33,7 +33,7 @@
     <div class="container-sm p-20 my-5 border rounded" style="background-color: #f4f5f8">
         <h1>Επεξεργασία Βιβλίου</h1>
         <div>
-            <form id = "formId" action="/admin/" method="POST">
+            <form id = "formId" action="/admin/products/save" method="POST">
                 <div class="mb-3">
                     <label for="title" class="form-label">Τίτλος</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${book.getTitle()}" required>
@@ -53,6 +53,8 @@
                     <label for="stock" class="form-label">Απόθεμα</label>
                     <input type="text" class="form-control" id="stock" name="stock" th:value="${book.getStock()}" required>
                 </div>
+
+                <input type="hidden" name="isbn" th:value="${book.getIsbn()}">
 
                 <div class="d-flex justify-content-center my-5">
                     <button type="submit" class="btn btn-register w-25">Αποθήκευση</button>

@@ -49,6 +49,10 @@ public class Book {
         this.authorUsername = authorUsername;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setStock(int stock) {
         this.stock = Math.max(stock, 0);
     }

@@ -102,6 +102,25 @@ public class AdminController {
         return "adminEditProduct";
     }
 
+    @PostMapping("/products/save")
+    public String adminProductsSave(HttpSession session,
+                                    @RequestParam(name = "title") String title,
+                                    @RequestParam(name = "description") String description,
+                                    @RequestParam(name = "price") String price,
+                                    @RequestParam(name = "stock") String stock,
+                                    @RequestParam(name = "isbn") String isbn){
+        if (checkInvalidSession(session)) {
+            return "redirect:/";
+        }
+        Book book = new BookDao().selectByIsbn(isbn);
+        book.setTitle(title);
+        book.setDescription(description);
+        book.setPrice(Float.parseFloat(price));
+        book.setStock(Integer.parseInt(stock));
+        new BookDao().update(book);
+        return "redirect:/admin/products";
+    }
+
     @GetMapping("/orders")
     public String adminOrdersPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
         if (checkInvalidSession(session)) {
