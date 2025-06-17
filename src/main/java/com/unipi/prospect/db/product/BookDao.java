@@ -161,4 +161,43 @@ public class BookDao {
             throw  new SQLException(e);
         }
     }
+
+    public ArrayList<Book> getTopBooks() throws SQLException {
+        String sqlString = "SELECT isbn, SUM(OrderItems.quantity) as sales from OrderItems join Books on OrderItems.bookIsbn = Books.isbn group by isbn order by sales limit 10";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlString);
+            ArrayList<String> isbns = new ArrayList<String>();
+            while (rs.next()){
+                isbns.add(rs.getString("isbn"));
+            }
+            rs.close();
+            stmt.close();
+            ArrayList<Book> books = new ArrayList<Book>();
+            for(String isbn : isbns){
+                books.add(selectByIsbn(isbn));
+            }
+            return books;
+        }catch (SQLException e){
+            throw  new SQLException(e);
+        }
+    }
+
+    public int getBookSales(String isbn) throws SQLException {
+        String sqlString = "SELECT SUM(OrderItems.quantity) as sales from OrderItems join Books on OrderItems.bookIsbn = Books.isbn where isbn = ?";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sqlString);
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            int sales = 0;
+            if (rs.next()){
+                sales = rs.getInt("sales");
+            }
+            rs.close();
+            stmt.close();
+            return sales;
+        }catch (SQLException e){
+            throw  new SQLException(e);
+        }
+    }
 }
