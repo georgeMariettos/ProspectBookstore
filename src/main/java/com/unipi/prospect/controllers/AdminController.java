@@ -2,7 +2,6 @@ package com.unipi.prospect.controllers;
 
 import com.unipi.prospect.commerce.Order;
 import com.unipi.prospect.communication.Ticket;
-import com.unipi.prospect.db.DBConnection;
 import com.unipi.prospect.db.commerce.OrderDao;
 import com.unipi.prospect.db.communication.TicketDao;
 import com.unipi.prospect.db.product.BookDao;
@@ -13,12 +12,10 @@ import com.unipi.prospect.users.Author;
 import com.unipi.prospect.users.Customer;
 import com.unipi.prospect.users.User;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Controller
@@ -122,7 +119,7 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping("/orders/confirm")
-    public boolean adminOrdersConfirmPage(HttpSession session, @RequestParam(required = false, name = "orderID") String orderID) {
+    public boolean adminOrdersConfirm(HttpSession session, @RequestParam(required = false, name = "orderID") String orderID) {
         if (checkInvalidSession(session)) {
             throw new RuntimeException("Invalid session");
         }

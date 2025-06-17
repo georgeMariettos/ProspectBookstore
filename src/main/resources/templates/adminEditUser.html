@@ -60,11 +60,13 @@
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" th:checked="${user.isActive()}" id="active" name="active">
-                    <label class="form-check-label" for="active">
+                    <input class="form-check-input" type="checkbox" onclick="changeVal()" th:checked="${user.isActive()}" id="a">
+                    <label class="form-check-label" for="a">
                         Active
                     </label>
                 </div>
+
+                <input type="hidden" th:value="${user.isActive()?'on':'off'}" id="active" name="active">
 
                 <input type="hidden" th:value="${role}" id="role" name="role">
 
@@ -84,6 +86,17 @@
         </div>
     </div>
 </footer>
+
+<script>
+    function changeVal(){
+        let active = document.getElementById("active");
+        if (active.value === "on"){
+            active.value = "off";
+        }else{
+            active.value = "on";
+        }
+    }
+</script>
 
 </body>
 </html>

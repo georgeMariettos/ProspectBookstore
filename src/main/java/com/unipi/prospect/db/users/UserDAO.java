@@ -131,7 +131,7 @@ public class UserDAO {
 
     public boolean update(User user) {
         byte[] salt;
-        try {
+        /*try {
             salt = generateSalt();
             String hashedPassword = hashPassword(user.getPassword(), salt);
             user.setPassword(hashedPassword);
@@ -139,16 +139,16 @@ public class UserDAO {
             System.err.println("Error generating password hash: " + e.getMessage());
             e.printStackTrace();
             return false; // User addition failed
-        }
-        String sqlString = "UPDATE Users SET password = ?, name = ?, surname = ?, active = ?, salt = ? WHERE username = ?";
+        }*/
+        String sqlString = "UPDATE Users SET password = ?, name = ?, surname = ?, active = ? WHERE username = ?";
         try{
             PreparedStatement pstmt = conn.prepareStatement(sqlString);
             pstmt.setString(1, user.getPassword());
             pstmt.setString(2, user.getName());
             pstmt.setString(3, user.getSurname());
             pstmt.setBoolean(4, user.isActive());
+            //pstmt.setBytes(5, salt);
             pstmt.setString(5, user.getUsername());
-            pstmt.setBytes(6, salt);
             pstmt.executeUpdate();
             pstmt.close();
 
