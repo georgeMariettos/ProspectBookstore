@@ -194,6 +194,18 @@ public class AdminController {
         return "adminTickets";
     }
 
+    @ResponseBody
+    @GetMapping("/tickets/resolve")
+    public boolean adminTicketsResolve(HttpSession session, @RequestParam(name = "ticketID") String ticketID) {
+        if (checkInvalidSession(session)) {
+            throw new RuntimeException("Invalid session");
+        }
+        try {
+            return new TicketDao().resolveTicket(Integer.parseInt(ticketID));
+        } catch (Exception e) {
+            return false;
+        }
+    }
     @GetMapping("/users")
     public String adminUsersPage(Model model, HttpSession session, @RequestParam(required = false, name = "tab") String tab) {
         if (checkInvalidSession(session)) {

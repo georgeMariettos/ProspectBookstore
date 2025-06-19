@@ -44,6 +44,19 @@ public class TicketDao {
         }
     }
 
+    public boolean resolveTicket(int ticketID){
+        String sqlString = "UPDATE Tickets SET status = 'resolved' WHERE ticketID = ?";
+        try {
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setInt(1, ticketID);
+            psmt.executeUpdate();
+            psmt.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public ArrayList<Ticket> selectAllTicketsByQuery(String query, String data){
         ArrayList<Ticket> tickets = new ArrayList<>();
         try{
