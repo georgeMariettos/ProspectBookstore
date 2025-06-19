@@ -194,16 +194,19 @@ public class AdminController {
         return "adminTickets";
     }
 
-    @ResponseBody
     @GetMapping("/tickets/resolve")
-    public boolean adminTicketsResolve(HttpSession session, @RequestParam(name = "ticketID") String ticketID) {
+    public String adminTicketsResolve(HttpSession session, @RequestParam(name = "ticketID") String ticketID) {
         if (checkInvalidSession(session)) {
             throw new RuntimeException("Invalid session");
         }
         try {
-            return new TicketDao().resolveTicket(Integer.parseInt(ticketID));
+            if(new TicketDao().resolveTicket(Integer.parseInt(ticketID))) {
+                return "redirect:/admin/tickets?tab=resolved";
+            } else {
+                return "redirect:/admin/tickets?tab=opened";
+            }
         } catch (Exception e) {
-            return false;
+            return "redirect:/admin/tickets?tab=opened";
         }
     }
     @GetMapping("/users")

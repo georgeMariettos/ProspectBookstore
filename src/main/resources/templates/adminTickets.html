@@ -61,8 +61,8 @@
                     <td th:text="${ticket.getCreationDate()}"/>
                     <td th:text="${ticket.getStatus()}">
                     <td>
-                        <div style="column-gap: 4px;">
-                            <a th:if="${ticket.getStatus() == 'opened'}" href="/admin/tickets/resolve?ticketId=${ticket.getId()}">
+                        <div th:if="${ticket.getStatus() == 'opened'}" style="column-gap: 4px;">
+                            <a th:href="'/admin/tickets/resolve?ticketID='+${ticket.getId()}">
                                 <button class="btn btn-success">
                                     <i class="bi bi-check-circle-fill"></i> Resolve
                                 </button>
