@@ -29,7 +29,7 @@ public class CommentController {
     @PostMapping("/comment/save")
     public ResponseEntity<String> saveComment(HttpSession session,
                                               @RequestParam("comment") String comment,
-                                              @RequestParam("rating") int rating,
+                                              @RequestParam(value = "rating", required = false) Integer rating,
                                               @RequestParam("isbn") String isbn) {
 
         java.util.Date utilDate = new java.util.Date();
@@ -38,7 +38,8 @@ public class CommentController {
         String username = session.getAttribute("username").toString();
 
         CommentDao commentDao = new CommentDao();
-        Comment userComment = new Comment(username, sqlDate, comment, isbn, -1, rating);
+        int safeRating = (rating != null) ? rating : 0;
+        Comment userComment = new Comment(username, sqlDate, comment, isbn, -1, safeRating);
         commentDao.insert(userComment);
 
         return ResponseEntity.ok("Success");

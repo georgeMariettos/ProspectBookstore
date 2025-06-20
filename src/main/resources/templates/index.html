@@ -161,7 +161,7 @@
                             <form id="commentForm" class="mb-3 validated-form" novalidate>
                                 <input type="hidden" id="bookDetailIsbn" name="isbn" value="">
                                 <div class="mb-3">
-                                    <label class="form-label">Η βαθμολογία σας:</label>
+                                    <label class="form-label">Η βαθμολογία σας :</label>
                                     <fieldset class="starability-fade">
                                         <input type="radio" id="rate5" name="rating" value="5" />
                                         <label for="rate5" title="Amazing">5 αστέρια</label>
@@ -175,12 +175,9 @@
                                         <input type="radio" id="rate2" name="rating" value="2" />
                                         <label for="rate2" title="Not good">2 αστέρια</label>
 
-                                        <input type="radio" id="rate1" name="rating" value="1" required />
+                                        <input type="radio" id="rate1" name="rating" value="1" />
                                         <label for="rate1" title="Terrible">1 αστέρι</label>
                                     </fieldset>
-                                    <div class="invalid-feedback" id="rating-error" style="display: none;">
-                                        Επιλέξτε μια βαθμολογία.
-                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="comment">Σχόλιο: </label>
@@ -503,32 +500,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('.validated-form');
         if (form) {
-            const ratingInputs = form.querySelectorAll('input[name="rating"]');
-            const ratingError = document.getElementById('rating-error');
-
-            if (ratingInputs && ratingError) {
-                ratingInputs.forEach(input => {
-                    input.addEventListener('change', () => {
-                        if (input.checked) {
-                            ratingError.style.display = 'none';
-                        }
-                    });
-                });
-
-                form.addEventListener('submit', function (event) {
-                    let ratingValid = Array.from(ratingInputs).some(input => input.checked);
-
-                    if (!ratingValid) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        ratingError.style.display = 'block';
-                    } else {
-                        ratingError.style.display = 'none';
-                    }
-
-                    form.classList.add('was-validated');
-                });
-            }
+            // No rating validation needed
         }
     });
 
@@ -546,17 +518,7 @@
                     return;
                 }
 
-                const ratingInputs = form.querySelectorAll('input[name="rating"]');
-                const ratingError = document.getElementById('rating-error');
-                const ratingValid = Array.from(ratingInputs).some(input => input.checked);
-
-                if (!ratingValid) {
-                    ratingError.style.display = 'block';
-                    return;
-                } else {
-                    ratingError.style.display = 'none';
-                }
-
+                // No rating validation required
 
                 const formData = new FormData(form);
 
@@ -569,10 +531,7 @@
                     if (response.ok) {
                         form.reset();
                         form.classList.remove('was-validated');
-                        const ratingError = document.getElementById('rating-error');
-                        if (ratingError) {
-                            ratingError.style.display = 'none';
-                        }
+                        // No rating-error to hide
 
                         const isbn = document.getElementById("bookDetailIsbn").value;
                         if (isbn) {
@@ -585,8 +544,6 @@
             });
         }
     });
-
-
 
     function refreshComments(isbn) {
         if (!isbn) {
@@ -630,15 +587,17 @@
                     let starsHtml = '';
                     if (!isReply) {
                         const fullStars = Math.floor(comment.rating || 0);
-                        const emptyStars = 5 - fullStars;
-                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
-                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+                        if (fullStars > 0) {
+                            const emptyStars = 5 - fullStars;
+                            for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
+                            for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+                        }
                     }
 
                     div.innerHTML = `
                     <div class="d-flex align-items-center gap-2 mb-1">
                         <h6 class="mb-0">${comment.username || 'Anonymous'} ${isReply ? '<span class="text-muted">(reply)</span>' : ''}</h6>
-                        ${!isReply ? `<div class="text-warning">${starsHtml}</div>` : ''}
+                        ${(!isReply && (comment.rating && comment.rating > 0)) ? `<div class="text-warning">${starsHtml}</div>` : ''}
                     </div>
                     <div class="mb-2">
                         <small class="text-muted">${comment.dateCreated ? new Date(comment.dateCreated).toLocaleDateString() : 'Unknown date'}</small>
