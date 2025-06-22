@@ -105,6 +105,7 @@ public class BookSearchController {
                             new UserDAO().insert(new Author(book.getAuthorUsername(), "000", book.getAuthorUsername(), book.getAuthorUsername(), true));
                         }
                         bookDao.insert(book);
+                        book.setStock(bookDao.getBookStock(book.getIsbn()));
                         books.add(book);
                     }
                 }

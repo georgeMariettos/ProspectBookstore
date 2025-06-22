@@ -69,6 +69,24 @@ public class BookDao {
         }
     }
 
+    public int getBookStock(String isbn) {
+        String sqlString = "SELECT stock FROM Books WHERE isbn = ?";
+        try{
+            PreparedStatement psmt = conn.prepareStatement(sqlString);
+            psmt.setString(1, isbn);
+            ResultSet rs = psmt.executeQuery();
+            int stock = 0;
+            if(rs.next()) {
+                stock = rs.getInt("stock");
+            }
+            psmt.close();
+            rs.close();
+            return stock;
+        } catch (SQLException e) {
+            return -1; // Error occurred
+        }
+    }
+
     public ArrayList<Book> selectAll() {
         String sqlString = "SELECT * FROM Books";
         return selectByQuery(sqlString);
