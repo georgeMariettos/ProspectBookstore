@@ -4,6 +4,7 @@ import com.unipi.prospect.product.Item;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ShoppingCart {
     private Date created;
@@ -38,7 +39,8 @@ public class ShoppingCart {
         for(Item item : items){
             sum += item.getTotalPrice();
         }
-        sum = Float.parseFloat(String.format("%.2f",sum));
+
+        sum = Float.parseFloat(String.format(Locale.US, "%.2f", sum));
         this.total = sum;
     }
 }

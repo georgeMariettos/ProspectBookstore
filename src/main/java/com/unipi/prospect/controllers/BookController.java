@@ -96,9 +96,7 @@ public class BookController {
 
     @GetMapping("/search/author")
     public ResponseEntity<List<Book>> searchBooksByAuthor(@RequestParam String author) {
-        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
-        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
-        System.out.println("AUTHOR SEARCH IS BEING EXECUTED");
+
         try {
             if (author == null || author.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body(Collections.emptyList());

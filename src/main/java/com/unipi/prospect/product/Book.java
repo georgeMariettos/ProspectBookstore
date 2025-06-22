@@ -19,6 +19,7 @@ public class Book {
     private int stock;
 
 
+
     public Book(String isbn, String title, String authorUsername, String imageUrl, String description, String publisher, String publishedDate, int pageCount, String genre, String previewLink, float price, int stock) {
         this.isbn = isbn;
         this.title = title;
