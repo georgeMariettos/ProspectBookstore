@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import java.sql.Date;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -134,7 +135,13 @@ public class BookController {
         }
     }
 
+    @GetMapping("/sales")
+    public ResponseEntity<Integer> getBookSales(@RequestParam String isbn) throws SQLException {
 
+        int sales = bookDao.getBookSales(isbn);
+
+        return ResponseEntity.ok(sales);
+    }
 
     // Helper method to parse book details from the API response
     private Book parseBookFromResponse(Map<String, Object> item) {
