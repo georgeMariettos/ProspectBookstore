@@ -252,7 +252,7 @@ public class AdminController {
     public String adminUpdateUser(@RequestParam("username") String username,
                                 @RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
-                                @RequestParam("address") String address,
+                                @RequestParam(value = "address", required = false) String address,
                                 @RequestParam("active") String active,
                                 @RequestParam("role") String role,
                                 HttpSession session) {

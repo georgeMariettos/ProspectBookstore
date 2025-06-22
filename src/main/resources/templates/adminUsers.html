@@ -68,7 +68,7 @@
                     <td th:text="${user.getUsername()}"/>
                     <td th:text="${user.getName()}"/>
                     <td th:text="${user.getSurname()}">
-                    <td>Customer</td>
+                    <td th:text="${tab}"></td>
                     <td><input class="form-check-input" type="checkbox" disabled th:checked="${user.isActive()}"></td>
                     <td>
                         <div style="column-gap: 4px;">

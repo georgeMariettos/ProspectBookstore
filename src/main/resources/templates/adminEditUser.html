@@ -50,9 +50,9 @@
                     <input type="text" class="form-control" id="surname" name="surname" th:value="${user.getSurname()}" required>
                 </div>
 
-                <div class="mb-3">
+                <div th:if="${role} == 'Customer'" class="mb-3">
                     <label for="address" class="form-label">Διεύθυνση</label>
-                    <input type="text" class="form-control" id="address" name="address" th:value="${address == null?'':address}" required>
+                    <input type="text" class="form-control" id="address" name="address" th:value="${address == null?'':address}">
                 </div>
 
                 <div class="form-check">
