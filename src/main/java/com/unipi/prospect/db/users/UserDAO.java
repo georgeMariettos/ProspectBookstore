@@ -166,6 +166,23 @@ public class UserDAO {
         }
     }
 
+    public boolean updatePassword(String username, String newPassword) {
+        byte[] salt;
+        try {
+            salt = generateSalt();
+            String hashedPassword = hashPassword(newPassword, salt);
+            String sqlString = "UPDATE Users SET password = ?, salt = ? WHERE username = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sqlString);
+            pstmt.setString(1, hashedPassword);
+            pstmt.setBytes(2, salt);
+            pstmt.setString(3, username);
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | SQLException e) {
+            return false;
+        }
+    }
     public boolean delete(User user) {
         String sqlString = "DELETE FROM Users WHERE username = ?";
         try{

@@ -86,6 +86,35 @@ public class UserController {
         }
     }
 
+    @PostMapping("/newpassword")
+    public String newPassword(@RequestParam String username,
+                              @RequestParam String current_password,
+                              @RequestParam String new_password,
+                              HttpSession session) {
+        // Try to authenticate as admin first
+        User authenticatedUser = new UserDAO().authenticate(username, current_password, "Admin");
+
+        // If not admin, try author
+        if (authenticatedUser == null) {
+            authenticatedUser = new UserDAO().authenticate(username, current_password, "Author");
+        }
+
+        // If not author, try customer
+        if (authenticatedUser == null) {
+            authenticatedUser = new UserDAO().authenticate(username, current_password, "Customer");
+        }
+
+        // If authentication failed for all roles
+        if (authenticatedUser == null) {
+            return "redirect:/login.html?error=true";
+        } else if (!authenticatedUser.isActive()) {
+            return "redirect:/login.html?banError=true";
+        }
+        // Update the password
+        new UserDAO().updatePassword(authenticatedUser.getUsername(), new_password);
+        return "redirect:/login.html";
+    }
+
     @PostMapping("/submit-ticket")
     public String submitTicket(@RequestParam String ticketSubject,
                                @RequestParam String ticketCategory,
