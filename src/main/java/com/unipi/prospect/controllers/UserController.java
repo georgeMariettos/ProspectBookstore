@@ -106,9 +106,9 @@ public class UserController {
 
         // If authentication failed for all roles
         if (authenticatedUser == null) {
-            return "redirect:/login.html?error=true";
+            return "redirect:/changepassword.html?error=true";
         } else if (!authenticatedUser.isActive()) {
-            return "redirect:/login.html?banError=true";
+            return "redirect:/changepassword.html?banError=true";
         }
         // Update the password
         new UserDAO().updatePassword(authenticatedUser.getUsername(), new_password);
