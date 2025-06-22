@@ -74,7 +74,7 @@
                     <a href="/cart/clear">
                         <button class="btn btn-primary bg-secondary bg-gradient border border-secondary" id="empty">Καθάρισε το καλάθι</button>
                     </a>
-                    <a href="/order">
+                    <a th:if="${cart.getTotal()}" href="/order">
                         <button class="btn btn-primary bg-success bg-gradient border border-success" id="checkout">Ολοκλήρωση παραγγελίας</button>
                     </a>
                 </div>

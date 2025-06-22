@@ -78,6 +78,10 @@ public class ShoppingCartController {
                         item.setQuantity(item.getQuantity() - 1);
                         shoppingCart.calculateTotal();
                         return "redirect:/cart";
+                    }else if (op.equals("minus") && item.getQuantity() == 1) {
+                        shoppingCart.getItems().remove(item);
+                        shoppingCart.calculateTotal();
+                        return "redirect:/cart";
                     }
                 }
             }
